@@ -2,7 +2,6 @@ package com.epam.jwd.dao.impl;
 
 import com.epam.jwd.dao.BaseDao;
 import com.epam.jwd.entity.Role;
-import com.epam.jwd.entity.RoleRemove;
 
 import java.util.List;
 
