@@ -1,21 +1,25 @@
 package com.epam.jwd.view;
 
-import com.epam.jwd.dao.BaseDao;
-import com.epam.jwd.dao.impl.BrigadeDaoImpl;
-import com.epam.jwd.dao.impl.BrigadeWithUsersDaoImpl;
-import com.epam.jwd.dao.impl.FlightDaoImpl;
-import com.epam.jwd.entity.Aircraft;
-import com.epam.jwd.dao.impl.AircraftDaoImpl;
-import com.epam.jwd.entity.Brigade;
+import com.epam.jwd.dao.entity.Role;
+import com.epam.jwd.dao.exception.DAOException;
+import com.epam.jwd.service.dto.FlightDTO;
+import com.epam.jwd.service.impl.FlightService;
 
 import java.sql.SQLException;
+import java.util.Locale;
 
 public class main {
     public static void main(String[] args) throws SQLException, InterruptedException {
 
-    BrigadeDaoImpl brigadeDao = new BrigadeDaoImpl();
-        BrigadeWithUsersDaoImpl brigadeWithUsersDao = new BrigadeWithUsersDaoImpl();
-        System.out.println(brigadeWithUsersDao.findById(brigadeDao.findById(1L)));
+        FlightService flightService =  new FlightService();
+        try {
+            FlightDTO flightDTO = flightService.findFlightById(10);
+
+            System.out.println(flightDTO.toString());
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+
 
     }
 

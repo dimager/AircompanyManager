@@ -5,9 +5,8 @@ import com.epam.jwd.controller.context.ResponseContext;
 
 public interface Command {
 
-    ResponseContext execute(RequestContext requestContext);
-
     static Command of(String name) {
         return Commands.getCommand(name);
     }
+    ResponseContext execute(RequestContext requestContext);
 }

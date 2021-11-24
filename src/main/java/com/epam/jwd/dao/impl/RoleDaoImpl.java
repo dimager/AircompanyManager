@@ -1,29 +1,32 @@
 package com.epam.jwd.dao.impl;
 
 import com.epam.jwd.dao.BaseDao;
-import com.epam.jwd.entity.Role;
+import com.epam.jwd.dao.connectionpool.ConnectionPool;
+import com.epam.jwd.dao.connectionpool.impl.ConnectionPoolImpl;
+import com.epam.jwd.dao.entity.Role;
+import com.epam.jwd.dao.entity.User;
 
 import java.util.List;
 
-public class RoleDaoImpl implements BaseDao<Byte, Role> {
+public class RoleDaoImpl {
+    public User save(User entity) {
+        return null;
+    }
 
-    @Override
-    public boolean save(Role entity) {
+    public boolean update(User entity) {
         return false;
     }
 
-    @Override
-    public List<Role> findAll() {
+    public List<User> findAll() {
         return null;
     }
 
-    @Override
-    public Role findById(Byte id) {
+    public User findById(Byte id) {
         return null;
     }
 
-    @Override
     public boolean deleteById(Byte id) {
         return false;
     }
+
 }

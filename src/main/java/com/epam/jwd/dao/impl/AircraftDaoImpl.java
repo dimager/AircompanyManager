@@ -1,8 +1,13 @@
 package com.epam.jwd.dao.impl;
 
 import com.epam.jwd.dao.BaseDao;
-import com.epam.jwd.connectioonpool.ConnectionPollImpl;
-import com.epam.jwd.entity.Aircraft;
+import com.epam.jwd.dao.api.SQLQueries;
+import com.epam.jwd.dao.connectionpool.ConnectionPool;
+import com.epam.jwd.dao.connectionpool.impl.ConnectionPoolImpl;
+import com.epam.jwd.dao.entity.Aircraft;
+import com.epam.jwd.dao.exception.DAOException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,82 +17,148 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AircraftDaoImpl implements BaseDao<Long, Aircraft> {
-    private static final String SELECT_AIRCRAFT_BY_ID_SQL = "SELECT aircraft_id, aircraft_producer, aircraft_model FROM aircompany_manager_db.aircrafts where aircraft_id=?";
-    private static final String SELECT_ALL_AIRCRAFTS_SQL = "SELECT aircraft_id, aircraft_producer, aircraft_model FROM aircompany_manager_db.aircrafts";
-    private static final String INSERT_AIRCRAFT_SQL = "INSERT INTO aircompany_manager_db.aircrafts (aircraft_producer,aircraft_model) VALUES (?,?)";
-    private static final String DELETE_AIRCRAFT_BY_ID_SQL = "DELETE FROM aircompany_manager_db.aircrafts WHERE aircraft_id = ?";
+
+public class AircraftDaoImpl implements BaseDao<Integer, Aircraft> {
+    private static final Logger logger = LogManager.getLogger(AircraftDaoImpl.class);
+    private static final String EXCEPTION_UPDATE_ERROR_MESSAGE = "Aircraft wasn't updated in db. ";
+    private static final String EXCEPTION_SAVE_ERROR_MESSAGE = "New aircraft wasn't saved in db. ";
+    private static final String EXCEPTION_FINDALL_SQL_ERROR_MESSAGE = "Find all aircraft's. ";
+    private static final String EXCEPTION_FIND_BY_ID_ERROR_MESSAGE = "Aircraft wasn't  found. ";
+    private static final String EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE = "Aircraft wasn't deleted. ";
+    private static final String EXCEPTION_SQL_MESSAGE = "SQL exception";
+
+    private final int ONE_UPDATED_ROW = 1;
+    private final ConnectionPool connectionPool = ConnectionPoolImpl.getInstance();
+
+    /**
+     * Save Aircraft entity to database.
+     *
+     * @param aircraft - aircraft entity.
+     * @return If entity is saved in database return Aircraft with generated ID, otherwise return NULL.
+     */
 
     @Override
-    public boolean save(Aircraft entity) {
-        Connection connection = ConnectionPollImpl.getInstance().requestConnection();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_AIRCRAFT_SQL);
-            preparedStatement.setString(1, entity.getProducer());
-            preparedStatement.setString(2, entity.getModel());
-            return preparedStatement.executeUpdate() == 1;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return false;
+    public Aircraft save(Aircraft aircraft) throws DAOException {
+        Connection connection = connectionPool.requestConnection();
+        ResultSet resultSet = null;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_AIRCRAFTS_INSERT, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setString(1, aircraft.getProducer());
+            preparedStatement.setString(2, aircraft.getModel());
+            preparedStatement.setString(3, aircraft.getRegistrationCode());
+            if (preparedStatement.executeUpdate() == ONE_UPDATED_ROW) {
+                resultSet = preparedStatement.getGeneratedKeys();
+                if (resultSet.next()) {
+                    aircraft.setId(resultSet.getInt(1));
+                    return aircraft;
+                }
+            }
+            logger.error(EXCEPTION_SAVE_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_SAVE_ERROR_MESSAGE);
+
+        } catch (SQLException e) {
+            logger.error(EXCEPTION_SAVE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
+            throw new DAOException(EXCEPTION_SAVE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
         } finally {
-            ConnectionPollImpl.getInstance().returnConnection(connection);
+            CloseResultSet(resultSet);
+            connectionPool.returnConnection(connection);
         }
     }
 
+    /**
+     * Update Aircraft entry in database by ID.
+     *
+     * @param aircraft- aircraft entity.
+     * @return true - if entry is successfully updated, otherwise false.
+     */
     @Override
-    public List<Aircraft> findAll() {
+    public boolean update(Aircraft aircraft) throws DAOException {
+        Connection connection = connectionPool.requestConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_AIRCRAFTS_UPDATE_BY_ID)) {
+            preparedStatement.setString(1, aircraft.getProducer());
+            preparedStatement.setString(2, aircraft.getModel());
+            preparedStatement.setString(3, aircraft.getRegistrationCode());
+            preparedStatement.setLong(4, aircraft.getId());
+            if (preparedStatement.executeUpdate() == ONE_UPDATED_ROW) {
+                return true;
+            }
+            logger.error(EXCEPTION_UPDATE_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE);
+        } catch (SQLException e) {
+            logger.error(EXCEPTION_UPDATE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
+            throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
+        } finally {
+            connectionPool.returnConnection(connection);
+        }
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public List<Aircraft> findAll() throws DAOException {
         List<Aircraft> aircrafts = new ArrayList<>();
-        Connection connection = ConnectionPollImpl.getInstance().requestConnection();
-        try (Statement statement = connection.createStatement();) {
-            ResultSet resultSet = statement.executeQuery(SELECT_ALL_AIRCRAFTS_SQL);
+        Connection connection = connectionPool.requestConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_AIRCRAFTS_SELECT_ALL);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 Aircraft aircraft = new Aircraft();
                 aircraft.setId(resultSet.getInt(1));
                 aircraft.setProducer(resultSet.getString(2));
                 aircraft.setModel(resultSet.getString(3));
+                aircraft.setRegistrationCode(resultSet.getString(4));
                 aircrafts.add(aircraft);
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } finally {
-            ConnectionPollImpl.getInstance().returnConnection(connection);
             return aircrafts;
+        } catch (SQLException e) {
+            logger.error(EXCEPTION_FINDALL_SQL_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
+            throw new DAOException(EXCEPTION_FINDALL_SQL_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
+        } finally {
+            connectionPool.returnConnection(connection);
         }
+
     }
 
     @Override
-    public Aircraft findById(Long id) {
+    public Aircraft findById(Integer id) throws DAOException {
         Aircraft aircraft = new Aircraft();
-        Connection connection = ConnectionPollImpl.getInstance().requestConnection();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_AIRCRAFT_BY_ID_SQL);
+        ResultSet resultSet = null;
+        Connection connection = connectionPool.requestConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_AIRCRAFTS_SELECT_BY_ID)) {
             preparedStatement.setLong(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
                 aircraft.setId(resultSet.getInt(1));
                 aircraft.setProducer(resultSet.getString(2));
                 aircraft.setModel(resultSet.getString(3));
+                aircraft.setRegistrationCode(resultSet.getString(4));
+                return aircraft;
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            logger.error(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE);
+        } catch (SQLException e) {
+            logger.error(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
+            throw new DAOException(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
         } finally {
-            ConnectionPollImpl.getInstance().returnConnection(connection);
-            return aircraft;
+            CloseResultSet(resultSet);
+            connectionPool.returnConnection(connection);
         }
     }
 
     @Override
-    public boolean deleteById(Long id) {
-        Connection connection = ConnectionPollImpl.getInstance().requestConnection();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_AIRCRAFT_BY_ID_SQL);
+    public boolean deleteById(Integer id) throws DAOException {
+        Connection connection = connectionPool.requestConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_AIRCRAFTS_DELETE_BY_ID)) {
             preparedStatement.setLong(1, id);
-            return preparedStatement.executeUpdate() == 1;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            if (preparedStatement.executeUpdate() == ONE_UPDATED_ROW) {
+                return true;
+            }
+            logger.error(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE);
+        } catch (SQLException e) {
+            logger.error(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
+            throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
         } finally {
-            ConnectionPollImpl.getInstance().returnConnection(connection);
-            return false;
+            connectionPool.returnConnection(connection);
         }
     }
 }
