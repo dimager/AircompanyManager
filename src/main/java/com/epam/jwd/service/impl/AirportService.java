@@ -16,12 +16,12 @@ public class AirportService {
     AirportConverter airportConverter = new AirportConverter();
     AirportValidator airportValidator  = new AirportValidator();
     public AirportDTO saveAirport (AirportDTO airportDTO) throws DAOException, ValidatorException {
-        airportValidator.validate(airportDTO);
+        airportValidator.isValid(airportDTO);
         return airportConverter.convertToDTO(airportDao.save(airportConverter.convertToDAO(airportDTO)));
     }
 
     public boolean updateAirport (AirportDTO airportDTO) throws ValidatorException, DAOException {
-        airportValidator.validate(airportDTO);
+        airportValidator.isValid(airportDTO);
         return airportDao.update(airportConverter.convertToDAO(airportDTO));
     }
 

@@ -1,9 +1,10 @@
 package com.epam.jwd.dao.impl;
 
 import com.epam.jwd.dao.BaseDao;
-import com.epam.jwd.dao.api.SQLQueries;
+import com.epam.jwd.dao.SQLQueries;
 import com.epam.jwd.dao.connectionpool.ConnectionPool;
 import com.epam.jwd.dao.connectionpool.impl.ConnectionPoolImpl;
+import com.epam.jwd.dao.entity.Brigade;
 import com.epam.jwd.dao.entity.User;
 import com.epam.jwd.dao.exception.DAOException;
 import org.apache.logging.log4j.LogManager;
@@ -31,6 +32,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
     private static final String EXCEPTION_UPDATE_NEW_USER_EXCEPTION = "User wasn't updated in db. ";
     private static final String EXCEPTION_FIND_BY_USERNAME_ERROR_MESSAGE = "Username wasn't found. ";
     private static final String EXCEPTION_GET_FREE_USERS_ERROR_MESSAGE = "Users not found";
+    private static final String EXCEPTION_FIND_USER_FLIGHTS_ERROR_MESSAGE = "Find users flights. ";
     private final int ONE_UPDATED_ROW = 1;
     ConnectionPool connectionPool = ConnectionPoolImpl.getInstance();
 
@@ -97,10 +99,10 @@ public class UserDaoImpl implements BaseDao<Long, User> {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_USERS_UPDATE_BY_ID)) {
             userToStatement(user, preparedStatement);
             preparedStatement.setLong(8, user.getId());
-            if (preparedStatement.executeUpdate() != ONE_UPDATED_ROW) {
-                throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE);
+            if (preparedStatement.executeUpdate() == ONE_UPDATED_ROW) {
+                return true;
             }
-            return true;
+            throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE);
 
         } catch (SQLException e) {
             logger.error(EXCEPTION_UPDATE_NEW_USER_EXCEPTION + EXCEPTION_SQL_MESSAGE, e);
@@ -183,16 +185,59 @@ public class UserDaoImpl implements BaseDao<Long, User> {
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_USERS_DELETE_BY_ID)) {
             preparedStatement.setLong(1, id);
-            if (preparedStatement.executeUpdate() != ONE_UPDATED_ROW) {
-                logger.error(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE);
-                throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE);
+            if (preparedStatement.executeUpdate() == ONE_UPDATED_ROW) {
+                return true;
             }
-            return true;
+            logger.error(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
             throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
         } finally {
             connectionPool.returnConnection(connection);
+        }
+    }
+
+    public List<Long> getUserFlights(long userId) throws DAOException {
+        List<Long> flightsIds = new ArrayList<>();
+        ResultSet resultSet = null;
+        Connection connection = ConnectionPoolImpl.getInstance().requestConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SELECT_USER_FLIGHTS)) {
+            preparedStatement.setLong(1, userId);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                flightsIds.add(resultSet.getLong(1));
+            }
+            return flightsIds;
+        } catch (SQLException e) {
+            logger.error(EXCEPTION_FIND_USER_FLIGHTS_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
+            throw new DAOException(EXCEPTION_FIND_USER_FLIGHTS_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
+        } finally {
+            CloseResultSet(resultSet);
+            ConnectionPoolImpl.getInstance().returnConnection(connection);
+        }
+    }
+
+    public List<Brigade> getUserBrigades(long userId) throws DAOException {
+        List<Brigade> userBrigades = new ArrayList<>();
+        ResultSet resultSet = null;
+        Connection connection = ConnectionPoolImpl.getInstance().requestConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SELECT_USER_BRIGADES)) {
+            preparedStatement.setLong(1, userId);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Brigade brigade = new Brigade();
+                brigade.setId(resultSet.getLong(1));
+                brigade.setBrigadeName(resultSet.getString(2));
+                userBrigades.add(brigade);
+            }
+            return userBrigades;
+        } catch (SQLException e) {
+            logger.error(EXCEPTION_FIND_USER_FLIGHTS_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
+            throw new DAOException(EXCEPTION_FIND_USER_FLIGHTS_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
+        } finally {
+            CloseResultSet(resultSet);
+            ConnectionPoolImpl.getInstance().returnConnection(connection);
         }
     }
 
@@ -245,10 +290,11 @@ public class UserDaoImpl implements BaseDao<Long, User> {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_USERS_UPDATE_ROLE)) {
             preparedStatement.setInt(1, roleId);
             preparedStatement.setLong(2, userId);
-            if (preparedStatement.executeUpdate() != ONE_UPDATED_ROW) {
-                throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE);
+            if (preparedStatement.executeUpdate() == ONE_UPDATED_ROW) {
+                return true;
             }
-            return true;
+            logger.error(EXCEPTION_UPDATE_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_UPDATE_NEW_USER_EXCEPTION + EXCEPTION_SQL_MESSAGE, e);
             throw new DAOException(EXCEPTION_UPDATE_NEW_USER_EXCEPTION + EXCEPTION_SQL_MESSAGE);

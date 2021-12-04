@@ -22,14 +22,30 @@ public class FlightService {
 
     public FlightDTO saveFlight(FlightDTO flightDTO) throws DAOException, ValidatorException {
         logger.debug("saveFlight method");
-        flightValidator.validate(flightDTO);
+        flightValidator.isValid(flightDTO);
         return flightConverter.convertToDTO(flightDao.save(flightConverter.convertToDAO(flightDTO)));
+    }
+
+    public FlightDTO saveFlight(Flight flight) throws DAOException, ValidatorException {
+        logger.debug("saveFlight method");
+        return this.convertToDTO(flightDao.save(flight));
     }
 
     public boolean updateFlight(FlightDTO flightDTO) throws ValidatorException, DAOException {
         logger.debug("updateFlight method");
-        flightValidator.validate(flightDTO);
+        flightValidator.isValid(flightDTO);
         return flightDao.update(flightConverter.convertToDAO(flightDTO));
+
+    }
+
+    public boolean updateFlight(Flight flight) throws ValidatorException, DAOException {
+        logger.debug("updateFlight method");
+        return flightDao.update(flight);
+    }
+
+    public boolean updateFlightBrigade(long flightId, long brigadeId) throws ValidatorException, DAOException {
+        logger.debug("updateFlight method");
+        return flightDao.updateBrigade(flightId, brigadeId);
     }
 
     public List<FlightDTO> findAllFlights() throws DAOException {
@@ -78,7 +94,7 @@ public class FlightService {
         }
 
         try {
-            flightDTO.setDestinationAirport(airportService.findAirportById(flight.getDepartureAirportId()));
+            flightDTO.setDestinationAirport(airportService.findAirportById(flight.getDestinationAirportId()));
         } catch (DAOException e) {
             flightDTO.setDestinationAirport(null);
         }

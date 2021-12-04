@@ -8,7 +8,7 @@ public class BrigadeValidator implements Validator<BrigadeDTO> {
     private static final int MIN_LENGTH = 1;
 
     @Override
-    public boolean validate(BrigadeDTO brigadeDTO) throws ValidatorException {
+    public boolean isValid(BrigadeDTO brigadeDTO) throws ValidatorException {
          if(brigadeDTO.getBrigadeName().length() >= MIN_LENGTH
                 && brigadeDTO.getBrigadeName().length() <= MAX_LENGTH){
              return true;

@@ -4,7 +4,11 @@
     <short-name>Example TLD</short-name>
     <tag>
         <name>Hello</name>
-        <tag-class>com.epam.jwd.controller.CustomTag</tag-class>
-        <body-content>empty</body-content>
+        <tag-class>com.epam.jwd.controller.tag.CustomTag</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>userDTO</name>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
     </tag>
 </taglib>

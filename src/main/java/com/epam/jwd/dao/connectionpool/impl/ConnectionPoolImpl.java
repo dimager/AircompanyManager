@@ -15,7 +15,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public final class ConnectionPoolImpl implements ConnectionPool {
 
     private static final ConnectionPool INSTANCE = new ConnectionPoolImpl();
-    private static final int CONNECTION_POOL_SIZE = 5;
+    private static final int CONNECTION_POOL_SIZE = 10;
 
     private final Queue<ProxyConnection> availableConnection = new ArrayBlockingQueue<>(CONNECTION_POOL_SIZE);
     private final List<ProxyConnection> usedConnection = new CopyOnWriteArrayList<>();

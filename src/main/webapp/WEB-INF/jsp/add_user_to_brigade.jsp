@@ -9,25 +9,27 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <c:import url="meta.jsp"/>
-<fmt:setBundle basename="messages"/>
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="messages" var="lang"/>
 <html>
 <head>
-    <title><fmt:message key="pagename.addusertobrigade"/> </title>
+    <title><fmt:message bundle="${lang}" key="pagename.addusertobrigade"/> </title>
 </head>
 <body>
 
-<c:import url="header.jsp"/>
 
-<div id="login-one" class="login-one" style="padding-top: 20px;">
+<div id="login-one" class="login-one" >
+    <c:import url="header.jsp"/>
+    <c:import url="exception.jsp"/>
+    <c:import url="command_result_state.jsp"/>
+
     <section class="mt-4">
-        <c:import url="exception.jsp"/>
-            <c:import url="command_result_state.jsp"/>
 
             <div class="row">
             <div class="col" style="padding-right: 45px;padding-left: 45px;">
                 <div class="card shadow">
                     <div class="card-header py-2">
-                        <p class="lead text-info m-0"><fmt:message key="tablename.addusertobrigade"/> ${requestScope.brigadeDTO.brigadeName}</p>
+                        <p class="lead text-info m-0"><fmt:message bundle="${lang}" key="tablename.addusertobrigade"/> ${requestScope.brigadeDTO.brigadeName}</p>
                     </div>
                     <div class="card-body">
 
@@ -35,9 +37,9 @@
                             <table class="table table-striped table-sm my-0 mydatatable">
                                 <thead>
                                 <tr>
-                                    <th><fmt:message key="tablecolumnlabel.firstname"/> </th>
-                                    <th><fmt:message key="tablecolumnlabel.lastname"/></th>
-                                    <th><fmt:message key="tablecolumnlabel.role"/></th>
+                                    <th><fmt:message bundle="${lang}" key="tablecolumnlabel.firstname"/> </th>
+                                    <th><fmt:message bundle="${lang}" key="tablecolumnlabel.lastname"/></th>
+                                    <th><fmt:message bundle="${lang}" key="tablecolumnlabel.role"/></th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -46,7 +48,7 @@
                                     <tr>
                                         <td>${user.firstName}</td>
                                         <td>${user.lastName}</td>
-                                        <td><fmt:message key="rolename.${user.role.roleId}"/></td>
+                                        <td><fmt:message bundle="${lang}" key="rolename.${user.role.roleId}"/></td>
                                         <td>
                                             <c:url value="/controller" var="addUserToBrigade">
                                                 <c:param name="command" value="ADD_USER_TO_BRIGADE_PAGE"/>

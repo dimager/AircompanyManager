@@ -12,7 +12,7 @@ public class AirportConverter implements Converter<Airport, AirportDTO> {
         airport.setName(airportDTO.getName());
         airport.setCity(airportDTO.getCity());
         airport.setCountry(airportDTO.getCountry());
-        airport.setIATACode(airport.getIATACode());
+        airport.setIATACode(airportDTO.getIATACode());
         return airport;
     }
 

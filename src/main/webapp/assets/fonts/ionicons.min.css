@@ -890,6 +890,11 @@
 
 .ion-edit:before {
     content: "\f2bf"
+
+}
+
+.editcolor {
+    color: #007bff;
 }
 
 .ion-egg:before {

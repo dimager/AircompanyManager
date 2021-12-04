@@ -1,7 +1,7 @@
 package com.epam.jwd.dao.impl;
 
 import com.epam.jwd.dao.BaseDao;
-import com.epam.jwd.dao.api.SQLQueries;
+import com.epam.jwd.dao.SQLQueries;
 import com.epam.jwd.dao.connectionpool.ConnectionPool;
 import com.epam.jwd.dao.connectionpool.impl.ConnectionPoolImpl;
 import com.epam.jwd.dao.entity.Airport;
@@ -42,8 +42,8 @@ public class AirportDaoImpl implements BaseDao<Integer, Airport> {
             preparedStatement.setString(3, airport.getCity());
             preparedStatement.setString(4, airport.getIATACode());
             if (preparedStatement.executeUpdate() == ONE_UPDATED_ROW) {
+                resultSet = preparedStatement.getGeneratedKeys();
                 if (resultSet.next()) {
-                    resultSet = preparedStatement.getGeneratedKeys();
                     airport.setId(resultSet.getInt(1));
                     return airport;
                 }

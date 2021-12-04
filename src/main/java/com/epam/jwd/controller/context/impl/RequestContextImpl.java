@@ -1,5 +1,6 @@
-package com.epam.jwd.controller.context;
+package com.epam.jwd.controller.context.impl;
 
+import com.epam.jwd.controller.context.RequestContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -20,10 +21,6 @@ public class RequestContextImpl implements RequestContext {
         request.setAttribute(name, attribute);
     }
 
-    @Override
-    public void addAttributeToHttpSession(String name, Object attribute) {
-        request.getSession().setAttribute(name, attribute);
-    }
 
     @Override
     public String getParamFromJSP(String name) {
@@ -31,15 +28,13 @@ public class RequestContextImpl implements RequestContext {
     }
 
     @Override
-    public Object getAttributeFromJsp(String name) {
-        return request.getAttribute(name);
-    }
-
     public HttpSession getHttpSession() {
         return request.getSession();
     }
 
+    @Override
     public HttpSession getHttpSession(boolean create) {
         return request.getSession(create);
     }
+
 }

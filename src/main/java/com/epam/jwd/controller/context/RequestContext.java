@@ -6,9 +6,7 @@ import jakarta.servlet.http.HttpSession;
 public interface RequestContext {
     HttpServletRequest getHttpServletRequest();
     void addAttributeToJSP(String name, Object attribute);
-    void addAttributeToHttpSession(String name, Object attribute);
     String getParamFromJSP(String name);
-    Object getAttributeFromJsp(String name);
     HttpSession getHttpSession();
     HttpSession getHttpSession(boolean create);
 

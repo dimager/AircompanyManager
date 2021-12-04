@@ -1,18 +1,14 @@
 package com.epam.jwd.dao.impl;
 
 import com.epam.jwd.dao.BaseDao;
-import com.epam.jwd.dao.api.SQLQueries;
+import com.epam.jwd.dao.SQLQueries;
 import com.epam.jwd.dao.connectionpool.ConnectionPool;
 import com.epam.jwd.dao.connectionpool.impl.ConnectionPoolImpl;
-import com.epam.jwd.dao.entity.Aircraft;
-import com.epam.jwd.dao.entity.Airport;
-import com.epam.jwd.dao.entity.Brigade;
 import com.epam.jwd.dao.entity.Flight;
 import com.epam.jwd.dao.exception.DAOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,14 +21,11 @@ import java.util.List;
 public class FlightDaoImpl implements BaseDao<Long, Flight> {
     private static final String EXCEPTION_UPDATE_ERROR_MESSAGE = "Flight wasn't updated in db. ";
     private static final String EXCEPTION_SAVE_ERROR_MESSAGE = "New flight wasn't saved in db. ";
-    private static final String EXCEPTION_FINDALL_SQL_ERROR_MESSAGE = "Find all flights. ";
+    private static final String EXCEPTION_FINDALL_ERROR_MESSAGE = "Find all flights. ";
     private static final String EXCEPTION_FIND_BY_ID_ERROR_MESSAGE = "Flight wasn't  found. ";
-    private static final String EXCEPTION_FIND_BY_ID_SQL_ERROR_MESSAGE = "Flight wasn't  found. ";
     private static final String EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE = "Flight wasn't deleted. ";
-    private static final String EXCEPTION_DELETE_BY_ID_SQL_ERROR_MESSAGE = "Flight wasn't deleted. ";
     private static final String EXCEPTION_SQL_MESSAGE = "SQL exception";
     private final static Logger logger = LogManager.getLogger(FlightDaoImpl.class);
-    private static final String EXCEPTION_FILL_THE_FLIGHT_ERROR_MESSAGE = "FillLight procedure error";
     private final int ONE_UPDATED_ROW = 1;
     private final ConnectionPool connectionPool = ConnectionPoolImpl.getInstance();
 
@@ -43,8 +36,8 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_FLIGHTS_INSERT, Statement.RETURN_GENERATED_KEYS)) {
             statementFlightFill(flight, preparedStatement);
             if (preparedStatement.executeUpdate() == ONE_UPDATED_ROW) {
+                resultSet = preparedStatement.getGeneratedKeys();
                 if (resultSet.next()) {
-                    resultSet = preparedStatement.getGeneratedKeys();
                     flight.setId(resultSet.getLong(1));
                     return flight;
                 }
@@ -66,9 +59,10 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_FLIGHTS_UPDATE_BY_ID)) {
             statementFlightFill(flight, preparedStatement);
             preparedStatement.setLong(7, flight.getId());
-            if (preparedStatement.executeUpdate() == ONE_UPDATED_ROW){
+
+            if (preparedStatement.executeUpdate() == ONE_UPDATED_ROW) {
                 return true;
-            };
+            }
             logger.error(EXCEPTION_UPDATE_ERROR_MESSAGE);
             throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE);
         } catch (SQLException e) {
@@ -92,8 +86,8 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
             }
             return flights;
         } catch (SQLException e) {
-            logger.error(EXCEPTION_FINDALL_SQL_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_FINDALL_SQL_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
+            logger.error(EXCEPTION_FINDALL_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
+            throw new DAOException(EXCEPTION_FINDALL_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
         } finally {
             connectionPool.returnConnection(connection);
         }
@@ -114,8 +108,8 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
             logger.error(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE);
             throw new DAOException(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE);
         } catch (SQLException e) {
-            logger.error(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE);
-            throw new DAOException(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE);
+            logger.error(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE  + EXCEPTION_SQL_MESSAGE, e);
+            throw new DAOException(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
         } finally {
             CloseResultSet(resultSet);
             ConnectionPoolImpl.getInstance().returnConnection(connection);
@@ -127,67 +121,38 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_FLIGHTS_DELETE_BY_ID)) {
             preparedStatement.setLong(1, id);
-            if (preparedStatement.executeUpdate() == ONE_UPDATED_ROW){
+            if (preparedStatement.executeUpdate() == ONE_UPDATED_ROW) {
                 return true;
             }
             logger.error(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE);
             throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE);
         } catch (SQLException e) {
-            logger.error(EXCEPTION_DELETE_BY_ID_SQL_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_DELETE_BY_ID_SQL_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
+            logger.error(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
+            throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
         } finally {
             connectionPool.returnConnection(connection);
         }
     }
 
-   /* public boolean fillFlightWithDBData(Flight flight, Airport dep, Airport dest, Brigade brigade, Aircraft aircraft) throws DAOException {
+    public boolean updateBrigade(long flightId, long brigadeId) throws DAOException {
         Connection connection = connectionPool.requestConnection();
-        try (CallableStatement callableStatement = connection.prepareCall(SQLQueries.PROC2)) {
-            callableStatement.setInt(1, flight.getDepartureAirportId());
-            callableStatement.setInt(2, flight.getDestinationAirportId());
-            callableStatement.setLong(3, flight.getBrigadeId());
-            callableStatement.setInt(4, flight.getFlightAircraftId());
-            callableStatement.registerOutParameter(5, Types.VARCHAR, 100);
-            callableStatement.registerOutParameter(6, Types.VARCHAR, 100);
-            callableStatement.registerOutParameter(7, Types.VARCHAR, 100);
-            callableStatement.registerOutParameter(8, Types.VARCHAR, 3);
-            callableStatement.registerOutParameter(9, Types.VARCHAR, 100);
-            callableStatement.registerOutParameter(10, Types.VARCHAR, 100);
-            callableStatement.registerOutParameter(11, Types.VARCHAR, 100);
-            callableStatement.registerOutParameter(12, Types.VARCHAR, 3);
-            callableStatement.registerOutParameter(13, Types.VARCHAR, 50);
-            callableStatement.registerOutParameter(14, Types.VARCHAR, 50);
-            callableStatement.registerOutParameter(15, Types.VARCHAR, 50);
-            callableStatement.registerOutParameter(16, Types.VARCHAR, 10);
-            ResultSet resultSet = callableStatement.executeQuery();
-            if (resultSet.next()) {
-                dep.setId(flight.getDepartureAirportId());
-                dep.setName(resultSet.getString(5));
-                dep.setCountry(resultSet.getString(6));
-                dep.setCity(resultSet.getString(7));
-                dep.setIATACode(resultSet.getString(8));
-                dest.setId(flight.getDestinationAirportId());
-                dest.setName(resultSet.getString(9));
-                dest.setCountry(resultSet.getString(10));
-                dest.setCity(resultSet.getString(11));
-                dest.setIATACode(resultSet.getString(12));
-                brigade.setId(flight.getBrigadeId());
-                brigade.setBrigadeName(resultSet.getString(13));
-                aircraft.setId(flight.getFlightAircraftId());
-                aircraft.setProducer(resultSet.getString(14));
-                aircraft.setModel(resultSet.getString(15));
-                aircraft.setRegistrationCode(resultSet.getString(16));
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_FLIGHTS_UPDATE_BRIGADE)) {
+            preparedStatement.setLong(1, brigadeId);
+            preparedStatement.setLong(2, flightId);
+            if (preparedStatement.executeUpdate() == ONE_UPDATED_ROW) {
                 return true;
             }
-            logger.error(EXCEPTION_FILL_THE_FLIGHT_ERROR_MESSAGE);
-            throw new DAOException(EXCEPTION_FILL_THE_FLIGHT_ERROR_MESSAGE);
+            logger.error(EXCEPTION_UPDATE_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE);
         } catch (SQLException e) {
-            logger.error(EXCEPTION_FILL_THE_FLIGHT_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_FILL_THE_FLIGHT_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
+            logger.error(EXCEPTION_UPDATE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
+            throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
         } finally {
             connectionPool.returnConnection(connection);
         }
-    }*/
+    }
+
+
 
 
     private void flightFill(Flight flight, ResultSet resultSet) throws SQLException {
@@ -202,7 +167,11 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
 
     private void statementFlightFill(Flight flight, PreparedStatement preparedStatement) throws SQLException {
         preparedStatement.setInt(1, flight.getFlightAircraftId());
-        preparedStatement.setLong(2, flight.getBrigadeId());
+        if (flight.getBrigadeId() == 0) {
+            preparedStatement.setNull(2, Types.NULL);
+        } else {
+            preparedStatement.setLong(2, flight.getBrigadeId());
+        }
         preparedStatement.setInt(3, flight.getDepartureAirportId());
         preparedStatement.setInt(4, flight.getDestinationAirportId());
         preparedStatement.setString(5, flight.getFlightCallsign());

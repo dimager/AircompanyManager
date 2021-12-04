@@ -1,3 +1,9 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="messages" var="lang"/>
 <footer class="footer-basic">
     <div class="social"><a href="#">
         <i class="icon ion-social-instagram"></i></a><a href="#">
@@ -11,5 +17,5 @@
         <li class="list-inline-item"><a href="#">Terms</a></li>
         <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
     </ul>
-    <p class="copyright">Company Name © 2021</p>
+    <p class="copyright">Company Name2021</p>
 </footer>

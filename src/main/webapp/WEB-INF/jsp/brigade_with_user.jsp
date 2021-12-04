@@ -1,11 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setBundle basename="messages"/>
-<fmt:setLocale value=""/>
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="messages" var="lang"/>
 <html>
 <head>
-    <title><fmt:message key="page.title.brigadepage"/></title>
+    <title><fmt:message bundle="${lang}" key="page.title.brigadepage"/></title>
     <c:import url="meta.jsp"/>
 </head>
 <body>
@@ -27,9 +27,9 @@
                             <table class="table table-striped table-sm my-0 mydatatable">
                                 <thead>
                                 <tr>
-                                    <th><fmt:message key="tablecolumnlabel.firstname"/></th>
-                                    <th><fmt:message key="tablecolumnlabel.lastname"/></th>
-                                    <th><fmt:message key="tablecolumnlabel.role"/></th>
+                                    <th><fmt:message bundle="${lang}" key="tablecolumnlabel.firstname"/></th>
+                                    <th><fmt:message bundle="${lang}" key="tablecolumnlabel.lastname"/></th>
+                                    <th><fmt:message bundle="${lang}" key="tablecolumnlabel.role"/></th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -38,7 +38,7 @@
                                     <tr>
                                         <td>${user.firstName}</td>
                                         <td>${user.lastName}</td>
-                                        <td><fmt:message key="rolename.${user.role.roleId}"/></td>
+                                        <td><fmt:message bundle="${lang}" key="rolename.${user.role.roleId}"/></td>
 
                                         <td>
                                             <c:url value="/controller" var="deleteUserFromBrigadeURL">
@@ -76,9 +76,9 @@
                             <table class="table table-striped table-sm my-0 mydatatable">
                                 <thead>
                                 <tr>
-                                    <th><fmt:message key="tablecolumnlabel.firstname"/></th>
-                                    <th><fmt:message key="tablecolumnlabel.lastname"/></th>
-                                    <th><fmt:message key="tablecolumnlabel.role"/></th>
+                                    <th><fmt:message bundle="${lang}" key="tablecolumnlabel.firstname"/></th>
+                                    <th><fmt:message bundle="${lang}" key="tablecolumnlabel.lastname"/></th>
+                                    <th><fmt:message bundle="${lang}" key="tablecolumnlabel.role"/></th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -87,7 +87,7 @@
                                     <tr>
                                         <td>${user.firstName}</td>
                                         <td>${user.lastName}</td>
-                                        <td><fmt:message key="rolename.${user.role.roleId}"/></td>
+                                        <td><fmt:message bundle="${lang}" key="rolename.${user.role.roleId}"/></td>
                                         <td>
                                             <c:url value="/controller" var="addUserToBrigade">
                                                 <c:param name="command" value="ADD_USER_TO_BRIGADE_PAGE"/>

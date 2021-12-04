@@ -15,7 +15,7 @@ public class DeleteAircraftCommand implements Command {
     private static final Logger logger = LogManager.getLogger(DeleteAircraftCommand.class);
     private static final Command INSTANCE = new DeleteAircraftCommand();
     private static final String DELETE_AIRCRAFT_JSP = "/controller?command=SHOW_AIRCRAFT_PAGE";
-    private static final String RESULT_MESSAGE = "Successfully deleted";
+    private static final int RESULT_MESSAGE_CODE = 102;
 
     private static final ResponseContext DELETE_AIRCRAFT_CONTEXT = new ResponseContext() {
         @Override
@@ -42,7 +42,7 @@ public class DeleteAircraftCommand implements Command {
         if (Objects.nonNull(requestContext.getParamFromJSP(Attributes.DELETE_AIRCRAFT_ID_ATTRIBUTE_NAME))) {
             try {
                 aircraftService.deleteAircraftById(Integer.parseInt(requestContext.getParamFromJSP(Attributes.DELETE_AIRCRAFT_ID_ATTRIBUTE_NAME)));
-                requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME, RESULT_MESSAGE);
+                requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME, RESULT_MESSAGE_CODE);
 
             } catch (DAOException |  NumberFormatException e) {
                 logger.error(e);

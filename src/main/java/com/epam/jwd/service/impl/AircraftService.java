@@ -35,7 +35,7 @@ public class AircraftService  {
 
     public AircraftDTO saveAircraft(AircraftDTO aircraftDTO) throws DAOException, ValidatorException {
         AircraftValidator aircraftValidator = new AircraftValidator();
-        aircraftValidator.validate(aircraftDTO);
+        aircraftValidator.isValid(aircraftDTO);
         return converter.convertToDTO(aircraftDAO.save(converter.convertToDAO(aircraftDTO)));
     }
 
@@ -48,7 +48,7 @@ public class AircraftService  {
 
     public boolean updateAircraft(AircraftDTO aircraftDTO) throws DAOException, ValidatorException {
         AircraftValidator aircraftValidator = new AircraftValidator();
-        aircraftValidator.validate(aircraftDTO);
+        aircraftValidator.isValid(aircraftDTO);
         return aircraftDAO.update(converter.convertToDAO(aircraftDTO));
     }
 }

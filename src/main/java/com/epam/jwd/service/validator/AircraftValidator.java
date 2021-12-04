@@ -9,7 +9,7 @@ public class AircraftValidator implements Validator<AircraftDTO> {
     private static final int MIN_LENGTH = 1;
 
     @Override
-    public boolean validate(AircraftDTO aircraftDTO) throws ValidatorException {
+    public boolean isValid(AircraftDTO aircraftDTO) throws ValidatorException {
         if (aircraftDTO.getProducer().length() <= MAX_LENGTH
                 && aircraftDTO.getModel().length() <= MAX_LENGTH
                 && aircraftDTO.getRegistrationCode().length() <= MAX_REGCODE_LENGTH

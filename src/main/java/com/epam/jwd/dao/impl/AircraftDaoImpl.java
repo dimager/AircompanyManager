@@ -1,7 +1,7 @@
 package com.epam.jwd.dao.impl;
 
 import com.epam.jwd.dao.BaseDao;
-import com.epam.jwd.dao.api.SQLQueries;
+import com.epam.jwd.dao.SQLQueries;
 import com.epam.jwd.dao.connectionpool.ConnectionPool;
 import com.epam.jwd.dao.connectionpool.impl.ConnectionPoolImpl;
 import com.epam.jwd.dao.entity.Aircraft;

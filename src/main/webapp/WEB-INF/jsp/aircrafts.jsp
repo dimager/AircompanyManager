@@ -1,16 +1,17 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setBundle basename="messages"/>
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="messages" var="lang"/>
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="../../assets/css/styles.css"/>
-    <title><fmt:message key="pagename.aircrafts"/></title>
+    <title><fmt:message bundle="${lang}" key="pagename.aircrafts"/></title>
     <c:import url="meta.jsp"/>
 </head>
 <body>
-<c:import url="header.jsp"/>
-<div id="login-one" class="login-one" style="padding-top: 20px;">
+<div id="login-one" class="login-one" >
+    <c:import url="header.jsp"/>
     <c:import url="exception.jsp"/>
     <c:import url="command_result_state.jsp"/>
     <section class="mt-4">
@@ -19,7 +20,7 @@
                 <div class="col" style="padding-right: 45px;padding-left: 45px;">
                     <div class="card shadow">
                         <div class="card-header py-2">
-                            <p class="lead text-info m-0"><fmt:message key="tablename.aircrafts"/></p>
+                            <p class="lead text-info m-0"><fmt:message bundle="${lang}" key="tablename.aircrafts"/></p>
                         </div>
                         <div class="card-body">
                             <div style="padding-top: 10px;padding-bottom: 10px;text-align: right;">
@@ -35,9 +36,9 @@
                                     <tr>
 
                                         <th></th>
-                                        <th><fmt:message key="tablecolumnlabel.regcode"/></th>
-                                        <th><fmt:message key="tablecolumnlabel.producer"/></th>
-                                        <th><fmt:message key="tablecolumnlabel.model"/></th>
+                                        <th><fmt:message bundle="${lang}" key="tablecolumnlabel.regcode"/></th>
+                                        <th><fmt:message bundle="${lang}" key="tablecolumnlabel.producer"/></th>
+                                        <th><fmt:message bundle="${lang}" key="tablecolumnlabel.model"/></th>
                                         <th></th>
                                     </tr>
                                     </thead>

@@ -1,7 +1,7 @@
 package com.epam.jwd.dao.impl;
 
 import com.epam.jwd.dao.BaseDao;
-import com.epam.jwd.dao.api.SQLQueries;
+import com.epam.jwd.dao.SQLQueries;
 import com.epam.jwd.dao.connectionpool.ConnectionPool;
 import com.epam.jwd.dao.connectionpool.impl.ConnectionPoolImpl;
 import com.epam.jwd.dao.entity.Brigade;
@@ -63,10 +63,10 @@ public class BrigadeDaoImpl implements BaseDao<Long, Brigade> {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_BRIGADE_HAS_USERS_INSERT)) {
             preparedStatement.setLong(1, brigadeId);
             preparedStatement.setLong(2, userId);
-            if (preparedStatement.executeUpdate() != ONE_UPDATED_ROW) {
-                throw new DAOException(EXCEPTION_ADD_USER_TO_BRIGADE_EXCEPTION);
+            if (preparedStatement.executeUpdate() == ONE_UPDATED_ROW) {
+                return true;
             }
-            return true;
+            throw new DAOException(EXCEPTION_ADD_USER_TO_BRIGADE_EXCEPTION);
         } catch (SQLException e) {
             logger.error(EXCEPTION_ADD_USER_TO_BRIGADE_EXCEPTION + EXCEPTION_SQL_MESSAGE, e);
             throw new DAOException(EXCEPTION_ADD_USER_TO_BRIGADE_EXCEPTION + EXCEPTION_SQL_MESSAGE);
@@ -80,10 +80,10 @@ public class BrigadeDaoImpl implements BaseDao<Long, Brigade> {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_BRIGADE_HAS_USERS_DELETE)) {
             preparedStatement.setLong(1, brigadeId);
             preparedStatement.setLong(2, userId);
-            if (preparedStatement.executeUpdate() != ONE_UPDATED_ROW) {
-                throw new DAOException(EXCEPTION_REMOVE_USER_FROM_BRIGADE_EXCEPTION);
+            if (preparedStatement.executeUpdate() == ONE_UPDATED_ROW) {
+                return true;
             }
-            return true;
+            throw new DAOException(EXCEPTION_REMOVE_USER_FROM_BRIGADE_EXCEPTION);
         } catch (SQLException e) {
             logger.error(EXCEPTION_REMOVE_USER_FROM_BRIGADE_EXCEPTION + EXCEPTION_SQL_MESSAGE, e);
             throw new DAOException(EXCEPTION_REMOVE_USER_FROM_BRIGADE_EXCEPTION + EXCEPTION_SQL_MESSAGE);
@@ -102,6 +102,7 @@ public class BrigadeDaoImpl implements BaseDao<Long, Brigade> {
                 resultSet = preparedStatement.getGeneratedKeys();
                 if (resultSet.next()) {
                     brigade.setId(resultSet.getLong(1));
+                    return brigade;
                 }
             }
             logger.error(EXCEPTION_SAVE_ERROR_MESSAGE);

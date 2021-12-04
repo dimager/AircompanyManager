@@ -38,9 +38,9 @@ public class EditAircraftCommand implements Command {
     public ResponseContext execute(RequestContext requestContext) {
         AircraftService aircraftService = new AircraftService();
         AircraftDTO aircraftDTO = new AircraftDTO();
-        aircraftDTO.setProducer(requestContext.getParamFromJSP(Attributes.AIRCRAFT_PRODUCER_ATTRIBUTE_NAME));
-        aircraftDTO.setModel(requestContext.getParamFromJSP(Attributes.AIRCRAFT_MODEL_ATTRIBUTE_NAME));
-        aircraftDTO.setRegistrationCode(requestContext.getParamFromJSP(Attributes.REG_CODE_ATTRIBUTE_NAME));
+        aircraftDTO.setProducer(requestContext.getParamFromJSP(Attributes.AIRCRAFT_PRODUCER_ATTRIBUTE_NAME).trim());
+        aircraftDTO.setModel(requestContext.getParamFromJSP(Attributes.AIRCRAFT_MODEL_ATTRIBUTE_NAME).trim());
+        aircraftDTO.setRegistrationCode(requestContext.getParamFromJSP(Attributes.REG_CODE_ATTRIBUTE_NAME).trim());
         aircraftDTO.setAircraftId(Integer.parseInt(requestContext.getParamFromJSP(Attributes.AIRCRAFT_ID_ATTRIBUTE_NAME)));
         try {
             aircraftService.updateAircraft(aircraftDTO);

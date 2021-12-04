@@ -6,13 +6,16 @@ import com.epam.jwd.service.dto.UserDTO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class UserConverter implements Converter<User, UserDTO> {
     @Override
     public User convertToDAO(UserDTO userDTO) {
         User user = new User();
         user.setId(userDTO.getUserId());
-        user.setRoleId(userDTO.getRole().getRoleId());
+        if (Objects.nonNull(userDTO.getRole())) {
+            user.setRoleId(userDTO.getRole().getRoleId());
+        }
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
@@ -35,7 +38,7 @@ public class UserConverter implements Converter<User, UserDTO> {
 
     public List<UserDTO> convertWorkerUsersListToDTO(List<User> users) {
         List<UserDTO> userDTOs = new ArrayList<>();
-            users.stream().filter(user -> user.getRoleId() > 2).forEach(user -> userDTOs.add(convertToDTO(user)));
+        users.stream().filter(user -> user.getRoleId() > 2).forEach(user -> userDTOs.add(convertToDTO(user)));
         return userDTOs;
     }
 
@@ -44,8 +47,6 @@ public class UserConverter implements Converter<User, UserDTO> {
         users.stream().forEach(user -> userDTOs.add(convertToDTO(user)));
         return userDTOs;
     }
-
-
 
 
     public List<User> convertUserDTOListToDao(List<UserDTO> userDTOs) {

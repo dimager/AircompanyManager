@@ -27,7 +27,7 @@ public class DeleteUserFromBrigadeCommand implements Command {
             return false;
         }
     };
-    private static final String RESULT_MESSAGE = "User was deleted from brigade.";
+    private static final int RESULT_MESSAGE_CODE = 109;
 
     private DeleteUserFromBrigadeCommand() {
     }
@@ -44,7 +44,7 @@ public class DeleteUserFromBrigadeCommand implements Command {
             long brigadeId = Long.parseLong(requestContext.getParamFromJSP("brigade_id"));
             requestContext.addAttributeToJSP("brigade_id", brigadeId);
             brigadeService.removeUserFromBrigade(userId, brigadeId);
-            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME,   RESULT_MESSAGE );
+            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME,   RESULT_MESSAGE_CODE );
         } catch (NumberFormatException | DAOException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());

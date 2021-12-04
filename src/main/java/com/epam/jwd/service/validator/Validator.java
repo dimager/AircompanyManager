@@ -5,5 +5,5 @@ import com.epam.jwd.service.dto.BaseDTO;
 import com.epam.jwd.service.exception.ValidatorException;
 
 public interface Validator<T extends BaseDTO> {
-    boolean validate(T t) throws ValidatorException;
+    boolean isValid(T t) throws ValidatorException;
 }

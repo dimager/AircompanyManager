@@ -14,9 +14,9 @@ import org.apache.logging.log4j.Logger;
 public class AddAircraftCommand implements Command {
     private static final Logger logger = LogManager.getLogger(AddAircraftCommand.class);
     private static final Command INSTANCE = new AddAircraftCommand();
-    private static final String ADD_AIRCRAFT_JSP = "/WEB-INF/jsp/add_edit_aircraft.jsp";
+    private static final String ADD_AIRCRAFT_JSP = "/controller?command=SHOW_AIRCRAFT_PAGE";
 
-    private static final String RESULT_MESSAGE = "Aircraft is successfully added";
+    private static final int RESULT_MESSAGE_CODE = 101;
 
     private static final ResponseContext ADD_AIRCRAFT_PAGE_CONTEXT = new ResponseContext() {
         @Override
@@ -26,7 +26,7 @@ public class AddAircraftCommand implements Command {
 
         @Override
         public boolean isRedirect() {
-            return false;
+            return true;
         }
     };
 
@@ -41,13 +41,13 @@ public class AddAircraftCommand implements Command {
     public ResponseContext execute(RequestContext requestContext) {
         AircraftService aircraftService = new AircraftService();
         AircraftDTO aircraftDTO = new AircraftDTO();
-        aircraftDTO.setProducer(requestContext.getParamFromJSP(Attributes.AIRCRAFT_PRODUCER_ATTRIBUTE_NAME));
-        aircraftDTO.setModel(requestContext.getParamFromJSP(Attributes.AIRCRAFT_MODEL_ATTRIBUTE_NAME));
-        aircraftDTO.setRegistrationCode(requestContext.getParamFromJSP(Attributes.REG_CODE_ATTRIBUTE_NAME));
+        aircraftDTO.setProducer(requestContext.getParamFromJSP(Attributes.AIRCRAFT_PRODUCER_ATTRIBUTE_NAME).trim());
+        aircraftDTO.setModel(requestContext.getParamFromJSP(Attributes.AIRCRAFT_MODEL_ATTRIBUTE_NAME).trim());
+        aircraftDTO.setRegistrationCode(requestContext.getParamFromJSP(Attributes.REG_CODE_ATTRIBUTE_NAME).trim());
 
         try {
             aircraftDTO = aircraftService.saveAircraft(aircraftDTO);
-            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME,  RESULT_MESSAGE);
+            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME,  RESULT_MESSAGE_CODE);
         } catch (DAOException | ValidatorException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());

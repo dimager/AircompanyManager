@@ -14,7 +14,7 @@ public class AddUserToBrigadeCommand implements Command {
     private static final Logger logger = LogManager.getLogger(AddUserToBrigadeCommand.class);
     private static final Command INSTANCE = new AddUserToBrigadeCommand();
     private static final String ADD_BRIGADE_JSP = "/controller?command=SHOW_BRIGADE_WITH_USERS_PAGE";
-    private static final String RESULT_MESSAGE = "User was added to brigade. ";
+    private static final int RESULT_MESSAGE_CODE = 107;
 
     private static final ResponseContext ADD_BRIGADES_PAGE_CONTEXT = new ResponseContext() {
         @Override
@@ -43,7 +43,7 @@ public class AddUserToBrigadeCommand implements Command {
             long brigadeId = Long.parseLong(requestContext.getParamFromJSP("brigade_id"));
             requestContext.addAttributeToJSP("brigade_id", brigadeId);
             brigadeService.addUserToBrigade(userId, brigadeId);
-            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME,  RESULT_MESSAGE);
+            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME,  RESULT_MESSAGE_CODE);
         } catch (NumberFormatException | DAOException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());

@@ -15,7 +15,7 @@ public class DeleteBrigadeCommand implements Command {
     private static final Command INSTANCE = new DeleteBrigadeCommand();
     private static final String DELETE_BRIGADE_JSP = "/controller?command=SHOW_BRIGADE_PAGE";
     private static final String DELETE_AIRCRAFT_ID_ATTRIBUTE_NAME = "delete_brigade_id";
-    private static final String RESULT_MESSAGE = "Brigade is deleted";
+    private static final int RESULT_MESSAGE_CODE = 108;
 
     private static final ResponseContext DELETE_BRIGADES_PAGE_CONTEXT = new ResponseContext() {
         @Override
@@ -42,7 +42,7 @@ public class DeleteBrigadeCommand implements Command {
         try {
             long id = Long.parseLong(requestContext.getParamFromJSP(DELETE_AIRCRAFT_ID_ATTRIBUTE_NAME));
             brigadeService.deleteBrigade(id);
-            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME,  RESULT_MESSAGE);
+            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME,  RESULT_MESSAGE_CODE);
         } catch (DAOException | NumberFormatException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());

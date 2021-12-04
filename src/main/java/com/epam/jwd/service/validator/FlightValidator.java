@@ -5,7 +5,7 @@ import com.epam.jwd.service.exception.ValidatorException;
 
 public class FlightValidator implements Validator<FlightDTO> {
     @Override
-    public boolean validate(FlightDTO flightDTO) throws ValidatorException {
+    public boolean isValid(FlightDTO flightDTO) throws ValidatorException {
         return false;
     }
 }

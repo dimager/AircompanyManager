@@ -1,4 +1,4 @@
-package com.epam.jwd.dao.api;
+package com.epam.jwd.dao;
 
 public interface SQLQueries {
     //Aircrafts sql
@@ -28,7 +28,8 @@ public interface SQLQueries {
     String SQL_FLIGHTS_SELECT_BY_ID = "SELECT flight_id, aircraft_id, brigade_id, departure_airport_id, destination_airport_id, flight_callsign, departure_datetime FROM aircompany_manager_db.flights where flight_id = ?";
     String SQL_FLIGHTS_INSERT = "INSERT INTO aircompany_manager_db.flights (aircraft_id, brigade_id, departure_airport_id, destination_airport_id, flight_callsign, departure_datetime) VALUES (?,?,?,?,?,?)";
     String SQL_FLIGHTS_DELETE_BY_ID = "DELETE FROM aircompany_manager_db.flights WHERE flight_id = ?";
-    String SQL_FLIGHTS_UPDATE_BY_ID = "UPDATE aircompany_manager_db.flights SET aircraft_id = ?, brigade_id = ?, departure_airport = ?, destination_airport = ?, flight_callsign = ?, departure_datetime = ? WHERE flight_id = ?";
+    String SQL_FLIGHTS_UPDATE_BY_ID = "UPDATE aircompany_manager_db.flights SET aircraft_id = ?, brigade_id = ?, departure_airport_id = ?, destination_airport_id = ?, flight_callsign = ?, departure_datetime = ? WHERE flight_id = ?";
+    String SQL_FLIGHTS_UPDATE_BRIGADE = "UPDATE flights SET brigade_id = ? WHERE flight_id = ?";
 
     //Role sql
     String SQL_ROLES_SELECT_ALL = "SELECT role_id, role_type FROM aircompany_manager_db.roles";
@@ -54,6 +55,8 @@ public interface SQLQueries {
     //String SELECT_BRIGADES_USER = "select user_id, role_id, first_name, last_name FROM users as u INNER JOIN brigades_has_users as bhu on u.user_id = bhu.users_user_id INNER JOIN brigades as b on b.brigade_id = bhu.brigades_brigade_id where b.brigade_id = ?";
     String SELECT_BRIGADES_USER = "select  user_id, role_id, first_name, last_name FROM users as u LEFT JOIN brigades_has_users as bhu on u.user_id = bhu.users_user_id where brigades_brigade_id =  ?";
     String SELECT_BRIGADES_FREE_USER = "select user_id, role_id, first_name, last_name FROM users where user_id  not in (select users_user_id from brigades_has_users where brigades_brigade_id = ?)";
+    String SELECT_USER_FLIGHTS = "select flight_id from flights as f  join brigades_has_users as bhu on f.brigade_id = bhu.brigades_brigade_id where bhu.users_user_id =?";
+    String SELECT_USER_BRIGADES = "select brigade_id,brigade_name  from brigades as b join brigades_has_users as bhu on b.brigade_id = bhu.brigades_brigade_id where users_user_id = ?";
 
     String SQL_BRIGADE_HAS_USERS_INSERT = "INSERT INTO brigades_has_users (brigades_brigade_id, users_user_id) VALUES (?, ?)";
     String SQL_BRIGADE_HAS_USERS_DELETE = "DELETE FROM brigades_has_users WHERE brigades_brigade_id = ? and users_user_id = ?";

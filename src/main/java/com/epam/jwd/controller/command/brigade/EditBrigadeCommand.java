@@ -15,7 +15,7 @@ public class EditBrigadeCommand implements Command {
     private static final Logger logger = LogManager.getLogger(EditBrigadeCommand.class);
     private static final Command INSTANCE = new EditBrigadeCommand();
     private static final String EDIT_BRIGADE_JSP = "/controller?command=SHOW_BRIGADE_PAGE";
-    private static final String RESULT_MESSAGE = "Brigade is updated";
+    private static final int RESULT_MESSAGE_CODE = 110;
 
     private static final ResponseContext EDIT_BRIGADES_PAGE_CONTEXT = new ResponseContext() {
         @Override
@@ -44,7 +44,7 @@ public class EditBrigadeCommand implements Command {
         brigadeDTO.setBrigadeId(Long.parseLong(requestContext.getParamFromJSP("brigadeId")));
         try {
             brigadeService.updateBrigade(brigadeDTO);
-            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME,  RESULT_MESSAGE);
+            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME,  RESULT_MESSAGE_CODE);
         } catch (DAOException | ValidatorException |  NumberFormatException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());

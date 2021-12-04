@@ -14,8 +14,8 @@ import org.apache.logging.log4j.Logger;
 public class AddBrigadeCommand implements Command {
     private static final Logger logger = LogManager.getLogger(AddBrigadeCommand.class);
     private static final Command INSTANCE = new AddBrigadeCommand();
-    private static final String ADD_BRIGADE_JSP = "/WEB-INF/jsp/add_edit_brigade.jsp";
-    private static final String RESULT_MESSAGE = "Brigade is added";
+    private static final String ADD_BRIGADE_JSP = "/controller?command=SHOW_BRIGADE_PAGE";
+    private static final int RESULT_MESSAGE_CODE = 106;
 
     private static final ResponseContext ADD_BRIGADES_PAGE_CONTEXT = new ResponseContext() {
         @Override
@@ -40,10 +40,10 @@ public class AddBrigadeCommand implements Command {
     public ResponseContext execute(RequestContext requestContext) {
         BrigadeDTO brigadeDTO = new BrigadeDTO();
         BrigadeService brigadeService = new BrigadeService();
-        brigadeDTO.setBrigadeName(requestContext.getParamFromJSP("brigadename"));
+        brigadeDTO.setBrigadeName(requestContext.getParamFromJSP(Attributes.BRIGADENAME_ATTRIBUTE_NAME).trim());
         try {
             brigadeService.saveBrigade(brigadeDTO);
-            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME,  RESULT_MESSAGE);
+            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME,  RESULT_MESSAGE_CODE);
         } catch (DAOException | ValidatorException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());

@@ -38,7 +38,7 @@ public class ShowAddEditBrigadePageCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext requestContext) {
         if (Objects.nonNull(requestContext.getParamFromJSP("edit_brigade_id"))) {
-            requestContext.addAttributeToJSP("editpage",true);
+            requestContext.addAttributeToJSP(Attributes.EDIT_PAGE_BOOLEAN_ATTRIBUTE_NAME,true);
             BrigadeService brigadeService = new BrigadeService();
             BrigadeDTO brigadeDTO;
             try {

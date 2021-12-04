@@ -1,7 +1,7 @@
 package com.epam.jwd.dao.entity;
 
 public enum Role {
-    ADMIN(1), MANAGER(2), PILOT(3), ENGINEER(4), FLIGHT_ATTENDANT(5), GUEST(6);
+    ADMIN(1), MANAGER(2), PILOT(3), RADIO_ENGINEER(4), FLIGHT_ATTENDANT(5), NAVIGATOR(6), GUEST(7);
     private int roleId;
     Role(int id) {
         this.roleId = id;

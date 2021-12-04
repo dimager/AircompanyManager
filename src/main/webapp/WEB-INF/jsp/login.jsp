@@ -1,57 +1,62 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value=""/>
-<fmt:setBundle basename="messages"/>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="messages" var="lang"/>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <c:if test="${sessionScope.loginState}">
-        <meta http-equiv="refresh" content="5;url=/controller?"/>
+        <meta http-equiv="refresh" content="3;url=/"/>
     </c:if>
-    <title>1Untitled</title>
+    <title>
+        <fmt:message bundle="${lang}" key="pagename.loginpage"/>
+    </title>
+    <jsp:include page="/WEB-INF/jsp/meta.jsp"/>
+
 </head>
 
 <body>
-<h2>
-
-</h2>
-<section class="login-clean">
+<div id="login-one" class="login-one">
+    <c:import url="header.jsp"/>
+    <c:import url="errors.jsp"/>
+    <c:import url="exception.jsp"/>
     <c:choose>
-        <c:when test="${empty sessionScope.loginState or not sessionScope.loginState}">
-            <form method="post" action="/controller">
-                <input type="hidden" name="command" value="LOGIN">
-                <h2 class="sr-only">Login Form</h2>
-                <div class="illustration"><i class="icon ion-ios-navigate"></i></div>
-                <div class="form-group"><input class="form-control" type="text" name="username" placeholder="username">
-                </div>
-                <div class="form-group"><input class="form-control" type="password" name="password"
-                                               placeholder="Password"></div>
-                <div class="form-group">
-                    <button class="btn btn-primary btn-block" type="submit">Log In</button>
-                </div>
-                <a class="forgot" href="/controller?command=SHOW_SIGNUP_PAGE">Sign Up</a>
-            </form>
-        </c:when>
         <c:when test="${sessionScope.loginState}">
-            <h1>allready logging, redirect 5 seconds</h1>
+            <c:import url="command_result_state.jsp"/>
+            <h3>Redirect in 3 seconds...</h3>
         </c:when>
+        <c:otherwise>
+            <form class="login-one-userform" method="post" action="/controller?command=LOGIN">
+                <div class="col">
+                    <div class="form-group">
+                        <div class="login-one-ico"><i class="fa fa-sign-in" id="lockico"></i></div>
+                        <div><h3 id="heading">  <fmt:message bundle="${lang}" key="label.loginto"/> <fmt:message bundle="${lang}" key="label.companyname"/></h3></div>
+                        <div>
+                            <label style="font-size: 20px">
+                                <fmt:message bundle="${lang}" key="labelloginpage.username"/>
+                            </label>
+                            <input class="form-control" minlength="1" maxlength="50" name="username"  pattern="[A-Za-z0-9]+" placeholder="<fmt:message bundle="${lang}" key="label.username"/>">
+                            <label style="font-size: 20px">
+                                <fmt:message bundle="${lang}" key="labelloginpage.password"/>
+                            </label>
+                            <input class="form-control" minlength="8" maxlength="50" type="password" name="password" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                                   placeholder="<fmt:message bundle="${lang}" key="label.password"/>">
+                        </div>
+                        <div style="    margin-top: 10px">
+                            <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                <fmt:message bundle="${lang}" key="buttonname.login"/>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </c:otherwise>
+
     </c:choose>
 
-</section>
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/dataTables.bootstrap4.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.flash.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/bootstrap/js/bootstrap.min.js"></script>
+</div>
+<c:import url="footer.jsp"/>
+<c:import url="scripts.jsp"/>
 </body>
 </html>

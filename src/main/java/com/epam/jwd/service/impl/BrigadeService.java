@@ -82,12 +82,12 @@ public class BrigadeService {
 
     public BrigadeDTO saveBrigade(BrigadeDTO brigadeDTO) throws DAOException, ValidatorException {
         logger.debug("saveBrigade method");
-        brigadeValidator.validate(brigadeDTO);
+        brigadeValidator.isValid(brigadeDTO);
         return brigadeConverter.convertToDTO(brigadeDAO.save(brigadeConverter.convertToDAO(brigadeDTO)));
     }
 
     public boolean updateBrigade(BrigadeDTO brigadeDTO) throws DAOException, ValidatorException {
-        brigadeValidator.validate(brigadeDTO);
+        brigadeValidator.isValid(brigadeDTO);
         return brigadeDAO.update(brigadeConverter.convertToDAO(brigadeDTO));
     }
 

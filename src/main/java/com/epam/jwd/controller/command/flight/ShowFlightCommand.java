@@ -5,7 +5,9 @@ import com.epam.jwd.controller.command.Command;
 import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.dao.exception.DAOException;
+import com.epam.jwd.service.dto.BrigadeDTO;
 import com.epam.jwd.service.dto.FlightDTO;
+import com.epam.jwd.service.impl.BrigadeService;
 import com.epam.jwd.service.impl.FlightService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,10 +39,13 @@ public class ShowFlightCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
+        BrigadeService brigadeService = new BrigadeService();
         FlightService flightService = new FlightService();
         try {
-            List<FlightDTO> flightDTOS = flightService.findAllFlights();
-            requestContext.addAttributeToJSP("flightDTOS", flightDTOS);
+            List<BrigadeDTO>  brigadeDTOList = brigadeService.findAllBrigade();
+            List<FlightDTO> flightDTOList = flightService.findAllFlights();
+            requestContext.addAttributeToJSP(Attributes.FLIGHT_DTO_LIST_ATTRIBUTE_NAME, flightDTOList);
+            requestContext.addAttributeToJSP(Attributes.BRIGADE_DTO_LIST_ATTRIBUTE_NAME, brigadeDTOList);
         } catch (DAOException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());

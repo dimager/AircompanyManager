@@ -16,7 +16,7 @@ public class ChangeRoleCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ChangeRoleCommand.class);
     private static final Command INSTANCE = new ChangeRoleCommand();
     private static final String ALL_USERS_JSP = "/controller?command=SHOW_ALL_USERS";
-    private static final String RESULT_MESSAGE = "Role was updated.";
+    private static final int RESULT_MESSAGE_CODE = 116;
     private static final ResponseContext SHOW_ALL_USERS_PAGE_CONTEXT = new ResponseContext() {
         @Override
         public String getPage() {
@@ -47,7 +47,7 @@ public class ChangeRoleCommand implements Command {
             int roleId = Integer.parseInt(requestContext.getParamFromJSP("new_role"));
             long userId = Integer.parseInt(requestContext.getParamFromJSP("user_id"));
             userService.changUserRole(userId, roleId);
-            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME, RESULT_MESSAGE);
+            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME, RESULT_MESSAGE_CODE);
         } catch (DAOException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());
