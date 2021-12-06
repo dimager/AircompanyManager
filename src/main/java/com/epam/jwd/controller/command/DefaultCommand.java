@@ -28,10 +28,9 @@ public class DefaultCommand implements Command {
     private DefaultCommand() {
     }
 
-
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-
+        logger.debug("execute method");
         return DEFAULT_PAGE_CONTEXT;
     }
 }

@@ -15,8 +15,8 @@ import org.apache.logging.log4j.Logger;
 
 public class ShowBrigadeWithUsersPageCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ShowBrigadeWithUsersPageCommand.class);
-    private static final String BRIGADE_WITH_USERS_DTO_ATTRIBUTE_NAME = "brigadeUserDTO";
-    private static final String BRIGADE_ID_ATTRIBUTE_NAME = "brigade_id";
+    private static final String BRIGADE_WITH_USERS_DTO_ATTRIBUTE = "brigadeUserDTO";
+    private static final String BRIGADE_ID_ATTRIBUTE = "brigade_id";
     private static final Command INSTANCE = new ShowBrigadeWithUsersPageCommand();
     private static final String BRIGADES_USERS_JSP = "/WEB-INF/jsp/brigade_with_user.jsp";
     private static final ResponseContext SHOW_BRIGADES_USERS_PAGE_CONTEXT = new ResponseContext() {
@@ -41,18 +41,19 @@ public class ShowBrigadeWithUsersPageCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
+        logger.debug("execute method");
         BrigadeService brigadeService = new BrigadeService();
         UserService userService = new UserService();
         try {
-            long id = Long.parseLong(requestContext.getParamFromJSP(BRIGADE_ID_ATTRIBUTE_NAME));
+            long id = Long.parseLong(requestContext.getParamFromJSP(BRIGADE_ID_ATTRIBUTE));
             BrigadeDTO brigadeDTO = brigadeService.findById(id);
             BrigadeUserDTO brigadeUserDTO = brigadeService.getBrigadeWithUsers(brigadeDTO);
-            requestContext.addAttributeToJSP(BRIGADE_WITH_USERS_DTO_ATTRIBUTE_NAME, brigadeUserDTO);
-            requestContext.addAttributeToJSP("brigadeDTO", brigadeDTO);
-            requestContext.addAttributeToJSP("userDTOList", userService.findFreeWorkers(brigadeDTO.getBrigadeId()));
+            requestContext.addAttributeToJSP(BRIGADE_WITH_USERS_DTO_ATTRIBUTE, brigadeUserDTO);
+            requestContext.addAttributeToJSP(Attributes.BRIGADE_DTO_ATTRIBUTE, brigadeDTO);
+            requestContext.addAttributeToJSP(Attributes.USER_DTO_LIST_ATTRIBUTE, userService.findFreeWorkers(brigadeDTO.getBrigadeId()));
         } catch (DAOException | NumberFormatException e) {
             logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
         }
         return SHOW_BRIGADES_USERS_PAGE_CONTEXT;
     }

@@ -37,18 +37,19 @@ public class ShowAddEditBrigadePageCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        if (Objects.nonNull(requestContext.getParamFromJSP("edit_brigade_id"))) {
-            requestContext.addAttributeToJSP(Attributes.EDIT_PAGE_BOOLEAN_ATTRIBUTE_NAME,true);
+        logger.debug("execute method");
+        if (Objects.nonNull(requestContext.getParamFromJSP(Attributes.EDIT_BRIGADE_ID_ATTRIBUTE))) {
+            requestContext.addAttributeToJSP(Attributes.EDIT_PAGE_BOOLEAN_ATTRIBUTE,true);
             BrigadeService brigadeService = new BrigadeService();
             BrigadeDTO brigadeDTO;
             try {
-                long id = Long.parseLong(requestContext.getParamFromJSP("edit_brigade_id"));
+                long id = Long.parseLong(requestContext.getParamFromJSP(Attributes.EDIT_BRIGADE_ID_ATTRIBUTE));
                 brigadeDTO = brigadeService.findById(id);
-                requestContext.addAttributeToJSP("brigadeDTO", brigadeDTO);
+                requestContext.addAttributeToJSP(Attributes.BRIGADE_DTO_ATTRIBUTE, brigadeDTO);
 
             } catch (DAOException |  NumberFormatException e) {
                 logger.error(e);
-                requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());
+                requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
             }
         }
 

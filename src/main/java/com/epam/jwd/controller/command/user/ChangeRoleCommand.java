@@ -4,20 +4,17 @@ import com.epam.jwd.controller.command.Attributes;
 import com.epam.jwd.controller.command.Command;
 import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
-import com.epam.jwd.dao.entity.Role;
 import com.epam.jwd.dao.exception.DAOException;
 import com.epam.jwd.service.impl.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.Arrays;
 
 public class ChangeRoleCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ChangeRoleCommand.class);
     private static final Command INSTANCE = new ChangeRoleCommand();
     private static final String ALL_USERS_JSP = "/controller?command=SHOW_ALL_USERS";
     private static final int RESULT_MESSAGE_CODE = 116;
-    private static final ResponseContext SHOW_ALL_USERS_PAGE_CONTEXT = new ResponseContext() {
+    private static final ResponseContext CHANGE_ROLE_PAGE_CONTEXT = new ResponseContext() {
         @Override
         public String getPage() {
             return ALL_USERS_JSP;
@@ -42,16 +39,17 @@ public class ChangeRoleCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
+        logger.debug("execute method");
         UserService userService = new UserService();
         try {
-            int roleId = Integer.parseInt(requestContext.getParamFromJSP("new_role"));
-            long userId = Integer.parseInt(requestContext.getParamFromJSP("user_id"));
+            int roleId = Integer.parseInt(requestContext.getParamFromJSP(Attributes.NEW_ROLE_ATTRIBUTE));
+            long userId = Integer.parseInt(requestContext.getParamFromJSP(Attributes.USER_ID_ATTRIBUTE));
             userService.changUserRole(userId, roleId);
-            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME, RESULT_MESSAGE_CODE);
-        } catch (DAOException e) {
+            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE, RESULT_MESSAGE_CODE);
+        } catch (DAOException | NumberFormatException e) {
             logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
         }
-        return SHOW_ALL_USERS_PAGE_CONTEXT;
+        return CHANGE_ROLE_PAGE_CONTEXT;
     }
 }

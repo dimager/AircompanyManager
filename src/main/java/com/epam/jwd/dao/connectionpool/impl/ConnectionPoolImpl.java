@@ -3,6 +3,8 @@ package com.epam.jwd.dao.connectionpool.impl;
 import com.epam.jwd.dao.connectionpool.ConnectionPool;
 import com.epam.jwd.dao.connectionpool.DataSourceFactory;
 import com.epam.jwd.dao.connectionpool.ProxyConnection;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -13,7 +15,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public final class ConnectionPoolImpl implements ConnectionPool {
-
+    private static final Logger logger = LogManager.getLogger(ConnectionPoolImpl.class);
     private static final ConnectionPool INSTANCE = new ConnectionPoolImpl();
     private static final int CONNECTION_POOL_SIZE = 10;
 
@@ -25,11 +27,13 @@ public final class ConnectionPoolImpl implements ConnectionPool {
     }
 
     public static ConnectionPool getInstance() {
+        logger.debug("getInstance method");
         return INSTANCE;
     }
 
     @Override
     public boolean init() {
+        logger.debug("init method");
         if (!initialized) {
             initialized = fillConnectionPool(CONNECTION_POOL_SIZE);
         }
@@ -39,12 +43,14 @@ public final class ConnectionPoolImpl implements ConnectionPool {
 
     @Override
     public void shutdown() {
+        logger.debug("shutdown method");
         closeConnections(availableConnection);
         closeConnections(usedConnection);
     }
 
     @Override
     public synchronized Connection requestConnection() {
+        logger.debug("requestConnection method");
         if (!initialized){
             init();
         }
@@ -52,7 +58,7 @@ public final class ConnectionPoolImpl implements ConnectionPool {
             try {
                 this.wait();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+               logger.error(e);
             }
         }
         ProxyConnection connection = availableConnection.poll();
@@ -62,6 +68,7 @@ public final class ConnectionPoolImpl implements ConnectionPool {
 
     @Override
     public synchronized void returnConnection(Connection connection) {
+        logger.debug("returnConnection method");
         if (usedConnection.remove(connection)) {
             availableConnection.add((ProxyConnection) connection);
             this.notifyAll();
@@ -69,16 +76,14 @@ public final class ConnectionPoolImpl implements ConnectionPool {
     }
 
     private boolean fillConnectionPool(int amount) {
+        logger.debug("fillConnectionPool method");
         for (int i = 0; i < amount; i++) {
             try {
                 Connection connection = DataSourceFactory.getMysqlProperties().getConnection();
                 final ProxyConnection proxyConnection = new ProxyConnection(this, connection);
                 availableConnection.add(proxyConnection);
-            } catch (SQLException throwables) {
-                //log
-                return false;
-            } catch (IllegalStateException | ClassCastException | NullPointerException | IllegalArgumentException e) {
-                // log
+            } catch (SQLException | IllegalStateException | ClassCastException | NullPointerException | IllegalArgumentException e) {
+                logger.error(e);
                 return false;
             }
         }
@@ -86,14 +91,15 @@ public final class ConnectionPoolImpl implements ConnectionPool {
     }
 
     private void closeConnections(Collection<ProxyConnection> connections) {
-        connections.forEach(connection -> closeConnection(connection));
+        connections.forEach(this::closeConnection);
     }
 
     private void closeConnection(ProxyConnection connection) {
+        logger.debug("closeConnection method");
         try {
             connection.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            logger.error(e);
         }
     }
 }

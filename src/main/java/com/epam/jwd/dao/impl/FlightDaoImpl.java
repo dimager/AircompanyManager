@@ -31,10 +31,11 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
 
     @Override
     public Flight save(Flight flight) throws DAOException {
+        logger.debug("save method");
         Connection connection = connectionPool.requestConnection();
         ResultSet resultSet = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_FLIGHTS_INSERT, Statement.RETURN_GENERATED_KEYS)) {
-            statementFlightFill(flight, preparedStatement);
+            fillFlightStatement(flight, preparedStatement);
             if (preparedStatement.executeUpdate() == ONE_UPDATED_ROW) {
                 resultSet = preparedStatement.getGeneratedKeys();
                 if (resultSet.next()) {
@@ -55,11 +56,11 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
 
     @Override
     public boolean update(Flight flight) throws DAOException {
+        logger.debug("update method");
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_FLIGHTS_UPDATE_BY_ID)) {
-            statementFlightFill(flight, preparedStatement);
+            fillFlightStatement(flight, preparedStatement);
             preparedStatement.setLong(7, flight.getId());
-
             if (preparedStatement.executeUpdate() == ONE_UPDATED_ROW) {
                 return true;
             }
@@ -75,13 +76,14 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
 
     @Override
     public List<Flight> findAll() throws DAOException {
+        logger.debug("findAll method");
         List<Flight> flights = new ArrayList<>();
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_FLIGHTS_SELECT_ALL);
              ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 Flight flight = new Flight();
-                flightFill(flight, resultSet);
+                fillFlight(flight, resultSet);
                 flights.add(flight);
             }
             return flights;
@@ -95,6 +97,7 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
 
     @Override
     public Flight findById(Long id) throws DAOException {
+        logger.debug("findById method");
         Flight flight = new Flight();
         ResultSet resultSet = null;
         Connection connection = ConnectionPoolImpl.getInstance().requestConnection();
@@ -102,7 +105,7 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
             preparedStatement.setLong(1, id);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                flightFill(flight, resultSet);
+                fillFlight(flight, resultSet);
                 return flight;
             }
             logger.error(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE);
@@ -118,6 +121,7 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
 
     @Override
     public boolean deleteById(Long id) throws DAOException {
+        logger.debug("deleteById method");
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_FLIGHTS_DELETE_BY_ID)) {
             preparedStatement.setLong(1, id);
@@ -135,6 +139,7 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
     }
 
     public boolean updateBrigade(long flightId, long brigadeId) throws DAOException {
+        logger.debug("updateBrigade method");
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_FLIGHTS_UPDATE_BRIGADE)) {
             preparedStatement.setLong(1, brigadeId);
@@ -155,7 +160,8 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
 
 
 
-    private void flightFill(Flight flight, ResultSet resultSet) throws SQLException {
+    private void fillFlight(Flight flight, ResultSet resultSet) throws SQLException {
+        logger.debug("flightFill method");
         flight.setId(resultSet.getLong(1));
         flight.setFlightAircraftId(resultSet.getInt(2));
         flight.setBrigadeId(resultSet.getLong(3));
@@ -165,7 +171,8 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
         flight.setDepartureDateTime(resultSet.getTimestamp(7));
     }
 
-    private void statementFlightFill(Flight flight, PreparedStatement preparedStatement) throws SQLException {
+    private void fillFlightStatement(Flight flight, PreparedStatement preparedStatement) throws SQLException {
+        logger.debug("statementFlightFill method");
         preparedStatement.setInt(1, flight.getFlightAircraftId());
         if (flight.getBrigadeId() == 0) {
             preparedStatement.setNull(2, Types.NULL);

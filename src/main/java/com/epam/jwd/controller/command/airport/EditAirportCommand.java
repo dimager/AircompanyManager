@@ -38,19 +38,20 @@ public class EditAirportCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
+        logger.debug("execute method");
         AirportService airportService = new AirportService();
         AirportDTO airportDTO = new AirportDTO();
-        airportDTO.setName(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_NAME_ATTRIBUTE_NAME).trim());
-        airportDTO.setCountry(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_COUNTRY_ATTRIBUTE_NAME).trim());
-        airportDTO.setCity(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_CITY_ATTRIBUTE_NAME).trim());
-        airportDTO.setIATACode(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_IATACODE_ATTRIBUTE_NAME).trim());
+        airportDTO.setName(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_NAME_ATTRIBUTE).trim());
+        airportDTO.setCountry(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_COUNTRY_ATTRIBUTE).trim());
+        airportDTO.setCity(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_CITY_ATTRIBUTE).trim());
+        airportDTO.setIATACode(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_IATACODE_ATTRIBUTE).trim());
         try {
-            airportDTO.setId(Integer.parseInt(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_ID_ATTRIBUTE_NAME)));
+            airportDTO.setId(Integer.parseInt(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_ID_ATTRIBUTE)));
             airportService.updateAirport(airportDTO);
-            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME,  RESULT_MESSAGE_CODE);
+            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE,  RESULT_MESSAGE_CODE);
         } catch (DAOException | ValidatorException | NumberFormatException e ) {
             logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
         }
         return EDIT_AIRPORT_CONTEXT;
     }

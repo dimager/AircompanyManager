@@ -19,7 +19,7 @@ public class ChangeFlightBrigadeCommand implements Command {
     private static final Command INSTANCE = new ChangeFlightBrigadeCommand();
     private static final int RESULT_MESSAGE_CODE = 112;
 
-    private static final ResponseContext DELETE_FLIGHT_COMMAND_CONTEXT = new ResponseContext() {
+    private static final ResponseContext CHANGE_FLIGHT_BRIGADE_COMMAND_CONTEXT = new ResponseContext() {
         @Override
         public String getPage() {
             return FLIGHT_JSP;
@@ -40,18 +40,20 @@ public class ChangeFlightBrigadeCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
+        logger.debug("execute method");
         FlightService flightService = new FlightService();
         Flight flight = new Flight();
         try {
-            long brigadeId = Long.parseLong(requestContext.getParamFromJSP(Attributes.NEW_BRIGADE_ID_ATTRIBUTE_NAME));
-            long flightId = Long.parseLong(requestContext.getParamFromJSP(Attributes.EDIT_FLIGHT_ID_ATTRIBUTE_NAME));
+            long brigadeId = Long.parseLong(requestContext.getParamFromJSP(Attributes.NEW_BRIGADE_ID_ATTRIBUTE));
+            long flightId = Long.parseLong(requestContext.getParamFromJSP(Attributes.EDIT_FLIGHT_ID_ATTRIBUTE));
             flightService.updateFlightBrigade(flightId,brigadeId);
-            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME, RESULT_MESSAGE_CODE);
+            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE, RESULT_MESSAGE_CODE);
         } catch (DateTimeParseException | DAOException | ValidatorException | NumberFormatException | NullPointerException e) {
             logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());
-            requestContext.addAttributeToJSP(Attributes.AIRCRAFT_DTO_ATTRIBUTE_NAME, flight);
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
+            //todo delete
+          //  requestContext.addAttributeToJSP(Attributes.AIRCRAFT_DTO_ATTRIBUTE, flight);
         }
-        return DELETE_FLIGHT_COMMAND_CONTEXT;
+        return CHANGE_FLIGHT_BRIGADE_COMMAND_CONTEXT;
     }
 }

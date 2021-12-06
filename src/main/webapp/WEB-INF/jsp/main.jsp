@@ -12,15 +12,22 @@
 <body>
 <c:import url="header.jsp"/>
 
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <img src="${pageContext.request.contextPath}/assets/img/img.png">
+        </div>
+        <div class="col-sm">
+          <h3>  Welcome to <fmt:message bundle="${lang}" key="label.companyname"/></h3>
+            <span>
+                <h5>Service for airline personnel management</h5>
+            </span>
+        </div>
 
-<c:forEach var = "i" begin = "1" end = "5">
-Item asdasdfasdf <c:out value = "${i}"/><p>
-    </c:forEach>
-        <c:out value="${sessionScope.userDTO.toString()}"/>
-        <c:out value="${sessionScope.loginState}"/>
-        <c:out value="${pageContext.request.contextPath}"/>
-<c:out value="${sessionScope.loginState}"/>
+    </div>
+</div>
 
 <c:import url="footer.jsp"/>
+<c:import url="scripts.jsp"/>
 </body>
 </html>

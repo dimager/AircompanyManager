@@ -4,16 +4,11 @@ import com.epam.jwd.controller.command.Attributes;
 import com.epam.jwd.controller.command.Command;
 import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
-import com.epam.jwd.dao.entity.Role;
 import com.epam.jwd.dao.exception.DAOException;
-import com.epam.jwd.service.dto.AircraftDTO;
 import com.epam.jwd.service.dto.UserDTO;
 import com.epam.jwd.service.impl.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class ShowUserPageCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ShowUserPageCommand.class);
@@ -40,16 +35,7 @@ public class ShowUserPageCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-
-        UserService userService = new UserService();
-        try {
-            UserDTO userDTO = userService.findById(1);
-            requestContext.addAttributeToJSP("userDTO", userDTO);
-        } catch (DAOException e) {
-            logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());
-        }
-
+        logger.debug("execute method");
         return SHOW_USER_PAGE_CONTEXT;
     }
 }

@@ -44,11 +44,11 @@ public class ShowFlightCommand implements Command {
         try {
             List<BrigadeDTO>  brigadeDTOList = brigadeService.findAllBrigade();
             List<FlightDTO> flightDTOList = flightService.findAllFlights();
-            requestContext.addAttributeToJSP(Attributes.FLIGHT_DTO_LIST_ATTRIBUTE_NAME, flightDTOList);
-            requestContext.addAttributeToJSP(Attributes.BRIGADE_DTO_LIST_ATTRIBUTE_NAME, brigadeDTOList);
+            requestContext.addAttributeToJSP(Attributes.FLIGHT_DTO_LIST_ATTRIBUTE, flightDTOList);
+            requestContext.addAttributeToJSP(Attributes.BRIGADE_DTO_LIST_ATTRIBUTE, brigadeDTOList);
         } catch (DAOException e) {
             logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
         }
 
         return SHOW_FLIGHTS_COMMAND_CONTEXT;

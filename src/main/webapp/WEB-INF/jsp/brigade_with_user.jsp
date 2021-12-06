@@ -5,6 +5,7 @@
 <fmt:setBundle basename="messages" var="lang"/>
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="../../assets/css/styles.css"/>
     <title><fmt:message bundle="${lang}" key="page.title.brigadepage"/></title>
     <c:import url="meta.jsp"/>
 </head>
@@ -40,7 +41,7 @@
                                         <td>${user.lastName}</td>
                                         <td><fmt:message bundle="${lang}" key="rolename.${user.role.roleId}"/></td>
 
-                                        <td>
+                                        <td class="icons">
                                             <c:url value="/controller" var="deleteUserFromBrigadeURL">
                                                 <c:param name="command" value="DELETE_USER_FROM_BRIGADE"/>
                                                 <c:param name="brigade_id"
@@ -50,6 +51,21 @@
 
                                             <a href="${deleteUserFromBrigadeURL}">
                                                 <i class="icon ion-android-delete" style="margin-left: 10px;"></i>
+                                            </a>
+
+                                            <c:url value="/controller" var="showUserFlights">
+                                                <c:param name="command" value="SHOW_USER_FLIGHTS_PAGE_FOR_MANAGER"/>
+                                                <c:param name="show_user_id" value="${user.userId}"/>
+                                            </c:url>
+                                            <c:url value="/controller" var="showUserBrigades">
+                                                <c:param name="command" value="SHOW_USER_BRIGADES_PAGE_FOR_MANAGER"/>
+                                                <c:param name="show_user_id" value="${user.userId}"/>
+                                            </c:url>
+                                            <a href="${showUserFlights}">
+                                                <i class="icon ion-paper-airplane" style=" margin-left: 10px;"></i>
+                                            </a>
+                                            <a href="${showUserBrigades}">
+                                                <i class="icon ion-ios-people" style=" margin-left: 10px;"></i>
                                             </a>
                                         </td>
                                     </tr>
@@ -88,7 +104,7 @@
                                         <td>${user.firstName}</td>
                                         <td>${user.lastName}</td>
                                         <td><fmt:message bundle="${lang}" key="rolename.${user.role.roleId}"/></td>
-                                        <td>
+                                        <td class="icons" >
                                             <c:url value="/controller" var="addUserToBrigade">
                                                 <c:param name="command" value="ADD_USER_TO_BRIGADE_PAGE"/>
                                                 <c:param name="brigade_id"
@@ -99,6 +115,22 @@
                                             <a href="${addUserToBrigade}">
                                                 <i class="icon ion-person-add" style=" margin-left: 10px;"></i>
                                             </a>
+
+                                            <c:url value="/controller" var="showUserFlights">
+                                                <c:param name="command" value="SHOW_USER_FLIGHTS_PAGE_FOR_MANAGER"/>
+                                                <c:param name="show_user_id" value="${user.userId}"/>
+                                            </c:url>
+                                            <c:url value="/controller" var="showUserBrigades">
+                                                <c:param name="command" value="SHOW_USER_BRIGADES_PAGE_FOR_MANAGER"/>
+                                                <c:param name="show_user_id" value="${user.userId}"/>
+                                            </c:url>
+                                            <a href="${showUserFlights}">
+                                                <i class="icon ion-paper-airplane" style=" margin-left: 10px;"></i>
+                                            </a>
+                                            <a href="${showUserBrigades}">
+                                                <i class="icon ion-ios-people" style=" margin-left: 10px;"></i>
+                                            </a>
+
                                         </td>
                                     </tr>
                                 </c:forEach>

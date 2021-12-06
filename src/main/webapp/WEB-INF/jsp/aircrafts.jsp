@@ -26,7 +26,7 @@
                             <div style="padding-top: 10px;padding-bottom: 10px;text-align: right;">
                                 <form method="get" action="/controller">
                                     <input type="hidden" name="command" value="SHOW_ADD_AIRCRAFT_PAGE">
-                                    <button class="btn btn-primary shadow" type="submit"><fmt:message
+                                    <button class="btn btn-primary shadow" type="submit"><fmt:message bundle="${lang}"
                                             key="button.addaircraft"/></button>
                                 </form>
                             </div>

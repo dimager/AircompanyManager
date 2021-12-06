@@ -14,7 +14,6 @@ public class UserDTO extends BaseDTO {
     private Role role;
     private String username;
     private String password;
-    //todo delete private List<BrigadeDTO> brigadeDTOs = new ArrayList<>();
 
     public String getUsername() {
         return username;

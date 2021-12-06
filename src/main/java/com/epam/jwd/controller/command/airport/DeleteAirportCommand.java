@@ -37,13 +37,14 @@ public class DeleteAirportCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
+        logger.debug("execute method");
         AirportService airportService = new AirportService();
             try {
-                airportService.deleteAirport(Integer.parseInt(requestContext.getParamFromJSP(Attributes.DELETE_AIRPORT_ID_ATTRIBUTE_NAME)));
-                requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME, RESULT_MESSAGE_CODE);
+                airportService.deleteAirport(Integer.parseInt(requestContext.getParamFromJSP(Attributes.DELETE_AIRPORT_ID_ATTRIBUTE)));
+                requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE, RESULT_MESSAGE_CODE);
             } catch (DAOException |  NumberFormatException e) {
                 logger.error(e);
-                requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());
+                requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
             }
         return DELETE_AIRCRAFT_CONTEXT;
     }

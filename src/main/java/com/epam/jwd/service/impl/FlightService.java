@@ -22,11 +22,11 @@ public class FlightService {
 
     public FlightDTO saveFlight(FlightDTO flightDTO) throws DAOException, ValidatorException {
         logger.debug("saveFlight method");
-        flightValidator.isValid(flightDTO);
         return flightConverter.convertToDTO(flightDao.save(flightConverter.convertToDAO(flightDTO)));
     }
 
     public FlightDTO saveFlight(Flight flight) throws DAOException, ValidatorException {
+        //todo
         logger.debug("saveFlight method");
         return this.convertToDTO(flightDao.save(flight));
     }
@@ -75,27 +75,29 @@ public class FlightService {
         FlightDTO flightDTO = flightConverter.convertToDTO(flight);
         try {
             flightDTO.setBrigadeDTO(brigadeService.findById(flight.getBrigadeId()));
-
         } catch (DAOException e) {
+            logger.debug("flight without brigade");
             flightDTO.setBrigadeDTO(null);
         }
 
         try {
             flightDTO.setAircraftDTO(aircraftService.findAircraftById(flight.getFlightAircraftId()));
-
         } catch (DAOException e) {
+            logger.debug("flight without aircraft");
             flightDTO.setAircraftDTO(null);
         }
 
         try {
             flightDTO.setDepartureAirport(airportService.findAirportById(flight.getDepartureAirportId()));
         } catch (DAOException e) {
+            logger.debug("flight without dep airport");
             flightDTO.setDepartureAirport(null);
         }
 
         try {
             flightDTO.setDestinationAirport(airportService.findAirportById(flight.getDestinationAirportId()));
         } catch (DAOException e) {
+            logger.debug("flight without dest airport");
             flightDTO.setDestinationAirport(null);
         }
 

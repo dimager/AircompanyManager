@@ -11,11 +11,19 @@ public interface Command {
     static Command of(String name) {
         return Commands.getCommand(name);
     }
+    static Commands name(String name) {
+        return Commands.getCommandName(name);
+    }
 
     static boolean executePermission(String name, Role role) {
         List<Role> roles = Commands.getPermitRoles(name);
-        return Objects.nonNull(roles) && (roles.isEmpty() || roles.contains(role));
+        if (Objects.isNull(roles)) {
+            return true;
+        } else {
+            return  (roles.isEmpty() || roles.contains(role));
+        }
     }
+
     ResponseContext execute(RequestContext requestContext);
 
 }

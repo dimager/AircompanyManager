@@ -37,13 +37,14 @@ public class ShowAircraftPageCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
+        logger.debug("execute method");
         AircraftService aircraftService = new AircraftService();
         try {
             List<AircraftDTO> aircraftDTOList = aircraftService.findAllAircrafts();
-            requestContext.addAttributeToJSP(Attributes.AIRCRAFT_DTO_LIST_ATTRIBUTE_NAME, aircraftDTOList);
+            requestContext.addAttributeToJSP(Attributes.AIRCRAFT_DTO_LIST_ATTRIBUTE, aircraftDTOList);
         } catch (DAOException e) {
             logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
         }
         return SHOW_AIRCRAFT_PAGE_CONTEXT;
     }

@@ -17,11 +17,10 @@ import java.util.List;
 import java.util.Objects;
 
 public class LoginCommand implements Command {
-    public static final String LOGIN_JSP = "/WEB-INF/jsp/login.jsp";
     private static final Logger logger = LogManager.getLogger(LoginCommand.class);
     private static final int RESULT_MESSAGE_CODE = 100;
     private static final Command INSTANCE = new LoginCommand();
-
+    public static String LOGIN_JSP = "/controller?command=SHOW_LOGIN_PAGE";
     private static final ResponseContext LOGIN_COMMAND_CONTEXT = new ResponseContext() {
         @Override
         public String getPage() {
@@ -40,11 +39,13 @@ public class LoginCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-
+        logger.debug("execute method");
         UserDTO userDTO = new UserDTO();
         List<Integer> errors = new ArrayList<>();
-        userDTO.setUsername(requestContext.getParamFromJSP(Attributes.JSP_USERNAME_INPUT_FILED_NAME).trim());
-        userDTO.setPassword(requestContext.getParamFromJSP(Attributes.JSP_PASSWORD_INPUT_FILED_NAME).trim());
+        String username = requestContext.getParamFromJSP(Attributes.JSP_USERNAME_INPUT_FILED_NAME).trim();
+        String password = requestContext.getParamFromJSP(Attributes.JSP_PASSWORD_INPUT_FILED_NAME).trim();
+        userDTO.setUsername(username);
+        userDTO.setPassword(password);
         ValidationService validationService = new ValidationService();
         LoginService loginService = new LoginService();
         try {
@@ -53,17 +54,17 @@ public class LoginCommand implements Command {
                 if (Objects.nonNull(loggedinUser)) {
                     HttpSession session = requestContext.getHttpSession(true);
                     session.setAttribute(Attributes.SESSION_USER_ATTRIBUTE, loggedinUser);
-                    session.setAttribute(Attributes.SESSION_LOGIN_STATE_ATTRIBUTE_NAME, true);
-                    requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME, RESULT_MESSAGE_CODE);
+                    session.setAttribute(Attributes.SESSION_LOGIN_STATE_ATTRIBUTE, true);
+                    requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE, RESULT_MESSAGE_CODE);
                 } else {
-                    requestContext.addAttributeToJSP("errors", errors);
+                    requestContext.addAttributeToJSP(Attributes.COMMAND_ERRORS_ATTRIBUTE, errors);
                 }
             } else {
-                requestContext.addAttributeToJSP("errors", errors);
+                requestContext.addAttributeToJSP(Attributes.COMMAND_ERRORS_ATTRIBUTE, errors);
             }
-            errors.forEach(integer -> System.out.println(integer));
         } catch (DAOException e) {
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());
+            logger.error(e);
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
         }
         return LOGIN_COMMAND_CONTEXT;
     }

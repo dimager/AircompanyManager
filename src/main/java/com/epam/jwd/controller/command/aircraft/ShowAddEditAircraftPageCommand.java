@@ -37,17 +37,18 @@ public class ShowAddEditAircraftPageCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        if (Objects.nonNull(requestContext.getParamFromJSP(Attributes.EDIT_AIRCRAFT_ATTRIBUTE_NAME))) {
-            requestContext.addAttributeToJSP(Attributes.EDIT_PAGE_BOOLEAN_ATTRIBUTE_NAME,true);
+        logger.debug("execute method");
+        if (Objects.nonNull(requestContext.getParamFromJSP(Attributes.EDIT_AIRCRAFT_ATTRIBUTE))) {
+            requestContext.addAttributeToJSP(Attributes.EDIT_PAGE_BOOLEAN_ATTRIBUTE,true);
             AircraftService aircraftService = new AircraftService();
             AircraftDTO editAircraftDTO;
             try {
-                int id = Integer.parseInt(requestContext.getParamFromJSP(Attributes.EDIT_AIRCRAFT_ATTRIBUTE_NAME));
+                int id = Integer.parseInt(requestContext.getParamFromJSP(Attributes.EDIT_AIRCRAFT_ATTRIBUTE));
                 editAircraftDTO = aircraftService.findAircraftById(id);
-                requestContext.addAttributeToJSP(Attributes.AIRCRAFT_DTO_ATTRIBUTE_NAME, editAircraftDTO);
+                requestContext.addAttributeToJSP(Attributes.AIRCRAFT_DTO_ATTRIBUTE, editAircraftDTO);
             } catch (DAOException | NumberFormatException e) {
                 logger.error(e);
-                requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());
+                requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
             }
 
         }

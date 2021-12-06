@@ -41,7 +41,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:forEach items="${requestScope.brigadesWithUser}" var="brigade">
+                                <c:forEach items="${requestScope.brigadeUserDTOList}" var="brigade">
                                     <tr>
                                         <td>${brigade.brigadeName}</td>
                                         <td>${brigade.userDTOs.size()}</td>
@@ -54,7 +54,7 @@
                                         </td>
                                         <td>
                                             <c:forEach items="${brigade.userDTOs}" var="user">
-                                                <c:if test="${user.role == Role_FLIGHT_ATTENDANT}">
+                                                <c:if test="${user.role == Role_NAVIGATOR}">
                                                     +
                                                 </c:if>
                                             </c:forEach>
@@ -69,12 +69,12 @@
                                         </td>
                                         <td >
                                             <c:forEach items="${brigade.userDTOs}" var="user">
-                                                <c:if test="${user.role == Role_NAVIGATOR}">
+                                                <c:if test="${user.role == Role_FLIGHT_ATTENDANT}">
                                                     +
                                                 </c:if>
                                             </c:forEach>
                                         </td>
-                                        <td>
+                                        <td class="icons">
                                             <c:url value="/controller" var="editURL">
                                                 <c:param name="command" value="SHOW_EDIT_BRIGADE_PAGE"/>
                                                 <c:param name="edit_brigade_id" value="${brigade.brigadeId}"/>

@@ -71,7 +71,7 @@
                                 <c:forEach items="${requestScope.flightDTOList}" var="flight">
                                     <tr>
                                         <td>${flight.flightCallsign}</td>
-                                        <td>${flight.aircraftDTO.registrationCode}</td>
+                                        <td>${flight.aircraftDTO.registrationCode} (${flight.aircraftDTO.model})</td>
                                         <td>${flight.brigadeDTO.brigadeName}</td>
                                         <c:if test="${sessionScope.loggedinUser.role.roleId >= Role_MANAGER.roleId}">
                                             <td>
@@ -94,14 +94,10 @@
                                                                 <div class="list-group">
                                                                     <c:forEach var="brigade" items="${brigadeDTOList}">
                                                                         <c:if test="${brigade.brigadeId != flight.brigadeDTO.brigadeId}">
-                                                                            <c:url value="/controller"
-                                                                                   var="changeBrigade">
-                                                                                <c:param name="command"
-                                                                                         value="CHANGE_BRIGADE"/>
-                                                                                <c:param name="new_brigade"
-                                                                                         value="${brigade.brigadeId}"/>
-                                                                                <c:param name="edit_flight_id"
-                                                                                         value="${flight.id}"/>
+                                                                            <c:url value="/controller" var="changeBrigade">
+                                                                                <c:param name="command" value="CHANGE_BRIGADE"/>
+                                                                                <c:param name="new_brigade" value="${brigade.brigadeId}"/>
+                                                                                <c:param name="edit_flight_id" value="${flight.id}"/>
                                                                             </c:url>
                                                                             <a href="${changeBrigade}" class="list-group-item list-group-item-action">
                                                                                     ${brigade.brigadeName}

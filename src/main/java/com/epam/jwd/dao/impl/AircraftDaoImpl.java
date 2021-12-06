@@ -39,6 +39,7 @@ public class AircraftDaoImpl implements BaseDao<Integer, Aircraft> {
 
     @Override
     public Aircraft save(Aircraft aircraft) throws DAOException {
+        logger.debug("save method");
         Connection connection = connectionPool.requestConnection();
         ResultSet resultSet = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_AIRCRAFTS_INSERT, Statement.RETURN_GENERATED_KEYS)) {
@@ -72,6 +73,7 @@ public class AircraftDaoImpl implements BaseDao<Integer, Aircraft> {
      */
     @Override
     public boolean update(Aircraft aircraft) throws DAOException {
+        logger.debug("update method");
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_AIRCRAFTS_UPDATE_BY_ID)) {
             preparedStatement.setString(1, aircraft.getProducer());
@@ -96,6 +98,7 @@ public class AircraftDaoImpl implements BaseDao<Integer, Aircraft> {
      */
     @Override
     public List<Aircraft> findAll() throws DAOException {
+        logger.debug("findAll method");
         List<Aircraft> aircrafts = new ArrayList<>();
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_AIRCRAFTS_SELECT_ALL);
@@ -120,6 +123,7 @@ public class AircraftDaoImpl implements BaseDao<Integer, Aircraft> {
 
     @Override
     public Aircraft findById(Integer id) throws DAOException {
+        logger.debug("findById method");
         Aircraft aircraft = new Aircraft();
         ResultSet resultSet = null;
         Connection connection = connectionPool.requestConnection();
@@ -146,6 +150,7 @@ public class AircraftDaoImpl implements BaseDao<Integer, Aircraft> {
 
     @Override
     public boolean deleteById(Integer id) throws DAOException {
+        logger.debug("deleteById method");
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_AIRCRAFTS_DELETE_BY_ID)) {
             preparedStatement.setLong(1, id);

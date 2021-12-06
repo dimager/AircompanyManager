@@ -34,6 +34,7 @@ public class AirportDaoImpl implements BaseDao<Integer, Airport> {
 
     @Override
     public Airport save(Airport airport) throws DAOException {
+        logger.debug("save method");
         Connection connection = connectionPool.requestConnection();
         ResultSet resultSet = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_AIRPORTS_INSERT, Statement.RETURN_GENERATED_KEYS)) {
@@ -61,6 +62,7 @@ public class AirportDaoImpl implements BaseDao<Integer, Airport> {
 
     @Override
     public boolean update(Airport airport) throws DAOException {
+        logger.debug("update method");
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_AIRPORTS_UPDATE_BY_ID)) {
             preparedStatement.setString(1, airport.getName());
@@ -83,6 +85,7 @@ public class AirportDaoImpl implements BaseDao<Integer, Airport> {
 
     @Override
     public List<Airport> findAll() throws DAOException {
+        logger.debug("findAll method");
         List<Airport> airports = new ArrayList<>();
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_AIRPORTS_SELECT_ALL);
@@ -107,6 +110,7 @@ public class AirportDaoImpl implements BaseDao<Integer, Airport> {
 
     @Override
     public Airport findById(Integer id) throws DAOException {
+        logger.debug("findById method");
         Airport airport = new Airport();
         ResultSet resultSet = null;
         Connection connection = connectionPool.requestConnection();
@@ -134,6 +138,7 @@ public class AirportDaoImpl implements BaseDao<Integer, Airport> {
 
     @Override
     public boolean deleteById(Integer id) throws DAOException {
+        logger.debug("deleteById method");
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_AIRPORTS_DELETE_BY_ID)) {
             preparedStatement.setLong(1, id);

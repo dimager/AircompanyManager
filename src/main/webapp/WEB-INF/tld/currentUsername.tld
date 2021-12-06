@@ -3,8 +3,8 @@
     <jsp-version>2.0</jsp-version>
     <short-name>Example TLD</short-name>
     <tag>
-        <name>Hello</name>
-        <tag-class>com.epam.jwd.controller.tag.CustomTag</tag-class>
+        <name>username</name>
+        <tag-class>com.epam.jwd.controller.tag.CurrentUsernameTag</tag-class>
         <body-content>scriptless</body-content>
         <attribute>
             <name>userDTO</name>

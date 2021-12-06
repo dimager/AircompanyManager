@@ -37,6 +37,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
     ConnectionPool connectionPool = ConnectionPoolImpl.getInstance();
 
     public boolean emailInUse(String email) throws DAOException {
+        logger.debug("emailInUse method");
         ResultSet resultSet = null;
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_CHECK_EMAIL)) {
@@ -54,6 +55,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
     }
 
     public boolean usernameInUse(String username) throws DAOException {
+        logger.debug("usernameInUse method");
         ResultSet resultSet = null;
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_CHECK_FREEUSERNAME)) {
@@ -71,6 +73,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
 
     @Override
     public User save(User user) throws DAOException {
+        logger.debug("save method");
         Connection connection = connectionPool.requestConnection();
         ResultSet resultSet = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_USERS_INSERT, Statement.RETURN_GENERATED_KEYS)) {
@@ -95,6 +98,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
 
     @Override
     public boolean update(User user) throws DAOException {
+        logger.debug("update method");
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_USERS_UPDATE_BY_ID)) {
             userToStatement(user, preparedStatement);
@@ -114,6 +118,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
 
     @Override
     public List<User> findAll() throws DAOException {
+        logger.debug("findAll method");
         List<User> users = new ArrayList<>();
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_USERS_SELECT_ALL);
@@ -135,6 +140,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
 
     @Override
     public User findById(Long id) throws DAOException {
+        logger.debug("findById method");
         User users = new User();
         ResultSet resultSet = null;
         Connection connection = ConnectionPoolImpl.getInstance().requestConnection();
@@ -158,6 +164,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
     }
 
     public List<User> getBrigadeFreeUsers(long brigadeId) throws DAOException {
+        logger.debug("getBrigadeFreeUsers method");
         List<User> users = new ArrayList<>();
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SELECT_BRIGADES_FREE_USER)) {
@@ -182,6 +189,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
 
     @Override
     public boolean deleteById(Long id) throws DAOException {
+        logger.debug("deleteById method");
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_USERS_DELETE_BY_ID)) {
             preparedStatement.setLong(1, id);
@@ -199,6 +207,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
     }
 
     public List<Long> getUserFlights(long userId) throws DAOException {
+        logger.debug("getUserFlights method");
         List<Long> flightsIds = new ArrayList<>();
         ResultSet resultSet = null;
         Connection connection = ConnectionPoolImpl.getInstance().requestConnection();
@@ -219,6 +228,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
     }
 
     public List<Brigade> getUserBrigades(long userId) throws DAOException {
+        logger.debug("getUserBrigades method");
         List<Brigade> userBrigades = new ArrayList<>();
         ResultSet resultSet = null;
         Connection connection = ConnectionPoolImpl.getInstance().requestConnection();
@@ -242,6 +252,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
     }
 
     private void resultSetToUser(User user, ResultSet resultSet) throws SQLException {
+        logger.debug("resultSetToUser method");
         user.setId(resultSet.getLong(1));
         user.setRoleId(resultSet.getInt(2));
         user.setFirstName(resultSet.getString(3));
@@ -253,6 +264,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
     }
 
     private void userToStatement(User user, PreparedStatement preparedStatement) throws SQLException {
+        logger.debug("userToStatement method");
         preparedStatement.setInt(1, user.getRoleId());
         preparedStatement.setString(2, user.getFirstName());
         preparedStatement.setString(3, user.getLastName());
@@ -263,6 +275,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
     }
 
     public User findByUsername(String username) throws DAOException {
+        logger.debug("findByUsername method");
         User user = new User();
         ResultSet resultSet = null;
         Connection connection = ConnectionPoolImpl.getInstance().requestConnection();
@@ -286,6 +299,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
     }
 
     public boolean updateRole(long userId, int roleId) throws DAOException {
+        logger.debug("updateRole method");
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_USERS_UPDATE_ROLE)) {
             preparedStatement.setInt(1, roleId);

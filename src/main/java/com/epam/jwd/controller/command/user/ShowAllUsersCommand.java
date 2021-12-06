@@ -37,14 +37,14 @@ public class ShowAllUsersCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-
-        requestContext.addAttributeToJSP("roles", Arrays.asList(Role.values()));
+        logger.debug("execute method");
+        requestContext.addAttributeToJSP(Attributes.ROLES_ATTRIBUTE, Arrays.asList(Role.values()));
         UserService userService = new UserService();
         try {
-            requestContext.addAttributeToJSP("allUsers", userService.findAll());
+            requestContext.addAttributeToJSP(Attributes.USER_DTO_LIST_ATTRIBUTE, userService.findAll());
         } catch (DAOException e) {
             logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
         }
 
         return SHOW_ALL_USERS_PAGE_CONTEXT;

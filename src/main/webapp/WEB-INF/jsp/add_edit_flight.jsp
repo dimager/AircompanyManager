@@ -25,6 +25,9 @@
     <c:import url="exception.jsp"/>
     <c:import url="command_result_state.jsp"/>
     <form class="login-one-userform" action="/controller">
+        <div class="img-loggin">
+            <img src="${pageContext.request.contextPath}/assets/img/flight.png" width="500" height="200" >
+        </div>
         <div class="login-one-ico"><i class="fa fa-plane" id="lockico"></i></div>
         <div>
             <c:choose>
@@ -44,7 +47,7 @@
             <label for="exampleFormControlInput1">
                 <fmt:message bundle="${lang}" key="label.callsign"/>
             </label>
-            <input class="form-control" id="exampleFormControlInput1" name="callsignInput"
+            <input class="form-control" id="exampleFormControlInput1" name="callsignInput" minlength="1" maxlength="10"
                    value="${requestScope.flightDTO.flightCallsign}"
                    placeholder="<fmt:message bundle="${lang}" key="label.callsign"/>">
         </div>
@@ -58,9 +61,7 @@
                 </option>
                 <c:forEach items="${requestScope.aircraftDTOList}" var="aircraftDTO">
                     <option value="${aircraftDTO.aircraftId}"
-                            <c:if
-                                    test="${requestScope.flightDTO.aircraftDTO.aircraftId == aircraftDTO.aircraftId}"> selected="selected" </c:if>
-                    >
+                            <c:if test="${requestScope.flightDTO.aircraftDTO.aircraftId == aircraftDTO.aircraftId}"> selected="selected" </c:if>>
                             ${aircraftDTO.registrationCode} ${aircraftDTO.producer} ${aircraftDTO.model}  </option>
                 </c:forEach>
             </select>
@@ -75,9 +76,7 @@
                 </option>
                 <c:forEach items="${requestScope.airportDTOList}" var="airportDTO">
                     <option value="${airportDTO.id}"
-                            <c:if
-                                    test="${requestScope.flightDTO.departureAirport.id == airportDTO.id}"> selected="selected" </c:if>
-                    >${airportDTO.IATACode} </option>
+                            <c:if test="${requestScope.flightDTO.departureAirport.id == airportDTO.id}"> selected="selected" </c:if>>${airportDTO.IATACode}</option>
                 </c:forEach>
             </select>
         </div>
@@ -91,9 +90,7 @@
                 </option>
                 <c:forEach items="${requestScope.airportDTOList}" var="airportDTO">
                     <option value="${airportDTO.id}"
-                            <c:if
-                                    test="${requestScope.flightDTO.destinationAirport.id == airportDTO.id}"> selected="selected" </c:if>
-                    >${airportDTO.IATACode} </option>
+                            <c:if test="${requestScope.flightDTO.destinationAirport.id == airportDTO.id}"> selected="selected" </c:if>>${airportDTO.IATACode} </option>
                 </c:forEach>
             </select>
         </div>
@@ -104,8 +101,7 @@
             <div class="form-group" id="exampleFormControlTextarea2">
                 <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
                     <input type="text" class="form-control" name="selectedDateTime"
-                            <c:if
-                                    test="${not empty requestScope.flightTime}"> value="${requestScope.flightTime}" </c:if>
+                            <c:if test="${not empty requestScope.flightTime}"> value="${requestScope.flightTime}" </c:if>
                            data-target="#datetimepicker1"/>
                     <div class="input-group-append" data-target="#datetimepicker1"
                          data-toggle="datetimepicker">

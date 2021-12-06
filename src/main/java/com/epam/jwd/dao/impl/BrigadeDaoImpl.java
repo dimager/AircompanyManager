@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BrigadeDaoImpl implements BaseDao<Long, Brigade> {
-
+    private static final Logger logger = LogManager.getLogger(BrigadeDaoImpl.class);
     private static final String EXCEPTION_SQL_MESSAGE = "SQL exception";
     private static final String EXCEPTION_UPDATE_ERROR_MESSAGE = "Brigade wasn't updated in db. ";
     private static final String EXCEPTION_SAVE_ERROR_MESSAGE = "New brigade wasn't saved in db. ";
@@ -30,11 +30,11 @@ public class BrigadeDaoImpl implements BaseDao<Long, Brigade> {
     private static final String EXCEPTION_ADD_USER_TO_BRIGADE_EXCEPTION = "User wasn't added to brigade. ";
     private static final String EXCEPTION_REMOVE_USER_FROM_BRIGADE_EXCEPTION = "User wasn't removed to brigade. ";
 
-    private final static Logger logger = LogManager.getLogger(BrigadeDaoImpl.class);
     private final int ONE_UPDATED_ROW = 1;
     private final ConnectionPool connectionPool = ConnectionPoolImpl.getInstance();
 
     public List<User> getBrigadeUsers(long brigadeId) throws DAOException {
+        logger.debug("getBrigadeUsers method");
         List<User> users = new ArrayList<>();
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SELECT_BRIGADES_USER)) {
@@ -59,6 +59,7 @@ public class BrigadeDaoImpl implements BaseDao<Long, Brigade> {
 
 
     public boolean addUserToBrigade(long userId, long brigadeId) throws DAOException {
+        logger.debug("addUserToBrigade method");
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_BRIGADE_HAS_USERS_INSERT)) {
             preparedStatement.setLong(1, brigadeId);
@@ -76,6 +77,7 @@ public class BrigadeDaoImpl implements BaseDao<Long, Brigade> {
     }
 
     public boolean removeUserFromBrigade(long userId, long brigadeId) throws DAOException {
+        logger.debug("removeUserFromBrigade method");
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_BRIGADE_HAS_USERS_DELETE)) {
             preparedStatement.setLong(1, brigadeId);
@@ -94,6 +96,7 @@ public class BrigadeDaoImpl implements BaseDao<Long, Brigade> {
 
     @Override
     public Brigade save(Brigade brigade) throws DAOException {
+        logger.debug("save method");
         Connection connection = connectionPool.requestConnection();
         ResultSet resultSet = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_BRIGADES_INSERT, Statement.RETURN_GENERATED_KEYS)) {
@@ -118,6 +121,7 @@ public class BrigadeDaoImpl implements BaseDao<Long, Brigade> {
 
     @Override
     public boolean update(Brigade brigade) throws DAOException {
+        logger.debug("update method");
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_BRIGADES_UPDATE_BY_ID)) {
             preparedStatement.setString(1, brigade.getBrigadeName());
@@ -137,6 +141,7 @@ public class BrigadeDaoImpl implements BaseDao<Long, Brigade> {
 
     @Override
     public List<Brigade> findAll() throws DAOException {
+        logger.debug("findAll method");
         List<Brigade> brigades = new ArrayList<>();
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_BRIGADES_SELECT_ALL);
@@ -158,6 +163,7 @@ public class BrigadeDaoImpl implements BaseDao<Long, Brigade> {
 
     @Override
     public Brigade findById(Long id) throws DAOException {
+        logger.debug("findById method");
         Brigade brigade = new Brigade();
         ResultSet resultSet = null;
         Connection connection = ConnectionPoolImpl.getInstance().requestConnection();
@@ -182,6 +188,7 @@ public class BrigadeDaoImpl implements BaseDao<Long, Brigade> {
 
     @Override
     public boolean deleteById(Long id) throws DAOException {
+        logger.debug("deleteById method");
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_BRIGADES_DELETE_BY_ID)) {
             preparedStatement.setLong(1, id);

@@ -14,7 +14,7 @@ public class DeleteBrigadeCommand implements Command {
     private static final Logger logger = LogManager.getLogger(DeleteBrigadeCommand.class);
     private static final Command INSTANCE = new DeleteBrigadeCommand();
     private static final String DELETE_BRIGADE_JSP = "/controller?command=SHOW_BRIGADE_PAGE";
-    private static final String DELETE_AIRCRAFT_ID_ATTRIBUTE_NAME = "delete_brigade_id";
+    private static final String DELETE_AIRCRAFT_ID_ATTRIBUTE = "delete_brigade_id";
     private static final int RESULT_MESSAGE_CODE = 108;
 
     private static final ResponseContext DELETE_BRIGADES_PAGE_CONTEXT = new ResponseContext() {
@@ -40,12 +40,12 @@ public class DeleteBrigadeCommand implements Command {
     public ResponseContext execute(RequestContext requestContext) {
         BrigadeService brigadeService = new BrigadeService();
         try {
-            long id = Long.parseLong(requestContext.getParamFromJSP(DELETE_AIRCRAFT_ID_ATTRIBUTE_NAME));
+            long id = Long.parseLong(requestContext.getParamFromJSP(DELETE_AIRCRAFT_ID_ATTRIBUTE));
             brigadeService.deleteBrigade(id);
-            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME,  RESULT_MESSAGE_CODE);
+            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE,  RESULT_MESSAGE_CODE);
         } catch (DAOException | NumberFormatException e) {
             logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
 
         }
         return DELETE_BRIGADES_PAGE_CONTEXT;

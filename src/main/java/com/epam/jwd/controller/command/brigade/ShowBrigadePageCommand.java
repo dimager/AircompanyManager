@@ -14,7 +14,6 @@ import java.util.List;
 
 public class ShowBrigadePageCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ShowAddEditBrigadePageCommand.class);
-
     private static final Command INSTANCE = new ShowBrigadePageCommand();
     private static final String BRIGADE_JSP = "/WEB-INF/jsp/brigades.jsp";
     private static final ResponseContext SHOW_BRIGADES_PAGE_CONTEXT = new ResponseContext() {
@@ -38,13 +37,14 @@ public class ShowBrigadePageCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
+        logger.debug("execute method");
         BrigadeService brigadeService = new BrigadeService();
         try {
             List<BrigadeUserDTO> brigadeUserDTOList = brigadeService.findAllBrigadeWithUsers();
-            requestContext.addAttributeToJSP("brigadesWithUser", brigadeUserDTOList);
+            requestContext.addAttributeToJSP(Attributes.BRIGADE_USER_DTO_LIST, brigadeUserDTOList);
         } catch (DAOException e) {
             logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
         }
         return SHOW_BRIGADES_PAGE_CONTEXT;
     }

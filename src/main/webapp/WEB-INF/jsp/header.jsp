@@ -2,7 +2,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="myTag" uri="/WEB-INF/tld/customTag.tld" %>
+<%@ taglib prefix="myTag" uri="/WEB-INF/tld/currentUsername.tld" %>
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="messages" var="lang"/>
 <nav class="navbar navbar-light navbar-expand-md navigation-clean-button" style="margin-bottom: 30px">
@@ -17,7 +17,8 @@
                 <li class="nav-item">
                     <a class="nav-link"
                             <c:if test="${fn:endsWith(pageContext.request.queryString,'controller' )}"> style="color:#007bff" </c:if>
-                       href="/">
+                       href="/controller">
+                        ${param.returnPage}
                         <fmt:message bundle="${lang}" key="headermenu.main"/>
                     </a>
                 </li>
@@ -112,19 +113,19 @@
             </c:url>
             <c:url value="/controller" var="setEnLocale">
                 <c:param name="command" value="SET_LOCALE"/>
-                <c:param name="returnPage" value="${param.command}"/>
+                <c:param name="returnPage" value="${pageContext.request.queryString}"/>
                 <c:param name="sessionLocale" value="en"/>
             </c:url>
             <c:url value="/controller" var="setRuLocale">
                 <c:param name="command" value="SET_LOCALE"/>
-                <c:param name="returnPage" value="${param.command}"/>
+                <c:param name="returnPage" value="${pageContext.request.queryString}"/>
                 <c:param name="sessionLocale" value="ru"/>
             </c:url>
             <a class="login" href="${setEnLocale}">
-            <img src="${pageContext.request.contextPath}/assets/img/en.png" height="32px" width="32px">
+            <img src="${pageContext.request.contextPath}/assets/img/en.png" height="24px" width="24px">
             </a>
             <a class="login" href="${setRuLocale}">
-            <img src="${pageContext.request.contextPath}/assets/img/ru.png" height="32px" width="32px">
+            <img src="${pageContext.request.contextPath}/assets/img/ru.png" height="24px" width="24px">
             </a>
             <c:choose>
                 <c:when test="${sessionScope.loginState}">
@@ -157,7 +158,7 @@
                         </c:when>
                     </c:choose>
                     <a class="login" href="${myacc}">
-                     <myTag:Hello userDTO="${sessionScope.loggedinUser}"/>
+                     <myTag:username userDTO="${sessionScope.loggedinUser}"/>
                   </a>
                     <a class="login" href="${logout}">
                      <fmt:message bundle="${lang}" key="headermenu.logout"/>

@@ -87,31 +87,38 @@ public class BrigadeService {
     }
 
     public boolean updateBrigade(BrigadeDTO brigadeDTO) throws DAOException, ValidatorException {
+        logger.debug("updateBrigade method");
         brigadeValidator.isValid(brigadeDTO);
         return brigadeDAO.update(brigadeConverter.convertToDAO(brigadeDTO));
     }
 
     public boolean deleteBrigade(long brigadeId) throws DAOException {
+        logger.debug("deleteBrigade method");
         return brigadeDAO.deleteById(brigadeId);
     }
 
     public boolean deleteBrigade(BrigadeDTO brigadeDTO) throws DAOException {
+        logger.debug("deleteBrigade method");
         return this.deleteBrigade(brigadeDTO.getBrigadeId());
     }
 
     public BrigadeDTO findById(long brigadeId) throws DAOException {
+        logger.debug("findById method");
         return brigadeConverter.convertToDTO(brigadeDAO.findById(brigadeId));
     }
 
     public BrigadeDTO findById(BrigadeDTO brigadeDTO) throws DAOException {
+        logger.debug("findById method");
         return this.findById(brigadeDTO.getBrigadeId());
     }
 
     public List<BrigadeDTO> findAllBrigade() throws DAOException {
+        logger.debug("findAllBrigade method");
         return brigadeConverter.convertToDTOList(brigadeDAO.findAll());
     }
 
     public BrigadeUserDTO getBrigadeWithUsers(BrigadeDTO brigadeDTO) throws DAOException {
+        logger.debug("getBrigadeWithUsers method");
         BrigadeUserDTO brigadeUserDTO = new BrigadeUserDTO();
         brigadeUserDTO.setBrigadeId(brigadeDTO.getBrigadeId());
         brigadeUserDTO.setBrigadeName(brigadeDTO.getBrigadeName());
@@ -120,6 +127,7 @@ public class BrigadeService {
     }
 
     public List<BrigadeUserDTO> findAllBrigadeWithUsers() throws DAOException {
+        logger.debug("findAllBrigadeWithUsers method");
         List<BrigadeUserDTO> brigadeUserDTOs = new ArrayList<>();
         List<BrigadeDTO> brigadeDTOs = brigadeConverter.convertToDTOList(brigadeDAO.findAll());
         for (BrigadeDTO brigadeDTO : brigadeDTOs) {

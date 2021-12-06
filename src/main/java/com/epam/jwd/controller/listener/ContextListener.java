@@ -13,14 +13,14 @@ public class ContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
+        logger.debug("contextInitialized method");
         ConnectionPoolImpl.getInstance().init();
-        logger.info("init pool");
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
+        logger.debug("contextDestroyed method");
         ConnectionPoolImpl.getInstance().shutdown();
-        logger.info("destroy pool");
 
     }
 }

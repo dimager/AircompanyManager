@@ -28,6 +28,19 @@ body{
   margin-bottom: 30px;
 }
 
+.login-one-userform2 {
+
+  display: inline-block;
+  max-width: 500px;
+  width: 500px;
+  left: 50%;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 5px;
+  box-shadow: 3px 3px 4px rgb(0 0 0 / 20%);
+  margin-bottom: 20px;
+}
+
 .login-one {
   background-color: rgba(0,0,0,0.1);
   min-height: 75%;
@@ -43,6 +56,9 @@ body{
 
 .form-group {
   text-align: center;
+}
+.form-group2 {
+  text-align: left;
 }
 
 #input {

@@ -5,10 +5,17 @@ import com.epam.jwd.controller.command.Command;
 import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.dao.exception.DAOException;
+import com.epam.jwd.service.dto.BrigadeDTO;
+import com.epam.jwd.service.dto.BrigadeUserDTO;
 import com.epam.jwd.service.dto.UserDTO;
+import com.epam.jwd.service.impl.BrigadeService;
 import com.epam.jwd.service.impl.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class ShowUserBrigadesCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ShowUserBrigadesCommand.class);
@@ -35,14 +42,28 @@ public class ShowUserBrigadesCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
+        logger.debug("execute method");
+        UserDTO userDTO;
         UserService userService = new UserService();
-
+        BrigadeService brigadeService = new BrigadeService();
+        List<BrigadeUserDTO> brigadeUserDTOList = new ArrayList<>();
         try {
-            UserDTO  userDTO = (UserDTO) requestContext.getHttpSession(false).getAttribute(Attributes.SESSION_USER_ATTRIBUTE);
-            requestContext.addAttributeToJSP(Attributes.USER_BRIGADES_ATTRIBUTE_NAME,userService.findUserBrigades(userDTO.getUserId()));
-        } catch (DAOException e) {
+
+            String userId = requestContext.getParamFromJSP(Attributes.SHOW_USER_FLIGHTS_ID_ATTRIBUTE);
+            if (Objects.nonNull(userId)) {
+                userDTO = userService.findById(Long.parseLong(userId));
+            } else {
+                userDTO = (UserDTO) requestContext.getHttpSession(false).getAttribute(Attributes.SESSION_USER_ATTRIBUTE);
+            }
+            List<BrigadeDTO> brigadeDTOList = userService.findUserBrigades(userDTO.getUserId());
+            for (BrigadeDTO brigadeDTO : brigadeDTOList) {
+                brigadeUserDTOList.add(brigadeService.getBrigadeWithUsers(brigadeDTO));
+            }
+            requestContext.addAttributeToJSP(Attributes.USER_BRIGADES_ATTRIBUTE, brigadeUserDTOList);
+            requestContext.addAttributeToJSP(Attributes.USER_DTO_ATTRIBUTE, userDTO);
+        } catch (DAOException | NumberFormatException e) {
             logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
         }
         return SHOW_USER_FLIGHTS_PAGE_CONTEXT;
     }

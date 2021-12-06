@@ -10,9 +10,7 @@ public class FlightDTO extends BaseDTO {
     private AirportDTO departureAirport = new AirportDTO();
     private AirportDTO destinationAirport = new AirportDTO();
     private String flightCallsign;
-    private Timestamp departureDateTime;;
-
-
+    private Timestamp departureDateTime;
 
     public long getId() {
         return id;

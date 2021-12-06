@@ -13,13 +13,13 @@ import org.apache.logging.log4j.Logger;
 public class AddUserToBrigadeCommand implements Command {
     private static final Logger logger = LogManager.getLogger(AddUserToBrigadeCommand.class);
     private static final Command INSTANCE = new AddUserToBrigadeCommand();
-    private static final String ADD_BRIGADE_JSP = "/controller?command=SHOW_BRIGADE_WITH_USERS_PAGE";
+    private static  String ADD_USER_TO_BRIGADE_JSP = "/controller?command=SHOW_BRIGADE_WITH_USERS_PAGE";
     private static final int RESULT_MESSAGE_CODE = 107;
 
     private static final ResponseContext ADD_BRIGADES_PAGE_CONTEXT = new ResponseContext() {
         @Override
         public String getPage() {
-            return ADD_BRIGADE_JSP;
+            return ADD_USER_TO_BRIGADE_JSP;
         }
 
         @Override
@@ -37,16 +37,17 @@ public class AddUserToBrigadeCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
+        logger.debug("execute method");
         BrigadeService brigadeService = new BrigadeService();
         try {
-            long userId = Long.parseLong(requestContext.getParamFromJSP("user_id"));
+            long userId = Long.parseLong(requestContext.getParamFromJSP(Attributes.USER_ID_ATTRIBUTE));
             long brigadeId = Long.parseLong(requestContext.getParamFromJSP("brigade_id"));
-            requestContext.addAttributeToJSP("brigade_id", brigadeId);
             brigadeService.addUserToBrigade(userId, brigadeId);
-            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME,  RESULT_MESSAGE_CODE);
+            ADD_USER_TO_BRIGADE_JSP="/controller?command=SHOW_BRIGADE_WITH_USERS_PAGE&brigade_id="+brigadeId;
+            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE,  RESULT_MESSAGE_CODE);
         } catch (NumberFormatException | DAOException e) {
             logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
         }
 
         return ADD_BRIGADES_PAGE_CONTEXT;

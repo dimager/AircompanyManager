@@ -41,15 +41,15 @@ public class ShowAirportPage implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
+        logger.debug("execute method");
         AirportService airportService = new AirportService();
-
         try {
             List<AirportDTO>  airportDTOList = airportService.findAllAirports();
-            requestContext.addAttributeToJSP(Attributes.AIRPORTS_DTO_LIST_ATTRIBUTE_NAME, airportDTOList);
+            requestContext.addAttributeToJSP(Attributes.AIRPORTS_DTO_LIST_ATTRIBUTE, airportDTOList);
 
         } catch (DAOException e) {
             logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
         }
         return CHANGE_PASSWORD_PAGE_CONTEXT;
     }

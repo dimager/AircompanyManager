@@ -31,6 +31,7 @@ public class ShowSignupCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
+        logger.debug("execute method");
         return SHOW_SIGNUP_PAGE_CONTEXT;
     }
 

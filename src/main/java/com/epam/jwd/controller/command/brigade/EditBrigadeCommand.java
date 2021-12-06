@@ -38,16 +38,17 @@ public class EditBrigadeCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
+        logger.debug("execute method");
         BrigadeDTO brigadeDTO = new BrigadeDTO();
         BrigadeService brigadeService = new BrigadeService();
         brigadeDTO.setBrigadeName(requestContext.getParamFromJSP("brigadename"));
         brigadeDTO.setBrigadeId(Long.parseLong(requestContext.getParamFromJSP("brigadeId")));
         try {
             brigadeService.updateBrigade(brigadeDTO);
-            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME,  RESULT_MESSAGE_CODE);
+            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE,  RESULT_MESSAGE_CODE);
         } catch (DAOException | ValidatorException |  NumberFormatException e) {
             logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
         }
         return EDIT_BRIGADES_PAGE_CONTEXT;
     }

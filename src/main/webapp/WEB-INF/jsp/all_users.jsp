@@ -1,12 +1,5 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: mager
-  Date: 22.11.2021
-  Time: 11:23
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="messages" var="lang"/>
@@ -16,14 +9,11 @@
     <c:import url="meta.jsp"/>
 </head>
 <body>
-
-
 <div id="login-one" class="login-one">
     <c:import url="header.jsp"/>
     <c:import url="exception.jsp"/>
     <c:import url="command_result_state.jsp"/>
     <section class="mt-4">
-
         <div class="row">
             <div class="col" style="padding-right: 45px;padding-left: 45px;">
                 <div class="card shadow">
@@ -43,18 +33,20 @@
                                     <c:if test="${sessionScope.loggedinUser.role == Role_ADMIN}">
                                         <th></th>
                                     </c:if>
+                                    <c:if test="${sessionScope.loggedinUser.role == Role_MANAGER}">
+                                        <th></th>
+                                    </c:if>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:forEach items="${requestScope.allUsers}" var="user">
+                                <c:forEach items="${requestScope.userDTOList}" var="user">
                                     <tr>
                                         <td>${user.firstName}</td>
                                         <td>${user.lastName}</td>
                                         <td><a href="mailto:${user.email}">${user.email}</a></td>
                                         <td><fmt:message bundle="${lang}" key="rolename.${user.role.roleId}"/></td>
                                         <c:if test="${sessionScope.loggedinUser.role == Role_ADMIN}">
-                                            <td style="text-align: center">
-
+                                            <td class="icons" >
                                                 <div class="dropdown">
                                                     <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         change role
@@ -72,11 +64,28 @@
                                                         </c:forEach>
                                                     </div>
                                                 </div>
-
                                                 <c:url value="/controller" var="editRole">
                                                     <c:param name="command" value="EDIT_USER_ROLE"/>
                                                     <c:param name="user_id" value="${user.userId}"/>
                                                 </c:url>
+                                            </td>
+                                        </c:if>
+                                        <c:if test="${sessionScope.loggedinUser.role == Role_MANAGER}">
+                                            <td class="icons">
+                                                <c:url value="/controller" var="showUserFlights">
+                                                    <c:param name="command" value="SHOW_USER_FLIGHTS_PAGE_FOR_MANAGER"/>
+                                                    <c:param name="show_user_id" value="${user.userId}"/>
+                                                </c:url>
+                                                <c:url value="/controller" var="showUserBrigades">
+                                                    <c:param name="command" value="SHOW_USER_BRIGADES_PAGE_FOR_MANAGER"/>
+                                                    <c:param name="show_user_id" value="${user.userId}"/>
+                                                </c:url>
+                                                <a href="${showUserFlights}">
+                                                    <i class="icon ion-paper-airplane" style=" margin-left: 10px;"></i>
+                                                </a>
+                                                <a href="${showUserBrigades}">
+                                                    <i class="icon ion-ios-people" style=" margin-left: 10px;"></i>
+                                                </a>
                                             </td>
                                         </c:if>
                                     </tr>
@@ -88,9 +97,7 @@
                 </div>
             </div>
         </div>
-
     </section>
-
     <c:import url="footer.jsp"/>
     <c:import url="scripts.jsp"/>
 </body>

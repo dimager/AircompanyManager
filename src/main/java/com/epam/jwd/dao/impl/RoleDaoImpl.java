@@ -7,7 +7,7 @@ import com.epam.jwd.dao.entity.Role;
 import com.epam.jwd.dao.entity.User;
 
 import java.util.List;
-
+//todo delete
 public class RoleDaoImpl {
     public User save(User entity) {
         return null;

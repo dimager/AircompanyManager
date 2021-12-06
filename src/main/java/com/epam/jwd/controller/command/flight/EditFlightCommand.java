@@ -6,8 +6,10 @@ import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.dao.entity.Flight;
 import com.epam.jwd.dao.exception.DAOException;
+import com.epam.jwd.service.dto.FlightDTO;
 import com.epam.jwd.service.exception.ValidatorException;
 import com.epam.jwd.service.impl.FlightService;
+import com.epam.jwd.service.validator.FlightValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -45,25 +47,37 @@ public class EditFlightCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
+        logger.debug("execute method");
         FlightService flightService = new FlightService();
+        FlightValidator flightValidator = new FlightValidator();
         Flight flight = new Flight();
         try {
-            String flightDate = requestContext.getParamFromJSP(Attributes.SELECTED_DATE_TIME).trim() + UTC;
-            flight.setFlightCallsign(requestContext.getParamFromJSP(Attributes.CALLSIGN_INPUT_FIELD));
-            flight.setDepartureDateTime(Timestamp.from(ZonedDateTime.parse(flightDate, DateTimeFormatter.ofPattern(DATETIME_PATTERN)).toInstant()));
-            flight.setFlightCallsign(requestContext.getParamFromJSP(Attributes.CALLSIGN_INPUT_FIELD));
-            flight.setBrigadeId(Long.parseLong(requestContext.getParamFromJSP(Attributes.SELECTED_BRIGADE_FIELD_NAME)));
-            flight.setFlightAircraftId(Integer.parseInt(requestContext.getParamFromJSP(Attributes.SELECTED_AIRCRAFT_FIELD_NAME)));
-            flight.setDepartureAirportId(Integer.parseInt(requestContext.getParamFromJSP(Attributes.SELECTED_DEPARTURE_AIRPORT_FIELD_NAME)));
-            flight.setDestinationAirportId(Integer.parseInt(requestContext.getParamFromJSP(Attributes.SELECTED_DESTINATION_AIRPORT_FIELD_NAME)));
-            flight.setId(Long.parseLong(requestContext.getParamFromJSP(Attributes.EDIT_FLIGHT_ID_ATTRIBUTE_NAME)));
-            flightService.updateFlight(flight);
-            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME, flight.getFlightCallsign() + RESULT_MESSAGE_CODE);
+            FlightDTO flightDTO = new FlightDTO();
+
+            String flightDateTime = requestContext.getParamFromJSP(Attributes.SELECTED_DATE_TIME).trim() + UTC;
+            Timestamp timestamp = Timestamp.from(ZonedDateTime.parse(flightDateTime, DateTimeFormatter.ofPattern(DATETIME_PATTERN)).toInstant());
+
+            flightDTO.setFlightCallsign(requestContext.getParamFromJSP(Attributes.CALLSIGN_INPUT_FIELD));
+            flightDTO.setDepartureDateTime(timestamp);
+
+            if (flightValidator.isValid(flightDTO)) {
+                flight.setFlightCallsign(requestContext.getParamFromJSP(Attributes.CALLSIGN_INPUT_FIELD));
+                flight.setDepartureDateTime(timestamp);
+                flight.setFlightCallsign(requestContext.getParamFromJSP(Attributes.CALLSIGN_INPUT_FIELD));
+                flight.setBrigadeId(Long.parseLong(requestContext.getParamFromJSP(Attributes.SELECTED_BRIGADE_FIELD_NAME)));
+                flight.setFlightAircraftId(Integer.parseInt(requestContext.getParamFromJSP(Attributes.SELECTED_AIRCRAFT_FIELD_NAME)));
+                flight.setDepartureAirportId(Integer.parseInt(requestContext.getParamFromJSP(Attributes.SELECTED_DEPARTURE_AIRPORT_FIELD_NAME)));
+                flight.setDestinationAirportId(Integer.parseInt(requestContext.getParamFromJSP(Attributes.SELECTED_DESTINATION_AIRPORT_FIELD_NAME)));
+                flight.setId(Long.parseLong(requestContext.getParamFromJSP(Attributes.EDIT_FLIGHT_ID_ATTRIBUTE)));
+                flightService.updateFlight(flight);
+                requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE, RESULT_MESSAGE_CODE);
+            }
+
         } catch (DateTimeParseException | DAOException | ValidatorException | NumberFormatException | NullPointerException e) {
             e.printStackTrace();
             logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e);
-            requestContext.addAttributeToJSP(Attributes.AIRCRAFT_DTO_ATTRIBUTE_NAME, flight);
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e);
+            requestContext.addAttributeToJSP(Attributes.AIRCRAFT_DTO_ATTRIBUTE, flight);
         }
 
         return ADD_EDIT_FLIGHT_COMMAND_CONTEXT;

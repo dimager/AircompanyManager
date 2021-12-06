@@ -18,9 +18,9 @@
     <c:import url="command_result_state.jsp"/>
     <c:import url="errors.jsp"/>
     <c:if test="${sessionScope.loginState}">
-    <div class="login-one-userform">
+        <div class="login-one-userform">
 
-    <div class="col">
+            <div class="col">
                 <div class="form-group">
                     <c:choose>
                         <c:when test="${sessionScope.loggedinUser.role == Role_ADMIN}">
@@ -59,13 +59,13 @@
                         </label>
                     </div>
                     <div>
-                        <label style="font-size: 20px">
-                            <fmt:message bundle="${lang}"  key="labeluserpage.username"/> ${sessionScope.loggedinUser.username}
+                        <label class="inputlabel">
+                            <fmt:message bundle="${lang}" key="labeluserpage.username"/> ${sessionScope.loggedinUser.username}
                         </label>
                     </div>
                     <div>
-                        <label style="font-size: 20px">
-                            <fmt:message bundle="${lang}"  key="labeluserpage.email"/> ${sessionScope.loggedinUser.email}
+                        <label class="inputlabel">
+                            <fmt:message bundle="${lang}" key="labeluserpage.email"/> ${sessionScope.loggedinUser.email}
                         </label>
                     </div>
                     <div style="margin-top: 10px">
@@ -78,8 +78,7 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalLabel">
-                                            <fmt:message
-                                                    key="buttonname.changepassword"/>
+                                            <fmt:message bundle="${lang}" key="buttonname.changepassword"/>
                                         </h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
@@ -88,17 +87,20 @@
                                     <form action="/controller" method="post">
                                         <div class="modal-body">
                                             <input type="hidden" name="command" value="CHANGE_PASSWORD">
-                                            <div class="form-group"><input class="form-control" minlength="1" maxlength="50"
+                                            <div class="form-group">
+                                                <input class="form-control" minlength="1" maxlength="50"
                                                                            type="password" name="oldPassword"
-                                                                           placeholder="<fmt:message bundle="${lang}" key="buttonname.oldpassword"/>">
+                                                                           placeholder="<fmt:message bundle="${lang}" key="label.oldpassword"/>">
                                             </div>
-                                            <div class="form-group"><input class="form-control" minlength="1" maxlength="50"
+                                            <div class="form-group">
+                                                <input class="form-control" minlength="1" maxlength="50" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
                                                                            type="password" name="newPassword"
-                                                                           placeholder="<fmt:message bundle="${lang}" key="buttonname.newpassword"/>">
+                                                                           placeholder="<fmt:message bundle="${lang}" key="label.newpassword"/>">
+                                                <p class="signuptip"><fmt:message bundle="${lang}" key="promt.password"/></p>
                                             </div>
-                                            <div class="form-group"><input class="form-control" minlength="1" maxlength="50"
+                                            <div class="form-group"><input class="form-control" minlength="1" maxlength="50" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
                                                                            type="password" name="newPasswordRepeat"
-                                                                           placeholder="<fmt:message bundle="${lang}" key="buttonname.repnewpassword"/>">
+                                                                           placeholder="<fmt:message bundle="${lang}" key="label.repnewpassword"/>">
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -112,8 +114,8 @@
                         </div>
                     </div>
                 </div>
-                </div>
             </div>
+        </div>
     </c:if>
 </div>
 <c:import url="footer.jsp"/>

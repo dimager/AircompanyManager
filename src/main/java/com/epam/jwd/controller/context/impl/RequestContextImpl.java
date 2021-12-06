@@ -22,6 +22,7 @@ public class RequestContextImpl implements RequestContext {
     }
 
 
+
     @Override
     public String getParamFromJSP(String name) {
         return request.getParameter(name);

@@ -16,7 +16,7 @@ import java.util.List;
 
 public class SignupCommand implements Command {
     private static final Logger logger = LogManager.getLogger(SignupCommand.class);
-    public static final String SIGNUP_JSP = "/WEB-INF/jsp/signup.jsp";
+    public static final String SIGNUP_JSP = "/controller?command=SHOW_SIGNUP_PAGE";
     private static final int RESULT_MESSAGE_CODE =105;
     private static final Command INSTANCE = new SignupCommand();
 
@@ -39,6 +39,7 @@ public class SignupCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
+        logger.debug("execute method");
         UserDTO userDTO = new UserDTO();
         List<Integer> errors = new ArrayList<>();
         ValidationService validationService = new ValidationService();
@@ -54,15 +55,15 @@ public class SignupCommand implements Command {
         try {
             if (validationService.validateNewUser(userDTO,passwordRepeat,errors)) {
                 signupService.saveNewUser(userDTO);
-                requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME, RESULT_MESSAGE_CODE);
+                requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE, RESULT_MESSAGE_CODE);
 
             }
             else {
-                requestContext.addAttributeToJSP(Attributes.COMMAND_ERRORS_ATTRIBUTE_NAME, errors);
+                requestContext.addAttributeToJSP(Attributes.COMMAND_ERRORS_ATTRIBUTE, errors);
             }
         } catch (DAOException e) {
             logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e.getMessage());
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
         }
         return SIGNUP_COMMAND_CONTEXT;
     }

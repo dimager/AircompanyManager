@@ -39,17 +39,18 @@ public class DeleteFlightCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
+        logger.debug("execute method");
         FlightService flightService = new FlightService();
         Flight flight = new Flight();
         try {
-            long id = Long.parseLong(requestContext.getParamFromJSP(Attributes.DELETE_FLIGHT_ID_ATTRIBUTE_NAME));
+            long id = Long.parseLong(requestContext.getParamFromJSP(Attributes.DELETE_FLIGHT_ID_ATTRIBUTE));
             flightService.deleteFlightById(id);
-            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE_NAME, RESULT_MESSAGE_CODE);
+            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE, RESULT_MESSAGE_CODE);
         } catch (DateTimeParseException | DAOException  | NumberFormatException | NullPointerException e) {
             e.printStackTrace();
             logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE_NAME, e);
-            requestContext.addAttributeToJSP(Attributes.AIRCRAFT_DTO_ATTRIBUTE_NAME, flight);
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e);
+            requestContext.addAttributeToJSP(Attributes.AIRCRAFT_DTO_ATTRIBUTE, flight);
         }
         return DELETE_FLIGHT_COMMAND_CONTEXT;
     }
