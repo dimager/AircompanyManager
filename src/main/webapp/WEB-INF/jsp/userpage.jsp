@@ -19,7 +19,6 @@
     <c:import url="errors.jsp"/>
     <c:if test="${sessionScope.loginState}">
         <div class="login-one-userform">
-
             <div class="col">
                 <div class="form-group">
                     <c:choose>

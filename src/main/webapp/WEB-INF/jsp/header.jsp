@@ -5,6 +5,21 @@
 <%@ taglib prefix="myTag" uri="/WEB-INF/tld/currentUsername.tld" %>
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="messages" var="lang"/>
+<fmt:message bundle="${lang}" key="headermenu.main" var="main"/>
+<fmt:message bundle="${lang}" key="headermenu.allusers" var="allUsers"/>
+<fmt:message bundle="${lang}" key="headermenu.flights" var="flights"/>
+<fmt:message bundle="${lang}" key="headermenu.aircrafts" var="aircrafts"/>
+<fmt:message bundle="${lang}" key="headermenu.brigades" var="brigades"/>
+<fmt:message bundle="${lang}" key="headermenu.myflights" var="myFlights"/>
+<fmt:message bundle="${lang}" key="headermenu.mybrigades" var="myBrigades"/>
+<fmt:message bundle="${lang}" key="headermenu.flights" var="flights"/>
+<fmt:message bundle="${lang}" key="headermenu.aircrafts" var="aircrafts"/>
+<fmt:message bundle="${lang}" key="headermenu.brigades" var="brigades"/>
+<fmt:message bundle="${lang}" key="headermenu.myflights" var="myFlights"/>
+<fmt:message bundle="${lang}" key="headermenu.mybrigades" var="myBrigades"/>
+<fmt:message bundle="${lang}" key="headermenu.logout" var="logout"/>
+<fmt:message bundle="${lang}" key="headermenu.login" var="login"/>
+<fmt:message bundle="${lang}" key="headermenu.signup" var="singup"/>
 <nav class="navbar navbar-light navbar-expand-md navigation-clean-button" style="margin-bottom: 30px">
     <div class="container">
         <a class="navbar-brand" href="#">
@@ -15,49 +30,36 @@
         <div class="collapse navbar-collapse" id="navcol-1">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link"
-                            <c:if test="${fn:endsWith(pageContext.request.queryString,'controller' )}"> style="color:#007bff" </c:if>
-                       href="/controller">
-                        ${param.returnPage}
-                        <fmt:message bundle="${lang}" key="headermenu.main"/>
+                    <a class="nav-link" <c:if test="${fn:endsWith(pageContext.request.queryString,'/controller' )}"> style="color:#007bff" </c:if> href="/controller">
+                        ${main}
                     </a>
                 </li>
                 <c:if test="${sessionScope.loggedinUser.role <= Role_MANAGER}">
                     <li class="nav-item">
                         <a class="nav-link"
-                                <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_FLIGHT_PAGE')}"> style="color:#007bff" </c:if>
-                           href="/controller?command=SHOW_FLIGHT_PAGE">
-                            <fmt:message bundle="${lang}" key="headermenu.flights"/>
+                                <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_FLIGHT_PAGE')}"> style="color:#007bff" </c:if> href="/controller?command=SHOW_FLIGHT_PAGE">
+                                ${flights}
                         </a>
                     </li>
                 </c:if>
                 <c:if test="${sessionScope.loggedinUser.role == Role_ADMIN}">
                     <li class="nav-item">
-                        <a class="nav-link"
-                                <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_AIRCRAFT_PAGE')}"> style="color:#007bff" </c:if>
-                           href="/controller?command=SHOW_AIRCRAFT_PAGE">
-                            <fmt:message bundle="${lang}" key="headermenu.aircrafts"/>
+                        <a class="nav-link" <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_AIRCRAFT_PAGE')}"> style="color:#007bff" </c:if> href="/controller?command=SHOW_AIRCRAFT_PAGE">
+                                ${aircrafts}
                         </a>
                     </li>
                 </c:if>
                 <c:if test="${sessionScope.loggedinUser.role == Role_MANAGER}">
                     <li class="nav-item">
-                        <a class="nav-link"
-                                <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_BRIGADE_PAGE')}"> style="color:#007bff" </c:if>
-                           href="/controller?command=SHOW_BRIGADE_PAGE">
-                            <fmt:message bundle="${lang}" key="headermenu.brigades"/>
+                        <a class="nav-link" <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_BRIGADE_PAGE')}"> style="color:#007bff" </c:if> href="/controller?command=SHOW_BRIGADE_PAGE">
+                                ${brigades}
                         </a>
                     </li>
                 </c:if>
                 <c:if test="${sessionScope.loggedinUser.role <= Role_MANAGER}">
                     <li class="nav-item">
-                        <a class="nav-link"
-                                <c:if
-                                        test="${fn:contains(pageContext.request.queryString,'SHOW_ALL_USERS')}">
-                                    style="color:#007bff"
-                                </c:if>
-                           href="/controller?command=SHOW_ALL_USERS">
-                            <fmt:message bundle="${lang}" key="headermenu.allusers"/>
+                        <a class="nav-link" <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_ALL_USERS')}"> style="color:#007bff" </c:if> href="/controller?command=SHOW_ALL_USERS">
+                                ${allUsers}
                         </a>
                     </li>
                 </c:if>
@@ -75,40 +77,30 @@
                 </c:if>
                 <c:if test="${sessionScope.loggedinUser.role > Role_MANAGER and sessionScope.loggedinUser.role < Role_GUEST}">
                     <li class="nav-item">
-                        <a class="nav-link"
-                                <c:if
-                                        test="${fn:contains(pageContext.request.queryString,'SHOW_USER_FLIGHTS_PAGE')}">
-                                    style="color:#007bff"
-                                </c:if>
-                           href="/controller?command=SHOW_USER_FLIGHTS_PAGE">
-                            <fmt:message bundle="${lang}" key="headermenu.myflights"/>
+                        <a class="nav-link"  <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_USER_FLIGHTS_PAGE')}"> style="color:#007bff" </c:if> href="/controller?command=SHOW_USER_FLIGHTS_PAGE">
+                                ${myFlights}
                         </a>
                     </li>
                 </c:if>
                 <c:if test="${sessionScope.loggedinUser.role > Role_MANAGER and sessionScope.loggedinUser.role < Role_GUEST}">
                     <li class="nav-item">
-                        <a class="nav-link"
-                                <c:if
-                                        test="${fn:contains(pageContext.request.queryString,'SHOW_USER_BRIGADES_PAGE')}">
-                                    style="color:#007bff"
-                                </c:if>
-                           href="/controller?command=SHOW_USER_BRIGADES_PAGE">
-                            <fmt:message bundle="${lang}" key="headermenu.mybrigades"/>
+                        <a class="nav-link" <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_USER_BRIGADES_PAGE')}"> style="color:#007bff" </c:if> href="/controller?command=SHOW_USER_BRIGADES_PAGE">
+                                ${myBrigades}
                         </a>
                     </li>
                 </c:if>
             </ul>
             <span class="navbar-text actions">
-            <c:url value="/controller" var="login">
+            <c:url value="/controller" var="loginURL">
                 <c:param name="command" value="SHOW_LOGIN_PAGE"/>
             </c:url>
-            <c:url value="/controller" var="logout">
+            <c:url value="/controller" var="logoutURL">
                 <c:param name="command" value="LOGOUT"/>
             </c:url>
-            <c:url value="/controller" var="signup">
+            <c:url value="/controller" var="signupURL">
                 <c:param name="command" value="SHOW_SIGNUP_PAGE"/>
             </c:url>
-            <c:url value="/controller" var="myacc">
+            <c:url value="/controller" var="myaccURL">
                 <c:param name="command" value="SHOW_USER_PAGE"/>
             </c:url>
             <c:url value="/controller" var="setEnLocale">
@@ -157,19 +149,19 @@
                              width="50px">
                         </c:when>
                     </c:choose>
-                    <a class="login" href="${myacc}">
+                    <a class="login" href="${myaccURL}">
                      <myTag:username userDTO="${sessionScope.loggedinUser}"/>
                   </a>
-                    <a class="login" href="${logout}">
-                     <fmt:message bundle="${lang}" key="headermenu.logout"/>
+                    <a class="login" href="${logoutURL}">
+                        ${logout}
                   </a>
                 </c:when>
                 <c:otherwise>
-                  <a class="login" href="${login}">
-                     <fmt:message bundle="${lang}" key="headermenu.login"/>
+                  <a class="login" href="${loginURL}">
+                      ${login}
                   </a>
-                    <a class="login" href="${signup}">
-                     <fmt:message bundle="${lang}" key="headermenu.signup"/>
+                    <a class="login" href="${signupURL}">
+                        ${singup}
                   </a>
                 </c:otherwise>
             </c:choose>

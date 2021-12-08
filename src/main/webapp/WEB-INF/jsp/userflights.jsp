@@ -3,14 +3,21 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="messages" var="lang"/>
+<fmt:message bundle="${lang}" key="pagename.myflights" var="pagename"/>
+<fmt:message bundle="${lang}" key="headermenu.myflights" var="headerName"/>
+<fmt:message bundle="${lang}" key="pagename.userflights" var="userpagename"/>
+<fmt:message bundle="${lang}" key="header.userflights" var="userHeaderName"/>
+<fmt:message bundle="${lang}" key="label.brigadeflight" var="labelFlightBrigade"/>
+<fmt:message bundle="${lang}" key="label.doesntHaveFlights" var="doesntHaveFlights"/>
+<fmt:message bundle="${lang}" key="label.userDoesntHaveFlights" var="userDoesntHaveFligts"/>
 <html>
 <head>
     <c:choose>
         <c:when test="${not empty param.show_user_id}">
-            <title> ${requestScope.userDTO.firstName} ${requestScope.userDTO.lastName} <fmt:message bundle="${lang}" key="pagename.userflights"/></title>
+            <title> ${requestScope.userDTO.firstName} ${requestScope.userDTO.lastName} ${userpagename} </title>
         </c:when>
         <c:otherwise>
-            <title><fmt:message bundle="${lang}" key="pagename.myflights"/></title>
+            <title>${pagename}</title>
         </c:otherwise>
     </c:choose>
     <c:import url="meta.jsp"/>
@@ -26,50 +33,60 @@
                 <div class="login-one-userform2">
                     <c:choose>
                         <c:when test="${not empty param.show_user_id}">
-                            <h3>${requestScope.userDTO.firstName} ${requestScope.userDTO.lastName} <fmt:message bundle="${lang}" key="header.userflights"/></h3>
+                            <h3>${requestScope.userDTO.firstName} ${requestScope.userDTO.lastName} ${userHeaderName}</h3>
+                            <c:if test="${empty requestScope.flightDTOList}">
+                                <h5>${userDoesntHaveFligts}</h5>
+                            </c:if>
                         </c:when>
                         <c:otherwise>
-                            <h3><fmt:message bundle="${lang}" key="headermenu.myflights"/></h3>
+                            <h3>${headerName}</h3>
+                            <c:if test="${empty requestScope.flightDTOList}">
+                                <h5>${doesntHaveFlights}</h5>
+                            </c:if>
                         </c:otherwise>
                     </c:choose>
                 </div>
             </div>
         </div>
-        <div class="row" style="text-align: left">
-            <c:forEach items="${requestScope.flightDTOList}" var="flight">
-                <div class="col-sm">
-                    <div class="login-one-userform2">
-                        <div class="form-group2">
-                            <div>
-                                <label class="flightlabel"><fmt:message bundle="${lang}" key="label.callsignflight"/></label>
-                                    ${flight.flightCallsign}
-                            </div>
-                            <div>
-                                <label class="flightlabel"><fmt:message bundle="${lang}" key="label.from"/></label>
-                                    ${flight.departureAirport.name},
-                                    ${flight.departureAirport.country},
-                                    ${flight.departureAirport.city}
-                            </div>
-                            <div>
-                                <label class="flightlabel"><fmt:message bundle="${lang}" key="label.to"/></label>
-                                    ${flight.destinationAirport.name},
-                                    ${flight.destinationAirport.country},
-                                    ${flight.destinationAirport.city}
-                            </div>
-                            <div>
-                                <label class="flightlabel"><fmt:message bundle="${lang}" key="label.time"/></label>
-                                <fmt:formatDate value="${flight.departureDateTime}" pattern="MM/dd/yyyy HH:mm"/>
-                            </div>
-                            <div>
-                                <label class="flightlabel"><fmt:message bundle="${lang}" key="label.brigadeflight"/></label>
-                                    ${flight.brigadeDTO.brigadeName}
-                            </div>
+            <div class="row" style="text-align: left">
+                <c:forEach items="${requestScope.flightDTOList}" var="flight">
+                    <div class="col-sm">
+                        <div class="login-one-userform2">
+                            <div class="form-group2">
+                                <div>
+                                    <fmt:message bundle="${lang}" key="label.callsignflight" var="labelCallsign"/>
+                                    <fmt:message bundle="${lang}" key="label.from" var="labelFrom"/>
+                                    <fmt:message bundle="${lang}" key="label.to" var="labelTo"/>
+                                    <fmt:message bundle="${lang}" key="label.time" var="labelTime"/>
+                                    <label class="flightlabel">${labelCallsign}</label>
+                                        ${flight.flightCallsign}
+                                </div>
+                                <div>
+                                    <label class="flightlabel">${labelFrom}</label>
+                                        ${flight.departureAirport.name},
+                                        ${flight.departureAirport.country},
+                                        ${flight.departureAirport.city}
+                                </div>
+                                <div>
+                                    <label class="flightlabel">${labelTo}</label>
+                                        ${flight.destinationAirport.name},
+                                        ${flight.destinationAirport.country},
+                                        ${flight.destinationAirport.city}
+                                </div>
+                                <div>
+                                    <label class="flightlabel">${labelTime}</label>
+                                    <fmt:formatDate value="${flight.departureDateTime}" pattern="MM/dd/yyyy HH:mm"/>
+                                </div>
+                                <div>
+                                    <label class="flightlabel">${labelFlightBrigade}</label>
+                                        ${flight.brigadeDTO.brigadeName}
+                                </div>
 
+                            </div>
                         </div>
                     </div>
-                </div>
-            </c:forEach>
-        </div>
+                </c:forEach>
+            </div>
     </div>
 </div>
 

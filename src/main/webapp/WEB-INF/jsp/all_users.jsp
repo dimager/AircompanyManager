@@ -3,9 +3,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="messages" var="lang"/>
+<fmt:message bundle="${lang}" key="tablecolumnlabel.firstname" var="firstname"/>
+<fmt:message bundle="${lang}" key="tablename.allusers" var="allUsers"/>
+<fmt:message bundle="${lang}" key="tablecolumnlabel.lastname" var="lastname"/>
+<fmt:message bundle="${lang}" key="tablecolumnlabel.email" var="email"/>
+<fmt:message bundle="${lang}" key="tablecolumnlabel.role" var="rolecol"/>
+<fmt:message bundle="${lang}" key="buttonname.changerole" var="changerole"/>
+<fmt:message bundle="${lang}" key="buttonname.close" var="close"/>
+<fmt:message bundle="${lang}" key="pagename.allusers" var="pagename"/>
+
+
 <html>
 <head>
-    <title><fmt:message bundle="${lang}" key="pagename.allusers"/></title>
+    <title>${pagename}</title>
     <c:import url="meta.jsp"/>
 </head>
 <body>
@@ -18,7 +28,7 @@
             <div class="col" style="padding-right: 45px;padding-left: 45px;">
                 <div class="card shadow">
                     <div class="card-header py-2">
-                        <p class="lead text-info m-0"><fmt:message bundle="${lang}" key="tablename.allusers"/></p>
+                        <p class="lead text-info m-0">${allUsers}</p>
                     </div>
                     <div class="card-body">
 
@@ -26,10 +36,10 @@
                             <table class="table table-striped table-sm my-0 mydatatable">
                                 <thead>
                                 <tr>
-                                    <th><fmt:message bundle="${lang}" key="tablecolumnlabel.firstname"/></th>
-                                    <th><fmt:message bundle="${lang}" key="tablecolumnlabel.lastname"/></th>
-                                    <th><fmt:message bundle="${lang}" key="tablecolumnlabel.email"/></th>
-                                    <th><fmt:message bundle="${lang}" key="tablecolumnlabel.role"/></th>
+                                    <th>${firstname}</th>
+                                    <th>${lastname}</th>
+                                    <th>${email}</th>
+                                    <th>${rolecol}</th>
                                     <c:if test="${sessionScope.loggedinUser.role == Role_ADMIN}">
                                         <th></th>
                                     </c:if>
@@ -46,32 +56,14 @@
                                         <td><a href="mailto:${user.email}">${user.email}</a></td>
                                         <td><fmt:message bundle="${lang}" key="rolename.${user.role.roleId}"/></td>
                                         <c:if test="${sessionScope.loggedinUser.role == Role_ADMIN}">
-                                            <td class="icons" >
-                                                <div class="dropdown">
-                                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        change role
-                                                    </button>
-                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                        <c:forEach var="role" items="${roles}">
-                                                            <c:if test="${user.role.roleId != role.roleId}">
-                                                                <c:url value="/controller" var="changeRole">
-                                                                    <c:param name="command" value="CHANGE_ROLE"/>
-                                                                    <c:param name="new_role" value="${role.roleId}"/>
-                                                                    <c:param name="user_id" value="${user.userId}"/>
-                                                                </c:url>
-                                                                <a class="dropdown-item" href="${changeRole}"><fmt:message bundle="${lang}" key="rolename.${role.roleId}"/></a>
-                                                            </c:if>
-                                                        </c:forEach>
-                                                    </div>
-                                                </div>
-                                                <c:url value="/controller" var="editRole">
-                                                    <c:param name="command" value="EDIT_USER_ROLE"/>
-                                                    <c:param name="user_id" value="${user.userId}"/>
-                                                </c:url>
+                                            <td class="icons">
+                                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalLong${user.userId}">
+                                                    ${changerole}
+                                                </button>
                                             </td>
                                         </c:if>
                                         <c:if test="${sessionScope.loggedinUser.role == Role_MANAGER}">
-                                            <td class="icons">
+                                            <td style="text-align: center">
                                                 <c:url value="/controller" var="showUserFlights">
                                                     <c:param name="command" value="SHOW_USER_FLIGHTS_PAGE_FOR_MANAGER"/>
                                                     <c:param name="show_user_id" value="${user.userId}"/>
@@ -89,6 +81,40 @@
                                             </td>
                                         </c:if>
                                     </tr>
+                                    <div class="modal fade" id="exampleModalLong${user.userId}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle${user.userId}" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLongTitle${user.userId}">
+                                                       ${changerole}
+                                                    </h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="list-group">
+
+                                                        <c:forEach var="role" items="${roles}">
+                                                            <c:if test="${user.role.roleId != role.roleId}">
+                                                                <c:url value="/controller" var="changeRole">
+                                                                    <c:param name="command" value="CHANGE_ROLE"/>
+                                                                    <c:param name="new_role" value="${role.roleId}"/>
+                                                                    <c:param name="user_id" value="${user.userId}"/>
+                                                                </c:url>
+                                                                <a href="${changeRole}" class="list-group-item list-group-item-action">
+                                                                    <fmt:message bundle="${lang}" key="rolename.${role.roleId}"/>
+                                                                </a>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">${close}</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </c:forEach>
                                 </tbody>
                             </table>

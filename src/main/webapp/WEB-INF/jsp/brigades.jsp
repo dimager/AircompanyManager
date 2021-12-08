@@ -3,9 +3,18 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="messages" var="lang"/>
+<fmt:message bundle="${lang}" key="page.title.brigadepage" var="pagename"/>
+<fmt:message bundle="${lang}" key="tablecolumnlabel.brigadename" var="colBrigadeName"/>
+<fmt:message bundle="${lang}" key="tablecolumnlabel.users" var="colUsers"/>
+<fmt:message bundle="${lang}" key="tablecolumnlabel.pilots" var="colPilots"/>
+<fmt:message bundle="${lang}" key="tablecolumnlabel.engineer" var="colEngineer"/>
+<fmt:message bundle="${lang}" key="tablecolumnlabel.navigator" var="colNavigator"/>
+<fmt:message bundle="${lang}" key="tablecolumnlabel.flightattendant" var="colFlightAttendent"/>
+<fmt:message bundle="${lang}" key="tablename.brigade" var="tableName"/>
+<fmt:message bundle="${lang}" key="buttonname.addbrigade" var="btnAddBrigade"/>
 <html>
 <head>
-    <title><fmt:message bundle="${lang}" key="page.title.brigadepage"/></title>
+    <title>${pagename}</title>
     <c:import url="meta.jsp"/>
 </head>
 <body>
@@ -18,25 +27,25 @@
             <div class="col" style="padding-right: 45px;padding-left: 45px;">
                 <div class="card shadow">
                     <div class="card-header py-2">
-                        <p class="lead text-info m-0"><fmt:message bundle="${lang}" key="tablename.brigade"/></p>
+                        <p class="lead text-info m-0">${tableName}</p>
                     </div>
                     <div class="card-body">
                         <div style="padding-top: 10px;padding-bottom: 10px;text-align: right;">
                             <form method="get" action="/controller">
                                 <input type="hidden" name="command" value="SHOW_ADD_BRIGADE_PAGE">
-                                <button class="btn btn-primary shadow" type="submit">Add brigade</button>
+                                <button class="btn btn-primary shadow" type="submit">${btnAddBrigade}</button>
                             </form>
                         </div>
                         <div class="table-responsive table mb-0 pt-3 pr-2">
                             <table class="table table-striped table-sm my-0 mydatatable">
                                 <thead>
                                 <tr>
-                                    <th><fmt:message bundle="${lang}" key="tablecolumnlabel.brigadename"/></th>
-                                    <th><fmt:message bundle="${lang}" key="tablecolumnlabel.users"/></th>
-                                    <th><fmt:message bundle="${lang}" key="tablecolumnlabel.pilots"/></th>
-                                    <th><fmt:message bundle="${lang}" key="tablecolumnlabel.engineer"/></th>
-                                    <th><fmt:message bundle="${lang}" key="tablecolumnlabel.navigator"/></th>
-                                    <th><fmt:message bundle="${lang}" key="tablecolumnlabel.flightattendant"/></th>
+                                    <th>${colBrigadeName}</th>
+                                    <th>${colUsers}</th>
+                                    <th>${colPilots} </th>
+                                    <th>${colEngineer}</th>
+                                    <th>${colNavigator}</th>
+                                    <th>${colFlightAttendent}</th>
                                     <th></th>
                                 </tr>
                                 </thead>

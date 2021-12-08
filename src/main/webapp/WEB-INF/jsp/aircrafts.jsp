@@ -3,10 +3,16 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="messages" var="lang"/>
+<fmt:message bundle="${lang}" key="pagename.aircrafts" var="pagename"/>
+<fmt:message bundle="${lang}" key="tablename.aircrafts" var="tablename"/>
+<fmt:message bundle="${lang}" key="button.addaircraft" var="btnaddaircraft"/>
+<fmt:message bundle="${lang}" key="tablecolumnlabel.regcode" var="colregcode"/>
+<fmt:message bundle="${lang}" key="tablecolumnlabel.producer" var="colproducer"/>
+<fmt:message bundle="${lang}" key="tablecolumnlabel.model" var="colmodel"/>
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="../../assets/css/styles.css"/>
-    <title><fmt:message bundle="${lang}" key="pagename.aircrafts"/></title>
+    <title>${pagename}</title>
     <c:import url="meta.jsp"/>
 </head>
 <body>
@@ -20,14 +26,13 @@
                 <div class="col" style="padding-right: 45px;padding-left: 45px;">
                     <div class="card shadow">
                         <div class="card-header py-2">
-                            <p class="lead text-info m-0"><fmt:message bundle="${lang}" key="tablename.aircrafts"/></p>
+                            <p class="lead text-info m-0">${tablename}</p>
                         </div>
                         <div class="card-body">
                             <div style="padding-top: 10px;padding-bottom: 10px;text-align: right;">
                                 <form method="get" action="/controller">
                                     <input type="hidden" name="command" value="SHOW_ADD_AIRCRAFT_PAGE">
-                                    <button class="btn btn-primary shadow" type="submit"><fmt:message bundle="${lang}"
-                                            key="button.addaircraft"/></button>
+                                    <button class="btn btn-primary shadow" type="submit">${btnaddaircraft}</button>
                                 </form>
                             </div>
                             <div class="table-responsive table mb-0 pt-3 pr-2">
@@ -36,9 +41,9 @@
                                     <tr>
 
                                         <th></th>
-                                        <th><fmt:message bundle="${lang}" key="tablecolumnlabel.regcode"/></th>
-                                        <th><fmt:message bundle="${lang}" key="tablecolumnlabel.producer"/></th>
-                                        <th><fmt:message bundle="${lang}" key="tablecolumnlabel.model"/></th>
+                                        <th>${colregcode}</th>
+                                        <th>${colproducer}</th>
+                                        <th>${colmodel}</th>
                                         <th></th>
                                     </tr>
                                     </thead>

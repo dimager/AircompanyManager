@@ -3,11 +3,35 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="messages" var="lang"/>
+<fmt:message bundle="${lang}" key="pagename.airports" var="pagename"/>
+<fmt:message bundle="${lang}" key="tablename.airports" var="tablename"/>
+<fmt:message bundle="${lang}" key="buttonname.addairport" var="btnaddairport"/>
+<fmt:message bundle="${lang}" key="modaltitle.addairport" var="modaltitleadd"/>
+<fmt:message bundle="${lang}" key="label.airoportName" var="labelairportname"/>
+<fmt:message bundle="${lang}" key="placeholder.airoportName" var="phAirportName"/>
+<fmt:message bundle="${lang}" key="label.airoportCoutry" var="labelAirportCounty"/>
+<fmt:message bundle="${lang}" key="placeholder.airportCountry" var="phAirportCountry"/>
+<fmt:message bundle="${lang}" key="label.airoportCity" var="labelAirportCity"/>
+<fmt:message bundle="${lang}" key="placeholder.airoportCity" var="phAirportCity"/>
+<fmt:message bundle="${lang}" key="label.airoportIATACode" var="labelIATACode"/>
+<fmt:message bundle="${lang}" key="placeholder.IATAcode" var="phIATAcode"/>
+<fmt:message bundle="${lang}" key="buttonname.close" var="btnclose"/>
+<fmt:message bundle="${lang}" key="buttonname.addairport" var="btnaddairport"/>
+<fmt:message bundle="${lang}" key="tablecolumnlabel.name" var="colName"/>
+<fmt:message bundle="${lang}" key="tablecolumnlabel.country" var="colCoutry"/>
+<fmt:message bundle="${lang}" key="tablecolumnlabel.city" var="colCity"/>
+<fmt:message bundle="${lang}" key="tablecolumnlabel.IATAcode" var="colIATAcode"/>
+<fmt:message bundle="${lang}" key="modaltitle.editairport" var="modaltitleedit"/>
+<fmt:message bundle="${lang}" key="label.airoportCity" var="labelAirportCity"/>
+<fmt:message bundle="${lang}" key="label.airoportIATACode" var="labelAirportCounty"/>
+<fmt:message bundle="${lang}" key="placeholder.airoportName" var="phAirportName"/>
+<fmt:message bundle="${lang}" key="buttonname.saveairport" var="btnSaveAirport"/>
+
+
+
 <html>
 <head>
-    <title>
-        <fmt:message bundle="${lang}" key="pagename.airports"/>
-    </title>
+    <title>${pagename}</title>
     <c:import url="meta.jsp"/>
 </head>
 <body>
@@ -20,25 +44,23 @@
             <div class="col" style="padding-right: 45px;padding-left: 45px;">
                 <div class="card shadow">
                     <div class="card-header py-2">
-                        <p class="lead text-info m-0">
-                            <fmt:message bundle="${lang}" key="tablename.airports"/>
-                        </p>
+                        <p class="lead text-info m-0">${tablename}</p>
                     </div>
                     <div class="card-body">
                         <div style="padding-top: 10px;padding-bottom: 10px;text-align: right;">
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                                <fmt:message bundle="${lang}" key="buttonname.addairport"/>
+                                ${btnaddairport}
                             </button>
                         </div>
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">
+                                        <h5 class="modal-title">
                                             <div class="img-modal">
                                                 <img src="${pageContext.request.contextPath}/assets/img/airport.jpg" width="498" height="200" >
                                             </div>
-                                            <fmt:message bundle="${lang}" key="modaltitle.addairport"/>
+                                            ${modaltitleadd}
                                         </h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
@@ -47,42 +69,18 @@
                                     <form action="/controller" method="get">
                                         <input type="hidden" name="command" value="ADD_AIRPORT">
                                         <div class="modal-body">
-                                            <label>
-                                                <fmt:message bundle="${lang}" key="label.airoportName"/>
-                                            </label>
-                                            <input class="form-control" type="text" id="input-1" name="airportName"
-                                                   placeholder=
-                                                           "<fmt:message bundle="${lang}" key="placeholder.airoportName"/>"
-                                                           minlength="1" maxlength="100">
-                                            <label>
-                                                <fmt:message bundle="${lang}" key="label.airoportCoutry"/>
-                                            </label>
-                                            <input class="form-control" type="text" id="input-2" name="airportCountry"
-                                                   placeholder=
-                                                           "<fmt:message bundle="${lang}" key="placeholder.airportCountry"/>"
-                                                           minlength="1" maxlength="100">
-                                            <label>
-                                                <fmt:message bundle="${lang}" key="label.airoportCity"/>
-                                            </label>
-                                            <input class="form-control" type="text" id="input-3" name="airportCity"
-                                                   placeholder=
-                                                           "<fmt:message bundle="${lang}" key="placeholder.airoportCity"/>"
-                                                           minlength="1" maxlength="100">
-                                            <label>
-                                                <fmt:message bundle="${lang}" key="label.airoportIATACode"/>
-                                            </label>
-                                            <input class="form-control" type="text" id="input-4" name="airportIATAcode"
-                                                   placeholder=
-                                                           "<fmt:message bundle="${lang}" key="placeholder.IATAcode"/>"
-                                                           minlength="3" maxlength="3">
+                                            <label>${labelairportname}</label>
+                                            <input class="form-control" type="text" id="input-1" name="airportName"  placeholder="${phAirportName}" minlength="1" maxlength="100">
+                                            <label>${labelAirportCounty}</label>
+                                            <input class="form-control" type="text" id="input-2" name="airportCountry" placeholder="${phAirportCountry}" minlength="1" maxlength="100">
+                                            <label>${labelAirportCity}</label>
+                                            <input class="form-control" type="text" id="input-3" name="airportCity" placeholder="${phAirportCity}" minlength="1" maxlength="100">
+                                            <label>${labelIATACode}</label>
+                                            <input class="form-control" type="text" id="input-4" name="airportIATAcode" placeholder="${phIATAcode}" minlength="3" maxlength="3">
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                                <fmt:message bundle="${lang}" key="buttonname.close"/>
-                                            </button>
-                                            <button type="submit" class="btn btn-primary">
-                                                <fmt:message bundle="${lang}" key="buttonname.addairport"/>
-                                            </button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal"> ${btnclose}</button>
+                                            <button type="submit" class="btn btn-primary">${btnaddairport}</button>
                                         </div>
                                     </form>
                                 </div>
@@ -92,18 +90,10 @@
                             <table class="table table-striped table-sm my-0 mydatatable">
                                 <thead>
                                 <tr>
-                                    <th>
-                                        <fmt:message bundle="${lang}" key="tablecolumnlabel.name"/>
-                                    </th>
-                                    <th>
-                                        <fmt:message bundle="${lang}" key="tablecolumnlabel.country"/>
-                                    </th>
-                                    <th>
-                                        <fmt:message bundle="${lang}" key="tablecolumnlabel.city"/>
-                                    </th>
-                                    <th>
-                                        <fmt:message bundle="${lang}" key="tablecolumnlabel.IATAcode"/>
-                                    </th>
+                                    <th>${colName}</th>
+                                    <th>${colCoutry}</th>
+                                    <th>${colCity}</th>
+                                    <th>${colIATAcode}</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -130,54 +120,32 @@
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel${airport.id}">
-                                                                    <fmt:message bundle="${lang}" key="modaltitle.editairport"/>
-                                                                        ${airport.name}
+                                                                <h5 class="modal-title" style="align-content: center">
+                                                                    <div class="img-modal">
+                                                                        <img src="${pageContext.request.contextPath}/assets/img/airport.jpg" width="498" height="200" >
+                                                                    </div> ${modaltitleedit}
                                                                 </h5>
                                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <label>
-                                                                    <fmt:message bundle="${lang}" key="label.airoportName"/>
-                                                                </label>
-                                                                <input class="form-control" type="text" id="input-1${airport.id}" name="airportName"
-                                                                       value="${airport.name}"
-                                                                       placeholder="
-                                                         <fmt:message bundle="${lang}" key="placeholder.airoportName"/>
-                                                         " minlength="1" maxlength="100">
-                                                                <label>
-                                                                    <fmt:message bundle="${lang}" key="label.airoportCoutry"/>
-                                                                </label>
-                                                                <input class="form-control" type="text" id="input-2${airport.id}" name="airportCountry"
-                                                                       value="${airport.country}"
-                                                                       placeholder=
-                                                                               "
-                                                         <fmt:message bundle="${lang}" key="placeholder.airportCountry"/>
-                                                         " minlength="1" maxlength="100">
-                                                                <label>
-                                                                    <fmt:message bundle="${lang}" key="label.airoportCity"/>
-                                                                </label>
-                                                                <input class="form-control" type="text" id="input-3${airport.id}" name="airportCity"
-                                                                       value="${airport.city}"
-                                                                       placeholder="
-                                                         <fmt:message bundle="${lang}" key="placeholder.airoportCity"/>
-                                                         " minlength="1" maxlength="100">
-                                                                <label>
-                                                                    <fmt:message bundle="${lang}" key="label.airoportIATACode"/>
-                                                                </label>
+                                                                <label> ${labelairportname}</label>
+                                                                <input class="form-control" type="text" id="input-1${airport.id}" name="airportName" value="${airport.name}" 
+                                                                       placeholder="${phAirportName}" minlength="1" maxlength="100">
+                                                                <label> ${labelAirportCounty}</label>
+                                                                <input class="form-control" type="text" id="input-2${airport.id}" name="airportCountry" value="${airport.country}" 
+                                                                       placeholder= "${phAirportCountry}" minlength="1" maxlength="100">
+                                                                <label>${labelAirportCity} </label>
+                                                                <input class="form-control" type="text" id="input-3${airport.id}" name="airportCity" value="${airport.city}"
+                                                                       minlength="1" maxlength="100">
+                                                                <label>${labelAirportCounty}</label>
                                                                 <input class="form-control" type="text" id="input-4${airport.id}" name="airportIATAcode"
-                                                                       value="${airport.IATACode}"
-                                                                       placeholder="
-                                                         <fmt:message bundle="${lang}" key="placeholder.IATAcode"/>
-                                                         " minlength="3" maxlength="3">
+                                                                       value="${airport.IATACode}" placeholder="${phIATAcode}" minlength="3" maxlength="3">
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <button type="submit" class="btn btn-primary">
-                                                                    <fmt:message bundle="${lang}" key="buttonname.saveairport"/>
-                                                                </button>
+                                                                <button type="submit" class="btn btn-primary">${btnSaveAirport}</button>
                                                             </div>
                                                         </div>
                                                     </div>

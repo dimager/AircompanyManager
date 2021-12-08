@@ -21,8 +21,6 @@ public class RequestContextImpl implements RequestContext {
         request.setAttribute(name, attribute);
     }
 
-
-
     @Override
     public String getParamFromJSP(String name) {
         return request.getParameter(name);

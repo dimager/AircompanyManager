@@ -4,15 +4,24 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="messages" var="lang"/>
+<fmt:message bundle="${lang}" key="pagename.editbrigade" var="editbrigade"/>
+<fmt:message bundle="${lang}" key="pagename.createbrigade" var="createbrigade"/>
+<fmt:message bundle="${lang}" key="formname.editbrigade" var="formeditbrigade"/>
+<fmt:message bundle="${lang}" key="formname.addbrigade" var="formaddbrigade"/>
+<fmt:message bundle="${lang}" key="buttonname.editbrigade" var="btneditbrigade"/>
+<fmt:message bundle="${lang}" key="buttonname.addbrigade" var="btnaddbrigade"/>
+<fmt:message bundle="${lang}" key="label.brigadename" var="labelbrigadename"/>
+<fmt:message bundle="${lang}" key="label.brigadename" var="phbrigadename"/>
+
 <html>
 <head>
     <title>
         <c:choose>
             <c:when test="${requestScope.editpage}">
-                <fmt:message bundle="${lang}" key="pagename.editbrigade"/>
+                ${editbrigade}
             </c:when>
             <c:otherwise>
-                <fmt:message bundle="${lang}" key="pagename.createbrigade"/>
+                ${createbrigade}
             </c:otherwise>
         </c:choose>
     </title>
@@ -33,42 +42,31 @@
                 <div>
                     <c:choose>
                         <c:when test="${requestScope.editpage}">
-                            <h3 id="heading">
-                                <fmt:message bundle="${lang}" key="formname.editbrigade"/>
-                            </h3>
+                            <h3 id="heading">${formeditbrigade}</h3>
                         </c:when>
                         <c:otherwise>
-                            <h3 id="heading">
-                                <fmt:message bundle="${lang}" key="formname.addbrigade"/>
-                            </h3>
+                            <h3 id="heading">${formaddbrigade}</h3>
                         </c:otherwise>
                     </c:choose>
                 </div>
                 <label>
-                    <fmt:message bundle="${lang}" key="label.brigadename"/>
+                    ${labelbrigadename}
                 </label>
                 <input class="form-control" type="text" id="input-1" name="brigadename"
                 <c:if test="${not empty requestScope.brigadeDTO}">
                        value="${requestScope.brigadeDTO.brigadeName}"
                 </c:if>
-                       placeholder="
-                  <fmt:message bundle="${lang}" key="label.brigadename"/>
-                  " name="brigadename" minlength="1"
-                       maxlength="50">
+                       placeholder="${phbrigadename}" name="brigadename" minlength="1" maxlength="50">
                 <div style="margin-top: 10px">
                     <c:choose>
                         <c:when test="${requestScope.editpage}">
                             <input type="hidden" name="command" value="EDIT_BRIGADE">
                             <input type="hidden" name="brigadeId" value="${requestScope.brigadeDTO.brigadeId}">
-                            <button class="btn btn-primary" id="button" style="background-color:#007ac9;" type="submit">
-                                <fmt:message bundle="${lang}" key="buttonname.editbrigade"/>
-                            </button>
+                            <button class="btn btn-primary" id="button" style="background-color:#007ac9;" type="submit">${btneditbrigade}</button>
                         </c:when>
                         <c:otherwise>
                             <input type="hidden" name="command" value="ADD_BRIGADE">
-                            <button class="btn btn-primary" id="button" style="background-color:#007ac9;" type="submit">
-                                <fmt:message bundle="${lang}" key="buttonname.addbrigade"/>
-                            </button>
+                            <button class="btn btn-primary" id="button" style="background-color:#007ac9;" type="submit">${btnaddbrigade}</button>
                         </c:otherwise>
                     </c:choose>
                 </div>

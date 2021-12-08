@@ -4,15 +4,31 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="messages" var="lang"/>
+<fmt:message bundle="${lang}" key="pagename.addflight" var="pagenameaddflight"/>
+<fmt:message bundle="${lang}" key="pagename.editflight" var="pagenameeditflight"/>
+<fmt:message bundle="${lang}" key="formname.editflight" var="formnameeditflight"/>
+<fmt:message bundle="${lang}" key="option.chooseaircraft" var="chooseaircraft"/>
+<fmt:message bundle="${lang}" key="label.depatureairport" var="labeldepairport"/>
+<fmt:message bundle="${lang}" key="label.destinationairport" var="destinationairport"/>
+<fmt:message bundle="${lang}" key="option.chooseairport" var="chooseairport"/>
+<fmt:message bundle="${lang}" key="label.departuretime" var="labaldeptime"/>
+<fmt:message bundle="${lang}" key="buttonname.editflight" var="btneditflight"/>
+<fmt:message bundle="${lang}" key="buttonname.addflight" var="btnaddflight"/>
+<fmt:message bundle="${lang}" key="formname.addflight" var="formnameaddflight"/>
+<fmt:message bundle="${lang}" key="label.callsign" var="labelcallsign"/>
+<fmt:message bundle="${lang}" key="label.callsign" var="phcallsign"/>
+
+
+
 <html>
 <head>
     <title>
         <c:choose>
             <c:when test="${requestScope.editpage}">
-                <fmt:message bundle="${lang}" key="pagename.editflight"/>
+                ${pagenameeditflight}
             </c:when>
             <c:otherwise>
-                <fmt:message bundle="${lang}" key="pagename.addflight"/>
+                ${pagenameaddflight}
             </c:otherwise>
         </c:choose>
     </title>
@@ -26,38 +42,34 @@
     <c:import url="command_result_state.jsp"/>
     <form class="login-one-userform" action="/controller">
         <div class="img-loggin">
-            <img src="${pageContext.request.contextPath}/assets/img/flight.png" width="500" height="200" >
+            <img src="${pageContext.request.contextPath}/assets/img/flight.png" width="500" height="200">
         </div>
         <div class="login-one-ico"><i class="fa fa-plane" id="lockico"></i></div>
         <div>
             <c:choose>
                 <c:when test="${requestScope.editpage}">
-                    <h3 id="heading">
-                        <fmt:message bundle="${lang}" key="formname.editflight"/>
-                    </h3>
+                    <h3 id="heading">${formnameeditflight}</h3>
                 </c:when>
                 <c:otherwise>
-                    <h3 id="heading">
-                        <fmt:message bundle="${lang}" key="formname.addflight"/>
-                    </h3>
+                    <h3 id="heading">${formnameaddflight}</h3>
                 </c:otherwise>
             </c:choose>
         </div>
         <div class="form-group">
             <label for="exampleFormControlInput1">
-                <fmt:message bundle="${lang}" key="label.callsign"/>
+                ${labalcallsign}
             </label>
             <input class="form-control" id="exampleFormControlInput1" name="callsignInput" minlength="1" maxlength="10"
                    value="${requestScope.flightDTO.flightCallsign}"
-                   placeholder="<fmt:message bundle="${lang}" key="label.callsign"/>">
+                   placeholder="${phcallsign}">
         </div>
         <div class="form-group">
             <label for="exampleFormControlSelect1">
-                <fmt:message bundle="${lang}" key="label.aircraft"/>
+                ${labelaircraft}
             </label>
             <select name="selectedAircraft" class="form-control" id="exampleFormControlSelect1">
                 <option value="" disabled selected>
-                    <fmt:message bundle="${lang}" key="option.chooseaircraft"/>
+                    ${chooseaircraft}
                 </option>
                 <c:forEach items="${requestScope.aircraftDTOList}" var="aircraftDTO">
                     <option value="${aircraftDTO.aircraftId}"
@@ -68,11 +80,11 @@
         </div>
         <div class="form-group">
             <label for="exampleFormControlSelect2">
-                <fmt:message bundle="${lang}" key="label.depatureairport"/>
+                ${labeldepairport}
             </label>
             <select name="selectedDepartureAirport" class="form-control" id="exampleFormControlSelect2">
                 <option value="" disabled selected>
-                    <fmt:message bundle="${lang}" key="option.chooseairport"/>
+                    ${chooseairport}
                 </option>
                 <c:forEach items="${requestScope.airportDTOList}" var="airportDTO">
                     <option value="${airportDTO.id}"
@@ -82,11 +94,11 @@
         </div>
         <div class="form-group">
             <label for="exampleFormControlSelect4">
-                <fmt:message bundle="${lang}" key="label.destinationairport"/>
+                ${destinationairport}
             </label>
             <select name="selectedDestinationAirport" class="form-control" id="exampleFormControlSelect4">
                 <option value="" disabled selected>
-                    <fmt:message bundle="${lang}" key="option.chooseairport"/>
+                    ${chooseairport}
                 </option>
                 <c:forEach items="${requestScope.airportDTOList}" var="airportDTO">
                     <option value="${airportDTO.id}"
@@ -96,7 +108,7 @@
         </div>
         <div class="form-group">
             <label for="exampleFormControlTextarea2">
-                <fmt:message bundle="${lang}" key="label.departuretime"/>
+                ${labaldeptime}
             </label>
             <div class="form-group" id="exampleFormControlTextarea2">
                 <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
@@ -130,13 +142,13 @@
                 </c:choose>
                 >
                 <button class="btn btn-primary" id="button" style="background-color:#007ac9;" type="submit">
-                    <fmt:message bundle="${lang}" key="buttonname.editflight"/>
+                        ${btneditflight}
                 </button>
             </c:when>
             <c:otherwise>
                 <input type="hidden" name="command" value="ADD_FLIGHT">
                 <button class="btn btn-primary" id="button" style="background-color:#007ac9;" type="submit">
-                    <fmt:message bundle="${lang}" key="buttonname.addflight"/>
+                        ${btnaddflight}
                 </button>
             </c:otherwise>
         </c:choose>

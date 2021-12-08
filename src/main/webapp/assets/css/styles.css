@@ -2,6 +2,27 @@
     text-align: center;
     width: 100px;
 }
+.btn1{
+    margin-top: 10px;
+}
+div.helloimage {
+    height: 625px;
+    margin-bottom: 50px;
+}
+.mainpage{
+    min-height: 500px;
+}
+.mainfooter{
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+
+@media screen and (max-width: 900px) {
+    div.helloimage {
+        display: none;
+    }
+}
 
 .signuptip {
     text-align: center;

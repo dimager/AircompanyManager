@@ -31,7 +31,7 @@ public class LoginService {
             loginUser.setLastName(userFromDB.getLastName());
             return userConverter.convertToDTO(loginUser);
         } else {
-            logger.error(loginUser.getPassword() + " incorrect password");
+            logger.debug("incorrect password");
             errors.add(INCORRECT_PASSWORD_MESSAGE_CODE);
             return null;
         }
