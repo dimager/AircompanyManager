@@ -9,6 +9,8 @@
 <fmt:message bundle="${lang}" key="formname.editflight" var="formnameeditflight"/>
 <fmt:message bundle="${lang}" key="option.chooseaircraft" var="chooseaircraft"/>
 <fmt:message bundle="${lang}" key="label.depatureairport" var="labeldepairport"/>
+<fmt:message bundle="${lang}" key="label.callsign" var="labalcallsign"/>
+<fmt:message bundle="${lang}" key="label.aircraft" var="labelaircraft"/>
 <fmt:message bundle="${lang}" key="label.destinationairport" var="destinationairport"/>
 <fmt:message bundle="${lang}" key="option.chooseairport" var="chooseairport"/>
 <fmt:message bundle="${lang}" key="label.departuretime" var="labaldeptime"/>
@@ -17,7 +19,6 @@
 <fmt:message bundle="${lang}" key="formname.addflight" var="formnameaddflight"/>
 <fmt:message bundle="${lang}" key="label.callsign" var="labelcallsign"/>
 <fmt:message bundle="${lang}" key="label.callsign" var="phcallsign"/>
-
 
 
 <html>
@@ -40,6 +41,7 @@
     <c:import url="header.jsp"/>
     <c:import url="exception.jsp"/>
     <c:import url="command_result_state.jsp"/>
+    <c:import url="errors.jsp"/>
     <form class="login-one-userform" action="/controller">
         <div class="img-loggin">
             <img src="${pageContext.request.contextPath}/assets/img/flight.png" width="500" height="200">
@@ -72,9 +74,13 @@
                     ${chooseaircraft}
                 </option>
                 <c:forEach items="${requestScope.aircraftDTOList}" var="aircraftDTO">
-                    <option value="${aircraftDTO.aircraftId}"
-                            <c:if test="${requestScope.flightDTO.aircraftDTO.aircraftId == aircraftDTO.aircraftId}"> selected="selected" </c:if>>
-                            ${aircraftDTO.registrationCode} ${aircraftDTO.producer} ${aircraftDTO.model}  </option>
+                    ${aircraftDTO.inOperation}
+                    <c:if test="${aircraftDTO.aircraftId == aircraftDTO.aircraftId and aircraftDTO.inOperation}"> selected="selected" </c:if>>
+                    <c:if test="${aircraftDTO.inOperation}">
+                        <option value="${aircraftDTO.aircraftId}">
+                                ${aircraftDTO.registrationCode} ${aircraftDTO.producer} ${aircraftDTO.model}
+                        </option>
+                    </c:if>>
                 </c:forEach>
             </select>
         </div>

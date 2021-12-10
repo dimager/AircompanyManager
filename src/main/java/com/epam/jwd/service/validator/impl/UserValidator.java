@@ -1,7 +1,7 @@
-package com.epam.jwd.service.validator;
+package com.epam.jwd.service.validator.impl;
 
 import com.epam.jwd.service.dto.UserDTO;
-import com.epam.jwd.service.exception.ValidatorException;
+import com.epam.jwd.service.validator.Validator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -67,7 +67,7 @@ public class UserValidator implements Validator<UserDTO> {
     }
 
     @Override
-    public boolean isValid(UserDTO userDTO) throws ValidatorException {
+    public boolean isValid(UserDTO userDTO){
         logger.debug("isValid method");
         return !(emailIsNotValid(userDTO.getEmail()) ||
                 passwordIsNotValid(userDTO.getPassword()) ||

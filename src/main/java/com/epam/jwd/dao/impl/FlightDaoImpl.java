@@ -4,6 +4,7 @@ import com.epam.jwd.dao.BaseDao;
 import com.epam.jwd.dao.SQLQueries;
 import com.epam.jwd.dao.connectionpool.ConnectionPool;
 import com.epam.jwd.dao.connectionpool.impl.ConnectionPoolImpl;
+import com.epam.jwd.dao.entity.Brigade;
 import com.epam.jwd.dao.entity.Flight;
 import com.epam.jwd.dao.exception.DAOException;
 import org.apache.logging.log4j.LogManager;
@@ -19,15 +20,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FlightDaoImpl implements BaseDao<Long, Flight> {
-    private static final String EXCEPTION_UPDATE_ERROR_MESSAGE = "Flight wasn't updated in db. ";
-    private static final String EXCEPTION_SAVE_ERROR_MESSAGE = "New flight wasn't saved in db. ";
-    private static final String EXCEPTION_FINDALL_ERROR_MESSAGE = "Find all flights. ";
-    private static final String EXCEPTION_FIND_BY_ID_ERROR_MESSAGE = "Flight wasn't  found. ";
-    private static final String EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE = "Flight wasn't deleted. ";
-    private static final String EXCEPTION_SQL_MESSAGE = "SQL exception";
+    private static final String EXCEPTION_UPDATE_ERROR_MESSAGE = "222";
+    private static final String EXCEPTION_SAVE_ERROR_MESSAGE = "223";
+    private static final String EXCEPTION_FINDALL_ERROR_MESSAGE = "225";
+    private static final String EXCEPTION_FIND_BY_ID_ERROR_MESSAGE = "226";
+    private static final String EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE = "227";
+    private static final String EXCEPTION_SQL_MESSAGE = "200";
+    private static final String EXCEPTION_ARCHIVE_STATUS_ERROR_MESSAGE = "244";
+    private static final String EXCEPTION_UPDATE_FLIGHT_BRIGADE_ERROR_MESSAGE = "245";
+
+
     private final static Logger logger = LogManager.getLogger(FlightDaoImpl.class);
     private final int ONE_UPDATED_ROW = 1;
     private final ConnectionPool connectionPool = ConnectionPoolImpl.getInstance();
+
+
+    public boolean changeArchiveStatus(long flightId, boolean isArchived ) throws DAOException {
+        logger.debug("changeArchiveStatus method");
+        Connection connection = connectionPool.requestConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_FLIGHTS_UPDATE_ARCHIVE_STATUS_BY_ID)) {
+            preparedStatement.setBoolean(1, isArchived);
+            preparedStatement.setLong(2, flightId);
+            if (preparedStatement.executeUpdate() == ONE_UPDATED_ROW) {
+                return true;
+            }
+            logger.error(EXCEPTION_ARCHIVE_STATUS_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_ARCHIVE_STATUS_ERROR_MESSAGE);
+        } catch (SQLException e) {
+            logger.error(EXCEPTION_ARCHIVE_STATUS_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
+            throw new DAOException(EXCEPTION_ARCHIVE_STATUS_ERROR_MESSAGE);
+        } finally {
+            connectionPool.returnConnection(connection);
+        }
+    }
 
     @Override
     public Flight save(Flight flight) throws DAOException {
@@ -47,7 +72,7 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
             throw new DAOException(EXCEPTION_SAVE_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_SAVE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_SAVE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
+            throw new DAOException(EXCEPTION_SAVE_ERROR_MESSAGE);
         } finally {
             CloseResultSet(resultSet);
             connectionPool.returnConnection(connection);
@@ -68,7 +93,7 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
             throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_UPDATE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
+            throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE);
         } finally {
             connectionPool.returnConnection(connection);
         }
@@ -89,7 +114,7 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
             return flights;
         } catch (SQLException e) {
             logger.error(EXCEPTION_FINDALL_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_FINDALL_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
+            throw new DAOException(EXCEPTION_FINDALL_ERROR_MESSAGE);
         } finally {
             connectionPool.returnConnection(connection);
         }
@@ -112,7 +137,7 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
             throw new DAOException(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE  + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
+            throw new DAOException(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE);
         } finally {
             CloseResultSet(resultSet);
             ConnectionPoolImpl.getInstance().returnConnection(connection);
@@ -132,13 +157,13 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
             throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
+            throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE );
         } finally {
             connectionPool.returnConnection(connection);
         }
     }
 
-    public boolean updateBrigade(long flightId, long brigadeId) throws DAOException {
+    public boolean updateFlightBrigade(long flightId, long brigadeId) throws DAOException {
         logger.debug("updateBrigade method");
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_FLIGHTS_UPDATE_BRIGADE)) {
@@ -147,11 +172,11 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
             if (preparedStatement.executeUpdate() == ONE_UPDATED_ROW) {
                 return true;
             }
-            logger.error(EXCEPTION_UPDATE_ERROR_MESSAGE);
-            throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE);
+            logger.error(EXCEPTION_UPDATE_FLIGHT_BRIGADE_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_UPDATE_FLIGHT_BRIGADE_ERROR_MESSAGE);
         } catch (SQLException e) {
-            logger.error(EXCEPTION_UPDATE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
+            logger.error(EXCEPTION_UPDATE_FLIGHT_BRIGADE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
+            throw new DAOException(EXCEPTION_UPDATE_FLIGHT_BRIGADE_ERROR_MESSAGE );
         } finally {
             connectionPool.returnConnection(connection);
         }
@@ -169,6 +194,7 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
         flight.setDestinationAirportId(resultSet.getInt(5));
         flight.setFlightCallsign(resultSet.getString(6));
         flight.setDepartureDateTime(resultSet.getTimestamp(7));
+        flight.setArchived(resultSet.getBoolean(8));
     }
 
     private void fillFlightStatement(Flight flight, PreparedStatement preparedStatement) throws SQLException {

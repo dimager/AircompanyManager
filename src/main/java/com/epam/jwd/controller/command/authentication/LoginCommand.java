@@ -44,6 +44,7 @@ public class LoginCommand implements Command {
         List<Integer> errors = new ArrayList<>();
         String username = requestContext.getParamFromJSP(Attributes.JSP_USERNAME_INPUT_FILED_NAME).trim();
         String password = requestContext.getParamFromJSP(Attributes.JSP_PASSWORD_INPUT_FILED_NAME).trim();
+
         userDTO.setUsername(username);
         userDTO.setPassword(password);
         ValidationService validationService = new ValidationService();

@@ -9,7 +9,7 @@ import com.epam.jwd.dao.exception.DAOException;
 import com.epam.jwd.service.dto.FlightDTO;
 import com.epam.jwd.service.exception.ValidatorException;
 import com.epam.jwd.service.impl.FlightService;
-import com.epam.jwd.service.validator.FlightValidator;
+import com.epam.jwd.service.validator.impl.FlightValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -8,10 +8,14 @@
 <fmt:message bundle="${lang}" key="headermenu.main" var="main"/>
 <fmt:message bundle="${lang}" key="headermenu.allusers" var="allUsers"/>
 <fmt:message bundle="${lang}" key="headermenu.flights" var="flights"/>
+<fmt:message bundle="${lang}" key="headermenu.archivedflights" var="archivedflights"/>
 <fmt:message bundle="${lang}" key="headermenu.aircrafts" var="aircrafts"/>
 <fmt:message bundle="${lang}" key="headermenu.brigades" var="brigades"/>
+<fmt:message bundle="${lang}" key="headermenu.archivedBrigades" var="archivedBrigades"/>
 <fmt:message bundle="${lang}" key="headermenu.myflights" var="myFlights"/>
+<fmt:message bundle="${lang}" key="headermenu.myflightsHistory" var="myFlightsHistory"/>
 <fmt:message bundle="${lang}" key="headermenu.mybrigades" var="myBrigades"/>
+<fmt:message bundle="${lang}" key="headermenu.flights" var="flights"/>
 <fmt:message bundle="${lang}" key="headermenu.flights" var="flights"/>
 <fmt:message bundle="${lang}" key="headermenu.aircrafts" var="aircrafts"/>
 <fmt:message bundle="${lang}" key="headermenu.brigades" var="brigades"/>
@@ -42,6 +46,7 @@
                         </a>
                     </li>
                 </c:if>
+
                 <c:if test="${sessionScope.loggedinUser.role == Role_ADMIN}">
                     <li class="nav-item">
                         <a class="nav-link" <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_AIRCRAFT_PAGE')}"> style="color:#007bff" </c:if> href="/controller?command=SHOW_AIRCRAFT_PAGE">
@@ -67,11 +72,25 @@
                     <li class="nav-item">
                         <a class="nav-link"
                                 <c:if
-                                        test="${fn:contains(pageContext.request.queryString,'SHOW_AIRPORT_PAGE')}">
-                                    style="color:#007bff"
+                                        test="${fn:contains(pageContext.request.queryString,'SHOW_AIRPORT_PAGE')}"> style="color:#007bff"
                                 </c:if>
                            href="/controller?command=SHOW_AIRPORT_PAGE">
                             <fmt:message bundle="${lang}" key="headermenu.allAirports"/>
+                        </a>
+                    </li>
+                </c:if>
+                <c:if test="${sessionScope.loggedinUser.role <= Role_MANAGER}">
+                    <li class="nav-item">
+                        <a class="nav-link"
+                                <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_ARCHIVED_FLIGHTS_PAGE')}"> style="color:#007bff" </c:if> href="/controller?command=SHOW_ARCHIVED_FLIGHTS_PAGE">
+                                ${archivedflights}
+                        </a>
+                    </li>
+                </c:if>
+                <c:if test="${sessionScope.loggedinUser.role == Role_MANAGER}">
+                    <li class="nav-item">
+                        <a class="nav-link" <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_ARCHIVED_BRIGADE_PAGE')}"> style="color:#007bff" </c:if> href="/controller?command=SHOW_ARCHIVED_BRIGADE_PAGE">
+                                ${archivedBrigades}
                         </a>
                     </li>
                 </c:if>
@@ -86,6 +105,13 @@
                     <li class="nav-item">
                         <a class="nav-link" <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_USER_BRIGADES_PAGE')}"> style="color:#007bff" </c:if> href="/controller?command=SHOW_USER_BRIGADES_PAGE">
                                 ${myBrigades}
+                        </a>
+                    </li>
+                </c:if>
+                <c:if test="${sessionScope.loggedinUser.role > Role_MANAGER and sessionScope.loggedinUser.role < Role_GUEST}">
+                    <li class="nav-item">
+                        <a class="nav-link"  <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_USER_FLIGHTS_HISTORY_PAGE')}"> style="color:#007bff" </c:if> href="/controller?command=SHOW_USER_FLIGHTS_HISTORY_PAGE">
+                                ${myFlightsHistory}
                         </a>
                     </li>
                 </c:if>

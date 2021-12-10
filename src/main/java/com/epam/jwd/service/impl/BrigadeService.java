@@ -2,13 +2,13 @@ package com.epam.jwd.service.impl;
 
 import com.epam.jwd.dao.exception.DAOException;
 import com.epam.jwd.dao.impl.BrigadeDaoImpl;
-import com.epam.jwd.service.converter.BrigadeConverter;
-import com.epam.jwd.service.converter.UserConverter;
+import com.epam.jwd.service.converter.impl.BrigadeConverter;
+import com.epam.jwd.service.converter.impl.UserConverter;
 import com.epam.jwd.service.dto.BrigadeDTO;
 import com.epam.jwd.service.dto.BrigadeUserDTO;
 import com.epam.jwd.service.dto.UserDTO;
 import com.epam.jwd.service.exception.ValidatorException;
-import com.epam.jwd.service.validator.BrigadeValidator;
+import com.epam.jwd.service.validator.impl.BrigadeValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -122,6 +122,7 @@ public class BrigadeService {
         BrigadeUserDTO brigadeUserDTO = new BrigadeUserDTO();
         brigadeUserDTO.setBrigadeId(brigadeDTO.getBrigadeId());
         brigadeUserDTO.setBrigadeName(brigadeDTO.getBrigadeName());
+        brigadeUserDTO.setIsArchived(brigadeDTO.getIsArchived());
         brigadeUserDTO.getUserDTOs().addAll(this.getBrigadeUsers(brigadeDTO.getBrigadeId()));
         return brigadeUserDTO;
     }
@@ -134,5 +135,9 @@ public class BrigadeService {
             brigadeUserDTOs.add(this.getBrigadeWithUsers(brigadeDTO));
         }
         return brigadeUserDTOs;
+    }
+
+    public boolean changeArchiveStatus(long brigadeId, boolean isArchived) throws DAOException {
+        return brigadeDAO.changeArchiveStatus(brigadeId,isArchived);
     }
 }

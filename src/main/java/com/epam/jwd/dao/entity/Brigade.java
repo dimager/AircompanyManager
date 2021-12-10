@@ -6,6 +6,15 @@ import java.util.Objects;
 public class Brigade extends Entity {
     private long id;
     private String brigadeName;
+    private boolean isArchived;
+
+    public boolean getIsArchived() {
+        return isArchived;
+    }
+
+    public void setIsArchived(boolean archived) {
+        isArchived = archived;
+    }
 
     public long getId() {
         return id;
@@ -28,12 +37,12 @@ public class Brigade extends Entity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Brigade brigade = (Brigade) o;
-        return id == brigade.id && Objects.equals(brigadeName, brigade.brigadeName);
+        return id == brigade.id && isArchived == brigade.isArchived && Objects.equals(brigadeName, brigade.brigadeName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, brigadeName);
+        return Objects.hash(id, brigadeName, isArchived);
     }
 
     @Override
@@ -41,6 +50,7 @@ public class Brigade extends Entity {
         return "Brigade{" +
                 "id=" + id +
                 ", brigadeName='" + brigadeName + '\'' +
+                ", isArchived=" + isArchived +
                 '}';
     }
 }

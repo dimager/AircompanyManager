@@ -6,11 +6,13 @@ import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.dao.entity.Flight;
 import com.epam.jwd.dao.exception.DAOException;
+import com.epam.jwd.service.dto.FlightDTO;
 import com.epam.jwd.service.impl.FlightService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.time.format.DateTimeParseException;
+import java.util.Objects;
 
 public class DeleteFlightCommand implements Command {
     public static final String FLIGHT_JSP = "/controller?command=SHOW_FLIGHT_PAGE";
@@ -29,6 +31,7 @@ public class DeleteFlightCommand implements Command {
             return false;
         }
     };
+    private static final String ERROR_CODE = "11";
 
     DeleteFlightCommand() {
     }
@@ -44,12 +47,18 @@ public class DeleteFlightCommand implements Command {
         Flight flight = new Flight();
         try {
             long id = Long.parseLong(requestContext.getParamFromJSP(Attributes.DELETE_FLIGHT_ID_ATTRIBUTE));
-            flightService.deleteFlightById(id);
-            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE, RESULT_MESSAGE_CODE);
-        } catch (DateTimeParseException | DAOException  | NumberFormatException | NullPointerException e) {
+            FlightDTO flightDTO = flightService.findFlightById(id);
+            if (!flightDTO.getIsArchived()) {
+                flightService.deleteFlightById(id);
+                requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE, RESULT_MESSAGE_CODE);
+            }
+            else {
+                requestContext.addAttributeToJSP(Attributes.COMMAND_ONEERROR_ATTRIBUTE,  ERROR_CODE);
+            }
+        } catch (DAOException  | NumberFormatException  e) {
             e.printStackTrace();
             logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e);
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
             requestContext.addAttributeToJSP(Attributes.AIRCRAFT_DTO_ATTRIBUTE, flight);
         }
         return DELETE_FLIGHT_COMMAND_CONTEXT;

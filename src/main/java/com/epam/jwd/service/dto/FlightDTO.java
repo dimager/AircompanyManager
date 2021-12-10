@@ -11,6 +11,15 @@ public class FlightDTO extends BaseDTO {
     private AirportDTO destinationAirport = new AirportDTO();
     private String flightCallsign;
     private Timestamp departureDateTime;
+    private boolean isArchived;
+
+    public boolean getIsArchived() {
+        return isArchived;
+    }
+
+    public void setIsArchived(boolean archived) {
+        isArchived = archived;
+    }
 
     public long getId() {
         return id;
@@ -73,12 +82,12 @@ public class FlightDTO extends BaseDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FlightDTO flightDTO = (FlightDTO) o;
-        return id == flightDTO.id && Objects.equals(aircraftDTO, flightDTO.aircraftDTO) && Objects.equals(brigadeDTO, flightDTO.brigadeDTO) && Objects.equals(departureAirport, flightDTO.departureAirport) && Objects.equals(destinationAirport, flightDTO.destinationAirport) && Objects.equals(flightCallsign, flightDTO.flightCallsign) && Objects.equals(departureDateTime, flightDTO.departureDateTime);
+        return id == flightDTO.id && isArchived == flightDTO.isArchived && Objects.equals(aircraftDTO, flightDTO.aircraftDTO) && Objects.equals(brigadeDTO, flightDTO.brigadeDTO) && Objects.equals(departureAirport, flightDTO.departureAirport) && Objects.equals(destinationAirport, flightDTO.destinationAirport) && Objects.equals(flightCallsign, flightDTO.flightCallsign) && Objects.equals(departureDateTime, flightDTO.departureDateTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, aircraftDTO, brigadeDTO, departureAirport, destinationAirport, flightCallsign, departureDateTime);
+        return Objects.hash(id, aircraftDTO, brigadeDTO, departureAirport, destinationAirport, flightCallsign, departureDateTime, isArchived);
     }
 
     @Override

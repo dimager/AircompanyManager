@@ -1,6 +1,7 @@
-package com.epam.jwd.service.converter;
+package com.epam.jwd.service.converter.impl;
 
 import com.epam.jwd.dao.entity.Flight;
+import com.epam.jwd.service.converter.Converter;
 import com.epam.jwd.service.dto.FlightDTO;
 
 public class FlightConverter implements Converter<Flight, FlightDTO> {
@@ -23,6 +24,7 @@ public class FlightConverter implements Converter<Flight, FlightDTO> {
         flightDTO.setId(flight.getId());
         flightDTO.setFlightCallsign(flight.getFlightCallsign());
         flightDTO.setDepartureDateTime(flight.getDepartureDateTime());
+        flightDTO.setIsArchived(flight.isArchived());
         return flightDTO;
     }
 

@@ -16,6 +16,7 @@ public class EditBrigadeCommand implements Command {
     private static final Command INSTANCE = new EditBrigadeCommand();
     private static final String EDIT_BRIGADE_JSP = "/controller?command=SHOW_BRIGADE_PAGE";
     private static final int RESULT_MESSAGE_CODE = 110;
+    private static final int ERROR_CODE = 131;
 
     private static final ResponseContext EDIT_BRIGADES_PAGE_CONTEXT = new ResponseContext() {
         @Override
@@ -41,11 +42,18 @@ public class EditBrigadeCommand implements Command {
         logger.debug("execute method");
         BrigadeDTO brigadeDTO = new BrigadeDTO();
         BrigadeService brigadeService = new BrigadeService();
-        brigadeDTO.setBrigadeName(requestContext.getParamFromJSP("brigadename"));
-        brigadeDTO.setBrigadeId(Long.parseLong(requestContext.getParamFromJSP("brigadeId")));
+
         try {
-            brigadeService.updateBrigade(brigadeDTO);
-            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE,  RESULT_MESSAGE_CODE);
+            brigadeDTO.setBrigadeName(requestContext.getParamFromJSP(Attributes.BRIGADENAME_ATTRIBUTE));
+            brigadeDTO.setBrigadeId(Long.parseLong(requestContext.getParamFromJSP(Attributes.EDIT_BRIGADE_ID_ATTRIBUTE)));
+            BrigadeDTO brigadeDTOFromDB = brigadeService.findById(brigadeDTO.getBrigadeId());
+            if (brigadeDTOFromDB.getIsArchived()){
+                requestContext.addAttributeToJSP(Attributes.COMMAND_ONEERROR_ATTRIBUTE,  ERROR_CODE);
+            }
+            else {
+                brigadeService.updateBrigade(brigadeDTO);
+                requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE,  RESULT_MESSAGE_CODE);
+            }
         } catch (DAOException | ValidatorException |  NumberFormatException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());

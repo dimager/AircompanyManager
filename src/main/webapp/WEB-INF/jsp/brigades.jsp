@@ -14,6 +14,7 @@
 <fmt:message bundle="${lang}" key="buttonname.addbrigade" var="btnAddBrigade"/>
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="../../assets/css/styles.css"/>
     <title>${pagename}</title>
     <c:import url="meta.jsp"/>
 </head>
@@ -22,6 +23,7 @@
     <c:import url="header.jsp"/>
     <c:import url="exception.jsp"/>
     <c:import url="command_result_state.jsp"/>
+    <c:import url="errors.jsp"/>
     <section class="mt-4">
         <div class="row">
             <div class="col" style="padding-right: 45px;padding-left: 45px;">
@@ -51,66 +53,66 @@
                                 </thead>
                                 <tbody>
                                 <c:forEach items="${requestScope.brigadeUserDTOList}" var="brigade">
-                                    <tr>
-                                        <td>${brigade.brigadeName}</td>
-                                        <td>${brigade.userDTOs.size()}</td>
-                                        <td>
-                                            <c:forEach items="${brigade.userDTOs}" var="user">
-                                                <c:if test="${user.role == Role_PILOT}">
-                                                    +
-                                                </c:if>
-                                            </c:forEach>
-                                        </td>
-                                        <td>
-                                            <c:forEach items="${brigade.userDTOs}" var="user">
-                                                <c:if test="${user.role == Role_NAVIGATOR}">
-                                                    +
-                                                </c:if>
-                                            </c:forEach>
-                                        </td>
-                                        <td >
-                                            <c:forEach items="${brigade.userDTOs}" var="user">
-                                                <c:if test="${user.role == Role_RADIO_ENGINEER}">
+                                    <c:if test="${not brigade.isArchived}">
+                                        <tr>
+                                            <td>${brigade.brigadeName}</td>
+                                            <td>${brigade.userDTOs.size()}</td>
+                                            <td class="plus">
+                                                <c:forEach items="${brigade.userDTOs}" var="user">
+                                                    <c:if test="${user.role == Role_PILOT}">
+                                                        +
+                                                    </c:if>
+                                                </c:forEach>
+                                            </td>
+                                            <td class="plus">
+                                                <c:forEach items="${brigade.userDTOs}" var="user">
+                                                    <c:if test="${user.role == Role_NAVIGATOR}">
+                                                       +
+                                                    </c:if>
+                                                </c:forEach>
+                                            </td>
+                                            <td class="plus">
+                                                <c:forEach items="${brigade.userDTOs}" var="user">
+                                                    <c:if test="${user.role == Role_RADIO_ENGINEER}">
 
-                                                    +
-                                                </c:if>
-                                            </c:forEach>
-                                        </td>
-                                        <td >
-                                            <c:forEach items="${brigade.userDTOs}" var="user">
-                                                <c:if test="${user.role == Role_FLIGHT_ATTENDANT}">
-                                                    +
-                                                </c:if>
-                                            </c:forEach>
-                                        </td>
-                                        <td class="icons">
-                                            <c:url value="/controller" var="editURL">
-                                                <c:param name="command" value="SHOW_EDIT_BRIGADE_PAGE"/>
-                                                <c:param name="edit_brigade_id" value="${brigade.brigadeId}"/>
-                                            </c:url>
-                                            <c:url value="/controller" var="deleteURL">
-                                                <c:param name="command" value="DELETE_BRIGADE"/>
-                                                <c:param name="delete_brigade_id" value="${brigade.brigadeId}"/>
-                                            </c:url>
-                                            <c:url value="/controller" var="showBrigadeURL">
-                                                <c:param name="command" value="SHOW_BRIGADE_WITH_USERS_PAGE"/>
-                                                <c:param name="brigade_id" value="${brigade.brigadeId}"/>
-                                            </c:url>
-                                            <a href="${editURL}">
-                                                <i class="icon ion-edit" style=" margin-left: 10px;"></i>
-                                            </a>
-                                            <a href="${deleteURL}">
-                                                <i class="icon ion-android-delete" style="margin-left: 10px;"></i>
-                                            </a>
-                                            <a href="${showBrigadeURL}">
-                                                <i class="icon ion-ios-people" style="margin-left: 10px;"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                                        +
+                                                    </c:if>
+                                                </c:forEach>
+                                            </td>
+                                            <td class="plus">
+                                                <c:forEach items="${brigade.userDTOs}" var="user">
+                                                    <c:if test="${user.role == Role_FLIGHT_ATTENDANT}">
+                                                        +
+                                                    </c:if>
+                                                </c:forEach>
+                                            </td>
+                                            <td class="icons">
+                                                <c:url value="/controller" var="editURL">
+                                                    <c:param name="command" value="SHOW_EDIT_BRIGADE_PAGE"/>
+                                                    <c:param name="edit_brigade_id" value="${brigade.brigadeId}"/>
+                                                </c:url>
+                                                <c:url value="/controller" var="showBrigadeURL">
+                                                    <c:param name="command" value="SHOW_BRIGADE_WITH_USERS_PAGE"/>
+                                                    <c:param name="brigade_id" value="${brigade.brigadeId}"/>
+                                                </c:url>
+                                                <c:url value="/controller" var="deleteURL">
+                                                    <c:param name="command" value="DELETE_BRIGADE"/>
+                                                    <c:param name="delete_brigade_id" value="${brigade.brigadeId}"/>
+                                                </c:url>
+                                                <a href="${editURL}">
+                                                    <i class="icon ion-edit" style=" margin-left: 10px;"></i>
+                                                </a>
+                                                    <a href="${deleteURL}">
+                                                         <i class="icon ion-android-delete" style="margin-left: 10px;"></i>
+                                                     </a>
+                                                <a href="${showBrigadeURL}">
+                                                    <i class="icon ion-ios-people" style="margin-left: 10px;"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </c:if>
                                 </c:forEach>
                                 </tbody>
-
-
                             </table>
                         </div>
                     </div>

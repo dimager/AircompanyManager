@@ -11,8 +11,6 @@
 <fmt:message bundle="${lang}" key="buttonname.changerole" var="changerole"/>
 <fmt:message bundle="${lang}" key="buttonname.close" var="close"/>
 <fmt:message bundle="${lang}" key="pagename.allusers" var="pagename"/>
-
-
 <html>
 <head>
     <title>${pagename}</title>
@@ -23,6 +21,7 @@
     <c:import url="header.jsp"/>
     <c:import url="exception.jsp"/>
     <c:import url="command_result_state.jsp"/>
+    <c:import url="errors.jsp"/>
     <section class="mt-4">
         <div class="row">
             <div class="col" style="padding-right: 45px;padding-left: 45px;">
@@ -68,6 +67,10 @@
                                                     <c:param name="command" value="SHOW_USER_FLIGHTS_PAGE_FOR_MANAGER"/>
                                                     <c:param name="show_user_id" value="${user.userId}"/>
                                                 </c:url>
+                                                <c:url value="/controller" var="showUserFlightsHistory">
+                                                    <c:param name="command" value="SHOW_USER_FLIGHTS_HISTORY_PAGE"/>
+                                                    <c:param name="show_user_id" value="${user.userId}"/>
+                                                </c:url>
                                                 <c:url value="/controller" var="showUserBrigades">
                                                     <c:param name="command" value="SHOW_USER_BRIGADES_PAGE_FOR_MANAGER"/>
                                                     <c:param name="show_user_id" value="${user.userId}"/>
@@ -77,6 +80,10 @@
                                                 </a>
                                                 <a href="${showUserBrigades}">
                                                     <i class="icon ion-ios-people" style=" margin-left: 10px;"></i>
+                                                </a>
+
+                                                <a href="${showUserFlightsHistory}">
+                                                    <i class="icon ion-clipboard" style=" margin-left: 10px;"></i>
                                                 </a>
                                             </td>
                                         </c:if>

@@ -3,10 +3,10 @@ package com.epam.jwd.service.impl;
 import com.epam.jwd.dao.entity.Aircraft;
 import com.epam.jwd.dao.exception.DAOException;
 import com.epam.jwd.dao.impl.AircraftDaoImpl;
-import com.epam.jwd.service.converter.AircraftConverter;
+import com.epam.jwd.service.converter.impl.AircraftConverter;
 import com.epam.jwd.service.dto.AircraftDTO;
 import com.epam.jwd.service.exception.ValidatorException;
-import com.epam.jwd.service.validator.AircraftValidator;
+import com.epam.jwd.service.validator.impl.AircraftValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,6 +28,10 @@ public class AircraftService  {
     public List<AircraftDTO> findAllAircrafts() throws DAOException {
         logger.debug("findAllAircrafts method");
         return this.convertToDTOList(aircraftDAO.findAll());
+    }
+
+    public boolean changeInOperationStatus(int aircraftId, boolean inOperation) throws DAOException {
+        return aircraftDAO.ChangeInOperationStatus(aircraftId,inOperation);
     }
 
     public AircraftDTO findAircraftById(AircraftDTO aircraftDTO) throws DAOException {

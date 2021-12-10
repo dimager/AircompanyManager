@@ -14,12 +14,11 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
-public class ShowFlightCommand implements Command {
-    private static final Logger logger = LogManager.getLogger(ShowFlightCommand.class);
-    public static final String FLIGHT_JSP = "/WEB-INF/jsp/flights.jsp";
-    private static final Command INSTANCE = new ShowFlightCommand();
-    private static final Object ERROR_CODE = 134;
+public class ShowArchivedFlightsCommand implements Command{
 
+    private static final Logger logger = LogManager.getLogger(ShowFlightCommand.class);
+    public static final String FLIGHT_JSP = "/WEB-INF/jsp/archived_flights.jsp";
+    private static final Command INSTANCE = new ShowArchivedFlightsCommand();
     private static final ResponseContext SHOW_FLIGHTS_COMMAND_CONTEXT = new ResponseContext() {
         @Override
         public String getPage() {
@@ -32,7 +31,7 @@ public class ShowFlightCommand implements Command {
         }
     };
 
-    ShowFlightCommand() {
+    ShowArchivedFlightsCommand() {
     }
 
     public static Command getInstance() {
@@ -44,16 +43,10 @@ public class ShowFlightCommand implements Command {
         BrigadeService brigadeService = new BrigadeService();
         FlightService flightService = new FlightService();
         try {
-            List<BrigadeDTO>  brigadeDTOList = brigadeService.findAllBrigade();
+            List<BrigadeDTO> brigadeDTOList = brigadeService.findAllBrigade();
             List<FlightDTO> flightDTOList = flightService.findAllFlights();
-            for (FlightDTO flightDTO : flightDTOList) {
-                if (!flightDTO.getAircraftDTO().getInOperation()){
-                        requestContext.addAttributeToJSP(Attributes.COMMAND_ONEERROR_ATTRIBUTE,  ERROR_CODE);
-                    }
-            }
             requestContext.addAttributeToJSP(Attributes.FLIGHT_DTO_LIST_ATTRIBUTE, flightDTOList);
             requestContext.addAttributeToJSP(Attributes.BRIGADE_DTO_LIST_ATTRIBUTE, brigadeDTOList);
-
         } catch (DAOException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
@@ -61,6 +54,5 @@ public class ShowFlightCommand implements Command {
 
         return SHOW_FLIGHTS_COMMAND_CONTEXT;
     }
-
 
 }

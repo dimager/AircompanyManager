@@ -47,12 +47,14 @@ public class AddAircraftCommand implements Command {
         aircraftDTO.setRegistrationCode(requestContext.getParamFromJSP(Attributes.REG_CODE_ATTRIBUTE).trim());
 
         try {
-            aircraftDTO = aircraftService.saveAircraft(aircraftDTO);
+            aircraftService.saveAircraft(aircraftDTO);
             requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE,  RESULT_MESSAGE_CODE);
-        } catch (DAOException | ValidatorException e) {
+        } catch (DAOException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
-            requestContext.addAttributeToJSP(Attributes.AIRCRAFT_DTO_ATTRIBUTE, aircraftDTO);
+        } catch (ValidatorException e) {
+            logger.error(e);
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
         }
         return ADD_AIRCRAFT_PAGE_CONTEXT;
     }

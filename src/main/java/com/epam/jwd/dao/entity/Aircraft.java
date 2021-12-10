@@ -7,6 +7,15 @@ public class Aircraft extends Entity {
     private String producer;
     private String model;
     private String registrationCode;
+    private boolean inOperation;
+
+    public boolean getInOperation() {
+        return inOperation;
+    }
+
+    public void setInOperation(boolean inOperation) {
+        this.inOperation = inOperation;
+    }
 
     public int getId() {
         return id;
@@ -45,12 +54,12 @@ public class Aircraft extends Entity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Aircraft aircraft = (Aircraft) o;
-        return id == aircraft.id && producer.equals(aircraft.producer) && model.equals(aircraft.model) && registrationCode.equals(aircraft.registrationCode);
+        return id == aircraft.id && inOperation == aircraft.inOperation && Objects.equals(producer, aircraft.producer) && Objects.equals(model, aircraft.model) && Objects.equals(registrationCode, aircraft.registrationCode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, producer, model, registrationCode);
+        return Objects.hash(id, producer, model, registrationCode, inOperation);
     }
 
     @Override

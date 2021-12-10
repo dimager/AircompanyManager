@@ -9,7 +9,8 @@ public interface Attributes {
     String REG_CODE_ATTRIBUTE = "regCode";
     String AIRCRAFT_DTO_ATTRIBUTE = "aircraftDTO";
     String DELETE_AIRCRAFT_ID_ATTRIBUTE = "delete_aircraft_id";
-    String AIRCRAFT_ID_ATTRIBUTE = "aircraftId";
+    String AIRCRAFT_ID_ATTRIBUTE = "change_aircraft_id";
+    String AIRCRAFT_IN_OPERATION_ATTRIBUTE = "inOperation";
     String EDIT_AIRCRAFT_ATTRIBUTE = "edit_aircraft_id";
     String EDIT_PAGE_BOOLEAN_ATTRIBUTE = "editpage";
     String AIRCRAFT_DTO_LIST_ATTRIBUTE = "aircraftDTOList";
@@ -20,6 +21,9 @@ public interface Attributes {
     String SELECTED_DEPARTURE_AIRPORT_FIELD_NAME = "selectedDepartureAirport";
     String SELECTED_DESTINATION_AIRPORT_FIELD_NAME = "selectedDestinationAirport";
     String EDIT_FLIGHT_ID_ATTRIBUTE = "edit_flight_id";
+    String ARCHIVE_FLIGHT_ID_ATTRIBUTE = "archive_flight_id";
+    String ARCHIVE_BRIGADE_ID_ATTRIBUTE = "archive_brigade_id";
+    String IS_ARCHIVED_ID_ATTRIBUTE = "isArchived";
     String DELETE_FLIGHT_ID_ATTRIBUTE = "delete_flight_id";
     String NEW_BRIGADE_ID_ATTRIBUTE = "new_brigade";
     String FLIGHT_DTO_LIST_ATTRIBUTE = "flightDTOList";
@@ -45,6 +49,7 @@ public interface Attributes {
     String AIRPORTS_DTO_ID_ATTRIBUTE = "edit_airport_id";
     String DELETE_AIRPORT_ID_ATTRIBUTE = "delete_airport_id";
     String COMMAND_ERRORS_ATTRIBUTE = "errors";
+    String COMMAND_ONEERROR_ATTRIBUTE = "oneError";
     String USER_BRIGADES_ATTRIBUTE = "userBrigades";
     String RETURN_PAGE_ATTRIBUTE = "returnPage";
     String LOCALE_ATTRIBUTE = "lang";

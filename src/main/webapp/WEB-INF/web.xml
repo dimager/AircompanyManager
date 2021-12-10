@@ -3,6 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+
     <servlet>
         <servlet-name>ApplicationServlet</servlet-name>
         <servlet-class>com.epam.jwd.controller.ApplicationController</servlet-class>
@@ -12,6 +13,13 @@
         <servlet-name>ApplicationServlet</servlet-name>
         <url-pattern>/controller</url-pattern>
     </servlet-mapping>
+    <jsp-config>
+        <jsp-property-group>
+            <url-pattern>*.jsp</url-pattern>
+            <trim-directive-whitespaces>true</trim-directive-whitespaces>
+        </jsp-property-group>
+    </jsp-config>
+
 </web-app>
 
 

@@ -7,6 +7,16 @@ public class AircraftDTO extends BaseDTO {
     private String producer;
     private String model;
     private String registrationCode;
+    private boolean inOperation;
+
+
+    public boolean getInOperation() {
+        return inOperation;
+    }
+
+    public void setInOperation(boolean inOperation) {
+        this.inOperation = inOperation;
+    }
 
     public String getRegistrationCode() {
         return registrationCode;

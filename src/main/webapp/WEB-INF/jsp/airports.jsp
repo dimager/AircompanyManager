@@ -39,6 +39,7 @@
     <c:import url="header.jsp"/>
     <c:import url="exception.jsp"/>
     <c:import url="command_result_state.jsp"/>
+    <c:import url="errors.jsp"/>
     <section class="mt-4">
         <div class="row">
             <div class="col" style="padding-right: 45px;padding-left: 45px;">
@@ -106,13 +107,13 @@
                                         <td>${airport.IATACode}</td>
                                         <td>
                                             <i class="icon ion-edit editcolor"  data-toggle="modal" data-target="#exampleModal${airport.id}" style=" margin-left: 10px;"></i>
-                                            <c:url value="/controller" var="deleteURL">
+                                            <%--<c:url value="/controller" var="deleteURL">
                                                 <c:param name="command" value="DELETE_AIRPORT"/>
                                                 <c:param name="delete_airport_id" value="${airport.id}"/>
                                             </c:url>
                                             <a href="${deleteURL}">
                                                 <i class="icon ion-android-delete" style="margin-left: 10px;"></i>
-                                            </a>
+                                            </a>--%>
                                             <form action="/controller" method="get">
                                                 <input type="hidden" name="command" value="EDIT_AIRPORT">
                                                 <input type="hidden" name="edit_airport_id" value="${airport.id}">

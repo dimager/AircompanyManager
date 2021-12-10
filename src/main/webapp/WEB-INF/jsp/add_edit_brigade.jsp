@@ -32,6 +32,7 @@
     <c:import url="header.jsp"/>
     <c:import url="exception.jsp"/>
     <c:import url="command_result_state.jsp"/>
+    <c:import url="errors.jsp"/>
     <form class="login-one-userform">
         <div class="img-loggin">
             <img src="${pageContext.request.contextPath}/assets/img/brigade.png" width="500" height="200" >
@@ -61,7 +62,7 @@
                     <c:choose>
                         <c:when test="${requestScope.editpage}">
                             <input type="hidden" name="command" value="EDIT_BRIGADE">
-                            <input type="hidden" name="brigadeId" value="${requestScope.brigadeDTO.brigadeId}">
+                            <input type="hidden" name="edit_brigade_id" value="${requestScope.brigadeDTO.brigadeId}">
                             <button class="btn btn-primary" id="button" style="background-color:#007ac9;" type="submit">${btneditbrigade}</button>
                         </c:when>
                         <c:otherwise>

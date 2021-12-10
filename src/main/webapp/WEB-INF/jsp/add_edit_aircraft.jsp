@@ -32,6 +32,7 @@
     <c:import url="header.jsp"/>
     <c:import url="exception.jsp"/>
     <c:import url="command_result_state.jsp"/>
+    <c:import url="errors.jsp"/>
     <form class="login-one-userform">
         <div class="img-loggin">
             <img src="${pageContext.request.contextPath}/assets/img/aircraft.png" width="500" height="200">

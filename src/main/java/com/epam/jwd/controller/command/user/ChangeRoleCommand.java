@@ -46,7 +46,10 @@ public class ChangeRoleCommand implements Command {
             long userId = Integer.parseInt(requestContext.getParamFromJSP(Attributes.USER_ID_ATTRIBUTE));
             userService.changUserRole(userId, roleId);
             requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE, RESULT_MESSAGE_CODE);
-        } catch (DAOException | NumberFormatException e) {
+        } catch (DAOException e) {
+            logger.error(e);
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
+        } catch (NumberFormatException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
         }

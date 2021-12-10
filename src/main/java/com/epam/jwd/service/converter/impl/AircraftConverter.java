@@ -1,6 +1,7 @@
-package com.epam.jwd.service.converter;
+package com.epam.jwd.service.converter.impl;
 
 import com.epam.jwd.dao.entity.Aircraft;
+import com.epam.jwd.service.converter.Converter;
 import com.epam.jwd.service.dto.AircraftDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,6 +17,7 @@ public class AircraftConverter implements Converter<Aircraft, AircraftDTO> {
         aircraft.setProducer(aircraftDTO.getProducer());
         aircraft.setModel(aircraftDTO.getModel());
         aircraft.setRegistrationCode(aircraftDTO.getRegistrationCode());
+        aircraft.setInOperation(aircraftDTO.getInOperation());
         return aircraft;
     }
 
@@ -27,6 +29,7 @@ public class AircraftConverter implements Converter<Aircraft, AircraftDTO> {
         aircraftDTO.setProducer(aircraft.getProducer());
         aircraftDTO.setModel(aircraft.getModel());
         aircraftDTO.setRegistrationCode(aircraft.getRegistrationCode());
+        aircraftDTO.setInOperation(aircraft.getInOperation());
         return aircraftDTO;
     }
 }

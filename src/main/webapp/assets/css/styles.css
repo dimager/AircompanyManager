@@ -53,3 +53,12 @@ div.helloimage {
     width: 140px;
     text-align: center;
 }
+
+.plus {
+    color: #007bff;
+    font-weight: bold;
+}
+
+.redaircraft {
+    color: red;
+}

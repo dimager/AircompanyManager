@@ -14,6 +14,12 @@ public interface BaseDao<K, T extends Entity> {
 
     Logger logger = LogManager.getLogger(BaseDao.class);
 
+    /**
+     * asdfasdfasdfasdf
+     * @param entity
+     * @return
+     * @throws DAOException
+     */
     T save(T entity) throws DAOException;
 
     boolean update(T entity) throws DAOException;

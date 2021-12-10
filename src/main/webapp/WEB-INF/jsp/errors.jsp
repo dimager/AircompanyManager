@@ -10,3 +10,11 @@
         </button>
     </div>
 </c:forEach>
+<c:if test="${not empty requestScope.oneError}">
+    <div class="alert  alert-danger alert-dismissible fade show" role="alert">
+        <strong><fmt:message bundle="${lang}" key="errorcode.${requestScope.oneError}"/></strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</c:if>

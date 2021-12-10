@@ -5,6 +5,15 @@ import java.util.Objects;
 public class BrigadeDTO extends BaseDTO {
     private long brigadeId;
     private String brigadeName;
+    private boolean isArchived;
+
+    public boolean getIsArchived() {
+        return isArchived;
+    }
+
+    public void setIsArchived(boolean archived) {
+        isArchived = archived;
+    }
 
     public long getBrigadeId() {
         return brigadeId;
@@ -27,12 +36,12 @@ public class BrigadeDTO extends BaseDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BrigadeDTO that = (BrigadeDTO) o;
-        return brigadeId == that.brigadeId && brigadeName.equals(that.brigadeName);
+        return brigadeId == that.brigadeId && Objects.equals(brigadeName, that.brigadeName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(brigadeId, brigadeName);
+        return Objects.hash(brigadeId, brigadeName, isArchived);
     }
 
     @Override
@@ -40,6 +49,7 @@ public class BrigadeDTO extends BaseDTO {
         return "BrigadeDTO{" +
                 "brigadeId=" + brigadeId +
                 ", brigadeName='" + brigadeName + '\'' +
+                ", isArchived=" + isArchived +
                 '}';
     }
 }

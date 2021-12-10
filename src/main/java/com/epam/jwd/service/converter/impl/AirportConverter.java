@@ -1,6 +1,7 @@
-package com.epam.jwd.service.converter;
+package com.epam.jwd.service.converter.impl;
 
 import com.epam.jwd.dao.entity.Airport;
+import com.epam.jwd.service.converter.Converter;
 import com.epam.jwd.service.dto.AircraftDTO;
 import com.epam.jwd.service.dto.AirportDTO;
 

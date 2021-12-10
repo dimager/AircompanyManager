@@ -3,10 +3,10 @@ package com.epam.jwd.service.impl;
 import com.epam.jwd.dao.entity.Airport;
 import com.epam.jwd.dao.exception.DAOException;
 import com.epam.jwd.dao.impl.AirportDaoImpl;
-import com.epam.jwd.service.converter.AirportConverter;
+import com.epam.jwd.service.converter.impl.AirportConverter;
 import com.epam.jwd.service.dto.AirportDTO;
 import com.epam.jwd.service.exception.ValidatorException;
-import com.epam.jwd.service.validator.AirportValidator;
+import com.epam.jwd.service.validator.impl.AirportValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -9,7 +9,7 @@ import com.epam.jwd.dao.exception.DAOException;
 import com.epam.jwd.service.dto.FlightDTO;
 import com.epam.jwd.service.exception.ValidatorException;
 import com.epam.jwd.service.impl.FlightService;
-import com.epam.jwd.service.validator.FlightValidator;
+import com.epam.jwd.service.validator.impl.FlightValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,6 +25,7 @@ public class EditFlightCommand implements Command {
     private static final int RESULT_MESSAGE_CODE = 114;
     private static final String DATETIME_PATTERN = "MM/dd/yyyy h:mm a z";
     private static final String UTC = " UTC";
+    private static final int ERROR_CODE = 132;
 
     private static final ResponseContext ADD_EDIT_FLIGHT_COMMAND_CONTEXT = new ResponseContext() {
         @Override
@@ -69,15 +70,29 @@ public class EditFlightCommand implements Command {
                 flight.setDepartureAirportId(Integer.parseInt(requestContext.getParamFromJSP(Attributes.SELECTED_DEPARTURE_AIRPORT_FIELD_NAME)));
                 flight.setDestinationAirportId(Integer.parseInt(requestContext.getParamFromJSP(Attributes.SELECTED_DESTINATION_AIRPORT_FIELD_NAME)));
                 flight.setId(Long.parseLong(requestContext.getParamFromJSP(Attributes.EDIT_FLIGHT_ID_ATTRIBUTE)));
-                flightService.updateFlight(flight);
-                requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE, RESULT_MESSAGE_CODE);
+
+                if (flightService.findFlightById(flight.getId()).getIsArchived()) {
+                    requestContext.addAttributeToJSP(Attributes.COMMAND_ONEERROR_ATTRIBUTE,  ERROR_CODE);
+                }
+                else {
+                    flightService.updateFlight(flight);
+                    requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE, RESULT_MESSAGE_CODE);
+                }
+
             }
 
-        } catch (DateTimeParseException | DAOException | ValidatorException | NumberFormatException | NullPointerException e) {
-            e.printStackTrace();
+        } catch (DateTimeParseException e) {
             logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e);
-            requestContext.addAttributeToJSP(Attributes.AIRCRAFT_DTO_ATTRIBUTE, flight);
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
+        } catch (DAOException |  ValidatorException e) {
+            logger.error(e);
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
+        } catch (NumberFormatException e) {
+            logger.error(e);
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
+        } catch (NullPointerException e) {
+            logger.error(e);
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
         }
 
         return ADD_EDIT_FLIGHT_COMMAND_CONTEXT;

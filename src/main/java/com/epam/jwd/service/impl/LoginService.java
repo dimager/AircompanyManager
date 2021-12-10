@@ -3,7 +3,7 @@ package com.epam.jwd.service.impl;
 import com.epam.jwd.dao.entity.User;
 import com.epam.jwd.dao.exception.DAOException;
 import com.epam.jwd.dao.impl.UserDaoImpl;
-import com.epam.jwd.service.converter.UserConverter;
+import com.epam.jwd.service.converter.impl.UserConverter;
 import com.epam.jwd.service.dto.UserDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class LoginService {
     private static final Logger logger = LogManager.getLogger(LoginService.class);
-    private static final int INCORRECT_PASSWORD_MESSAGE_CODE = 121;
+    private static final int INCORRECT_PASSWORD_MESSAGE_CODE = 10;
     UserConverter userConverter = new UserConverter();
     UserDaoImpl userDAO = new UserDaoImpl();
 

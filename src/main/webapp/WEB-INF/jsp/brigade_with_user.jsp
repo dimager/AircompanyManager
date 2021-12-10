@@ -3,7 +3,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="messages" var="lang"/>
-<fmt:message bundle="${lang}" key="page.title.brigadepage" var="pagename"/>
 <fmt:message bundle="${lang}" key="tablecolumnlabel.firstname" var="colFirstName"/>
 <fmt:message bundle="${lang}" key="tablecolumnlabel.lastname" var="colLastName"/>
 <fmt:message bundle="${lang}" key="tablecolumnlabel.role" var="colRole"/>
@@ -11,16 +10,20 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="../../assets/css/styles.css"/>
-    <title>${pagename}</title>
+    <title>${pagename} ${requestScope.brigadeUserDTO.brigadeName}  </title>
     <c:import url="meta.jsp"/>
 </head>
 <body>
-<c:import url="header.jsp"/>
-<div id="login-one" class="login-one" style="padding-top: 20px; padding-bottom: 40px; height: auto">
+<c:if test="${requestScope.brigadeUserDTO.isArchived}">
+    <jsp:forward page="archive_brigade_with_user.jsp"></jsp:forward>
+</c:if>
+<div id="login-one" class="login-one" >
+    <c:import url="header.jsp"/>
+    <c:import url="exception.jsp"/>
+    <c:import url="command_result_state.jsp"/>
+    <c:import url="errors.jsp"/>
     <section class="mt-4">
-        <c:import url="exception.jsp"/>
-        <c:import url="command_result_state.jsp"/>
-        <c:import url="errors.jsp"/>
+
         <div class="row">
             <div class="col" style="padding-right: 45px;padding-left: 45px;">
                 <div class="card shadow">
@@ -70,6 +73,13 @@
                                             <a href="${showUserBrigades}">
                                                 <i class="icon ion-ios-people" style=" margin-left: 10px;"></i>
                                             </a>
+                                            <c:url value="/controller" var="showUserFlightsHistory">
+                                                <c:param name="command" value="SHOW_USER_FLIGHTS_HISTORY_PAGE"/>
+                                                <c:param name="show_user_id" value="${user.userId}"/>
+                                            </c:url>
+                                            <a href="${showUserFlightsHistory}">
+                                                <i class="icon ion-clipboard" style=" margin-left: 10px;"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -81,12 +91,14 @@
             </div>
         </div>
     </section>
+
+
     <section class="mt-4">
         <div class="row">
             <div class="col" style="padding-right: 45px;padding-left: 45px;">
                 <div class="card shadow">
                     <div class="card-header py-2">
-                        <p class="lead text-info m-0"> ${tableNameAddUser} ${requestScope.brigadeDTO.brigadeName}</p>
+                        <p class="lead text-info m-0"> ${tableNameAddUser} - ${requestScope.brigadeDTO.brigadeName}</p>
                     </div>
                     <div class="card-body">
 

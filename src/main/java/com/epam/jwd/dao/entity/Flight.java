@@ -13,6 +13,16 @@ public class Flight extends Entity {
     private String flightCallsign;
     private Timestamp departureDateTime;
 
+    private boolean isArchived;
+
+    public boolean isArchived() {
+        return isArchived;
+    }
+
+    public void setArchived(boolean archived) {
+        isArchived = archived;
+    }
+
     public long getId() {
         return id;
     }
@@ -74,12 +84,12 @@ public class Flight extends Entity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Flight flight = (Flight) o;
-        return id == flight.id && flightAircraftId == flight.flightAircraftId && brigadeId == flight.brigadeId && departureAirportId == flight.departureAirportId && destinationAirportId == flight.destinationAirportId && flightCallsign.equals(flight.flightCallsign) && departureDateTime.equals(flight.departureDateTime);
+        return id == flight.id && flightAircraftId == flight.flightAircraftId && brigadeId == flight.brigadeId && departureAirportId == flight.departureAirportId && destinationAirportId == flight.destinationAirportId && isArchived == flight.isArchived && Objects.equals(flightCallsign, flight.flightCallsign) && Objects.equals(departureDateTime, flight.departureDateTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, flightAircraftId, brigadeId, departureAirportId, destinationAirportId, flightCallsign, departureDateTime);
+        return Objects.hash(id, flightAircraftId, brigadeId, departureAirportId, destinationAirportId, flightCallsign, departureDateTime, isArchived);
     }
 
     @Override

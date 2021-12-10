@@ -11,10 +11,8 @@ import com.epam.jwd.service.impl.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class ShowUserFlightsCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ShowUserFlightsCommand.class);
@@ -51,16 +49,15 @@ public class ShowUserFlightsCommand implements Command {
             } else {
                 userDTO = (UserDTO) requestContext.getHttpSession().getAttribute(Attributes.SESSION_USER_ATTRIBUTE);
             }
-
             if (Objects.nonNull(userDTO)) {
-                List<FlightDTO> flightDTOList = userService.findUserFlights(userDTO.getUserId()).stream()
-                        .sorted(Comparator.comparing(FlightDTO::getDepartureDateTime))
-                        .collect(Collectors.toList());
+                List<FlightDTO> flightDTOList = userService.findUserFlights(userDTO.getUserId());
                 requestContext.addAttributeToJSP(Attributes.FLIGHT_DTO_LIST_ATTRIBUTE, flightDTOList);
             }
-
             requestContext.addAttributeToJSP(Attributes.USER_DTO_ATTRIBUTE, userDTO);
-        } catch (DAOException | NumberFormatException e) {
+        } catch (DAOException e) {
+            logger.error(e);
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
+        } catch (NumberFormatException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
         }

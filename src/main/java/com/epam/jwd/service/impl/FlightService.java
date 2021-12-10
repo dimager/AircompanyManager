@@ -3,10 +3,10 @@ package com.epam.jwd.service.impl;
 import com.epam.jwd.dao.entity.Flight;
 import com.epam.jwd.dao.exception.DAOException;
 import com.epam.jwd.dao.impl.FlightDaoImpl;
-import com.epam.jwd.service.converter.FlightConverter;
+import com.epam.jwd.service.converter.impl.FlightConverter;
 import com.epam.jwd.service.dto.FlightDTO;
 import com.epam.jwd.service.exception.ValidatorException;
-import com.epam.jwd.service.validator.FlightValidator;
+import com.epam.jwd.service.validator.impl.FlightValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,23 +19,10 @@ public class FlightService {
     FlightConverter flightConverter = new FlightConverter();
     FlightValidator flightValidator = new FlightValidator();
 
-
-    public FlightDTO saveFlight(FlightDTO flightDTO) throws DAOException, ValidatorException {
-        logger.debug("saveFlight method");
-        return flightConverter.convertToDTO(flightDao.save(flightConverter.convertToDAO(flightDTO)));
-    }
-
     public FlightDTO saveFlight(Flight flight) throws DAOException, ValidatorException {
-        //todo
+        flightValidator.dateTimeIsValid(flight.getDepartureDateTime());
         logger.debug("saveFlight method");
         return this.convertToDTO(flightDao.save(flight));
-    }
-
-    public boolean updateFlight(FlightDTO flightDTO) throws ValidatorException, DAOException {
-        logger.debug("updateFlight method");
-        flightValidator.isValid(flightDTO);
-        return flightDao.update(flightConverter.convertToDAO(flightDTO));
-
     }
 
     public boolean updateFlight(Flight flight) throws ValidatorException, DAOException {
@@ -43,10 +30,16 @@ public class FlightService {
         return flightDao.update(flight);
     }
 
-    public boolean updateFlightBrigade(long flightId, long brigadeId) throws ValidatorException, DAOException {
-        logger.debug("updateFlight method");
-        return flightDao.updateBrigade(flightId, brigadeId);
+    public boolean changeArchiveStatus(long flightId, boolean isArchived) throws DAOException {
+        logger.debug("changeArchiveStatus method");
+        return flightDao.changeArchiveStatus(flightId, isArchived);
     }
+
+    public boolean updateFlightBrigade(long flightId, long brigadeId) throws DAOException {
+        logger.debug("updateFlight method");
+        return flightDao.updateFlightBrigade(flightId, brigadeId);
+    }
+
 
     public List<FlightDTO> findAllFlights() throws DAOException {
         logger.debug("findAllFlights method");
@@ -100,7 +93,6 @@ public class FlightService {
             logger.debug("flight without dest airport");
             flightDTO.setDestinationAirport(null);
         }
-
         return flightDTO;
     }
 

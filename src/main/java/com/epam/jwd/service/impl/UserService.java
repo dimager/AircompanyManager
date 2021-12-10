@@ -5,8 +5,8 @@ import com.epam.jwd.dao.entity.Role;
 import com.epam.jwd.dao.entity.User;
 import com.epam.jwd.dao.exception.DAOException;
 import com.epam.jwd.dao.impl.UserDaoImpl;
-import com.epam.jwd.service.converter.BrigadeConverter;
-import com.epam.jwd.service.converter.UserConverter;
+import com.epam.jwd.service.converter.impl.BrigadeConverter;
+import com.epam.jwd.service.converter.impl.UserConverter;
 import com.epam.jwd.service.dto.BrigadeDTO;
 import com.epam.jwd.service.dto.FlightDTO;
 import com.epam.jwd.service.dto.UserDTO;
@@ -14,7 +14,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class UserService {
@@ -30,6 +32,13 @@ public class UserService {
         User user = userConverter.convertToDAO(userDTO);
         BcryptService.crypt(user);
         return userConverter.convertToDTO(userDao.save(user));
+    }
+
+    public Role getCurrentUserRole (long id) throws DAOException {
+        logger.debug("getCurrentUserRole method");
+        UserDTO userDTO = this.findById(id);
+        return userDTO.getRole();
+
     }
 
     public boolean update(UserDTO userDTO) throws DAOException {
@@ -82,11 +91,37 @@ public class UserService {
         for (Long flightId : userFlightsId) {
             userFlightDTOList.add(flightService.findFlightById(flightId));
         }
-        return userFlightDTOList;
+        return userFlightDTOList.stream()
+                .filter(flightDTO -> flightDTO.getIsArchived()==false)
+                .sorted(Comparator.comparing(FlightDTO::getDepartureDateTime))
+                .collect(Collectors.toList());
+    }
+    public List<FlightDTO> findUserFlightsHistory(Long userId) throws DAOException {
+        logger.debug("findUserFlightsHistory method");
+        List<Long> userFlightsId = userDao.getUserFlights(userId);
+        List<FlightDTO> userFlightDTOList = new ArrayList<>();
+        for (Long flightId : userFlightsId) {
+            userFlightDTOList.add(flightService.findFlightById(flightId));
+        }
+        return userFlightDTOList.stream()
+                .filter(flightDTO -> flightDTO.getIsArchived()==true)
+                .sorted(Comparator.comparing(FlightDTO::getDepartureDateTime))
+                .collect(Collectors.toList());
     }
 
-    public List<BrigadeDTO> findUserBrigades(Long userId) throws DAOException {
+    public List<BrigadeDTO> findArchivedUserBrigades(Long userId) throws DAOException {
         logger.debug("findUserBrigades method");
-        return brigadeConverter.convertToDTOList(userDao.getUserBrigades(userId));
+        return brigadeConverter.convertToDTOList(userDao.getUserBrigades(userId)).stream()
+                .filter(brigadeDTO -> brigadeDTO.getIsArchived() == true)
+                .collect(Collectors.toList());
+    }
+
+    public List<BrigadeDTO> findCurrentUserBrigades(Long userId) throws DAOException {
+        logger.debug("findUserBrigades method");
+        return findUserFlights(userId).stream()
+                .filter(flightDTO -> flightDTO.getIsArchived() == false)
+                .map(flightDTO -> flightDTO.getBrigadeDTO())
+                .distinct()
+                .collect(Collectors.toList());
     }
 }

@@ -66,7 +66,10 @@ public class ShowAddEditFlightCommand implements Command {
                 SimpleDateFormat format = new SimpleDateFormat(DATE_TIME_PATTERN);
                 requestContext.addAttributeToJSP(Attributes.FLIGHTSTIME_ATTRIBUTE,format.format(flightDTO.getDepartureDateTime()));
             }
-        } catch (DAOException | NumberFormatException e) {
+        } catch (DAOException e) {
+            logger.error(e);
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
+        } catch (NumberFormatException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
         }

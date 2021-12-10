@@ -19,14 +19,13 @@ import java.util.List;
 
 public class AirportDaoImpl implements BaseDao<Integer, Airport> {
 
-    private static final String EXCEPTION_UPDATE_ERROR_MESSAGE = "Aircraft wasn't updated in db. ";
-    private static final String EXCEPTION_SAVE_ERROR_MESSAGE = "New aircraft wasn't saved in db. ";
-    private static final String EXCEPTION_FINDALL_SQL_ERROR_MESSAGE = "Find all aircraft's. ";
-    private static final String EXCEPTION_FIND_BY_ID_ERROR_MESSAGE = "Aircraft wasn't  found. ";
-    private static final String EXCEPTION_FIND_BY_ID_SQL_ERROR_MESSAGE = "Aircraft wasn't  found. ";
-    private static final String EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE = "Aircraft wasn't deleted. ";
-    private static final String EXCEPTION_DELETE_BY_ID_SQL_ERROR_MESSAGE = "Aircraft wasn't deleted. ";
-    private static final String EXCEPTION_SQL_MESSAGE = "SQL exception";
+    private static final String EXCEPTION_UPDATE_ERROR_MESSAGE = "208";
+    private static final String EXCEPTION_SAVE_ERROR_MESSAGE = "209";
+    private static final String EXCEPTION_FINDALL_SQL_ERROR_MESSAGE = "210";
+    private static final String EXCEPTION_FIND_BY_ID_ERROR_MESSAGE = "211";
+    private static final String EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE = "213";
+    private static final String EXCEPTION_SQL_MESSAGE = "200";
+
 
     private final static Logger logger = LogManager.getLogger(AircraftDaoImpl.class);
     private final int ONE_UPDATED_ROW = 1;
@@ -53,7 +52,7 @@ public class AirportDaoImpl implements BaseDao<Integer, Airport> {
             throw new DAOException(EXCEPTION_SAVE_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_SAVE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_SAVE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
+            throw new DAOException(EXCEPTION_SAVE_ERROR_MESSAGE );
         } finally {
             CloseResultSet(resultSet);
             connectionPool.returnConnection(connection);
@@ -77,7 +76,7 @@ public class AirportDaoImpl implements BaseDao<Integer, Airport> {
             throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_UPDATE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
+            throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE );
         } finally {
             connectionPool.returnConnection(connection);
         }
@@ -102,7 +101,7 @@ public class AirportDaoImpl implements BaseDao<Integer, Airport> {
             return airports;
         } catch (SQLException e) {
             logger.error(EXCEPTION_FINDALL_SQL_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_FINDALL_SQL_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
+            throw new DAOException(EXCEPTION_FINDALL_SQL_ERROR_MESSAGE );
         } finally {
             connectionPool.returnConnection(connection);
         }
@@ -128,8 +127,8 @@ public class AirportDaoImpl implements BaseDao<Integer, Airport> {
             logger.error(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE);
             throw new DAOException(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE);
         } catch (SQLException e) {
-            logger.error(EXCEPTION_FIND_BY_ID_SQL_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_FIND_BY_ID_SQL_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
+            logger.error(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
+            throw new DAOException(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE );
         } finally {
             CloseResultSet(resultSet);
             connectionPool.returnConnection(connection);
@@ -148,8 +147,8 @@ public class AirportDaoImpl implements BaseDao<Integer, Airport> {
             logger.error(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE);
             throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE);
         } catch (SQLException e) {
-            logger.error(EXCEPTION_DELETE_BY_ID_SQL_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_DELETE_BY_ID_SQL_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
+            logger.error(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
+            throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE );
         } finally {
             connectionPool.returnConnection(connection);
         }

@@ -1,6 +1,7 @@
-package com.epam.jwd.service.converter;
+package com.epam.jwd.service.converter.impl;
 
 import com.epam.jwd.dao.entity.Brigade;
+import com.epam.jwd.service.converter.Converter;
 import com.epam.jwd.service.dto.BrigadeDTO;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class BrigadeConverter implements Converter<Brigade, BrigadeDTO> {
         BrigadeDTO brigadeDTO = new BrigadeDTO();
         brigadeDTO.setBrigadeId(brigade.getId());
         brigadeDTO.setBrigadeName(brigade.getBrigadeName());
+        brigadeDTO.setIsArchived(brigade.getIsArchived());
         return brigadeDTO;
     }
 

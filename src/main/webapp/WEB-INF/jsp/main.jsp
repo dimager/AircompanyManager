@@ -14,6 +14,9 @@
 <body>
 <div id="login-one" class="login-one">
     <c:import url="header.jsp"/>
+    <c:import url="exception.jsp"/>
+    <c:import url="command_result_state.jsp"/>
+    <c:import url="errors.jsp"/>
     <div class="container">
         <div class="row mainpage">
             <div class="col-sm helloimage">

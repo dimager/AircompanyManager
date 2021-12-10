@@ -2,9 +2,8 @@ package com.epam.jwd.service.impl;
 
 import com.epam.jwd.dao.exception.DAOException;
 import com.epam.jwd.dao.impl.UserDaoImpl;
-import com.epam.jwd.service.converter.UserConverter;
 import com.epam.jwd.service.dto.UserDTO;
-import com.epam.jwd.service.validator.UserValidator;
+import com.epam.jwd.service.validator.impl.UserValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
