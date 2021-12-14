@@ -3,9 +3,6 @@ package com.epam.jwd.service.converter.impl;
 import com.epam.jwd.dao.entity.Brigade;
 import com.epam.jwd.service.converter.Converter;
 import com.epam.jwd.service.dto.BrigadeUserDTO;
-import com.epam.jwd.service.dto.UserDTO;
-
-import java.util.List;
 public class BrigadeUserConverter implements Converter<Brigade, BrigadeUserDTO> {
     @Override
     public Brigade convertToDAO(BrigadeUserDTO brigadeUserDTO) {

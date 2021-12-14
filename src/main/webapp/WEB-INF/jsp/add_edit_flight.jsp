@@ -66,6 +66,27 @@
                    placeholder="${phcallsign}">
         </div>
         <div class="form-group">
+            <label for="exampleFormControlTextarea2">
+                ${labaldeptime}
+            </label>
+            <div class="form-group" id="exampleFormControlTextarea2">
+                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                    <input type="text" class="form-control" name="selectedDateTime"
+                            <c:if test="${not empty requestScope.flightTime}"> value="${requestScope.flightTime}" </c:if>
+                           data-target="#datetimepicker1"/>
+                    <div class="input-group-append" data-target="#datetimepicker1"
+                         data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
+            </div>
+            <script type="text/javascript">
+                $(function () {
+                    $('#datetimepicker1').datetimepicker();
+                });
+            </script>
+        </div>
+        <div class="form-group">
             <label for="exampleFormControlSelect1">
                 ${labelaircraft}
             </label>
@@ -77,8 +98,8 @@
                     ${aircraftDTO.inOperation}
                     <c:if test="${aircraftDTO.aircraftId == aircraftDTO.aircraftId and aircraftDTO.inOperation}"> selected="selected" </c:if>>
                     <c:if test="${aircraftDTO.inOperation}">
-                        <option value="${aircraftDTO.aircraftId}">
-                                ${aircraftDTO.registrationCode} ${aircraftDTO.producer} ${aircraftDTO.model}
+                        <option value="${aircraftDTO.aircraftId}" <c:if test="${requestScope.flightDTO.aircraftDTO.aircraftId == aircraftDTO.aircraftId}">selected</c:if>>
+                                ${aircraftDTO.registrationCode}-${aircraftDTO.producer}-${aircraftDTO.model}
                         </option>
                     </c:if>>
                 </c:forEach>
@@ -112,27 +133,7 @@
                 </c:forEach>
             </select>
         </div>
-        <div class="form-group">
-            <label for="exampleFormControlTextarea2">
-                ${labaldeptime}
-            </label>
-            <div class="form-group" id="exampleFormControlTextarea2">
-                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                    <input type="text" class="form-control" name="selectedDateTime"
-                            <c:if test="${not empty requestScope.flightTime}"> value="${requestScope.flightTime}" </c:if>
-                           data-target="#datetimepicker1"/>
-                    <div class="input-group-append" data-target="#datetimepicker1"
-                         data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                </div>
-            </div>
-            <script type="text/javascript">
-                $(function () {
-                    $('#datetimepicker1').datetimepicker();
-                });
-            </script>
-        </div>
+
         <c:choose>
             <c:when test="${requestScope.editpage}">
                 <input type="hidden" name="edit_flight_id" value="${requestScope.flightDTO.id}">

@@ -35,6 +35,12 @@ public class BrigadeDaoImpl implements BaseDao<Long, Brigade> {
     private final int ONE_UPDATED_ROW = 1;
     private final ConnectionPool connectionPool = ConnectionPoolImpl.getInstance();
 
+    /**
+     * Allows getting brigade`s user list.
+     * @param brigadeId - brigade id
+     * @return User List
+     * @throws DAOException throws if SQL exception
+     */
     public List<User> getBrigadeUsers(long brigadeId) throws DAOException {
         logger.debug("getBrigadeUsers method");
         List<User> users = new ArrayList<>();
@@ -59,7 +65,13 @@ public class BrigadeDaoImpl implements BaseDao<Long, Brigade> {
         }
     }
 
-
+    /**
+     * Allows adding user to brigade
+     * @param userId  user id which should be added
+     * @param brigadeId btigade id in which user should be added
+     * @return true if user was successfully added to brigade, otherwise exception
+     * @throws DAOException
+     */
     public boolean addUserToBrigade(long userId, long brigadeId) throws DAOException {
         logger.debug("addUserToBrigade method");
         Connection connection = connectionPool.requestConnection();
@@ -72,7 +84,7 @@ public class BrigadeDaoImpl implements BaseDao<Long, Brigade> {
             throw new DAOException(EXCEPTION_ADD_USER_TO_BRIGADE_EXCEPTION);
         } catch (SQLException e) {
             logger.error(EXCEPTION_ADD_USER_TO_BRIGADE_EXCEPTION + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_ADD_USER_TO_BRIGADE_EXCEPTION);
+            throw new DAOException(EXCEPTION_ADD_USER_TO_BRIGADE_EXCEPTION   + EXCEPTION_SQL_MESSAGE);
         } finally {
             connectionPool.returnConnection(connection);
         }
@@ -90,7 +102,7 @@ public class BrigadeDaoImpl implements BaseDao<Long, Brigade> {
             throw new DAOException(EXCEPTION_REMOVE_USER_FROM_BRIGADE_EXCEPTION);
         } catch (SQLException e) {
             logger.error(EXCEPTION_REMOVE_USER_FROM_BRIGADE_EXCEPTION + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_REMOVE_USER_FROM_BRIGADE_EXCEPTION );
+            throw new DAOException(EXCEPTION_REMOVE_USER_FROM_BRIGADE_EXCEPTION  + EXCEPTION_SQL_MESSAGE );
         } finally {
             connectionPool.returnConnection(connection);
         }
@@ -110,15 +122,13 @@ public class BrigadeDaoImpl implements BaseDao<Long, Brigade> {
             throw new DAOException(EXCEPTION_ARCHIVE_STATUS_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_ARCHIVE_STATUS_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_ARCHIVE_STATUS_ERROR_MESSAGE );
+            throw new DAOException(EXCEPTION_ARCHIVE_STATUS_ERROR_MESSAGE   + EXCEPTION_SQL_MESSAGE);
         } finally {
             connectionPool.returnConnection(connection);
         }
     }
 
-    public boolean changeArchiveStatus(Brigade brigade) throws DAOException {
-        return changeArchiveStatus(brigade.getId(),brigade.getIsArchived());
-    }
+
 
     /**
      * @inheritDoc
@@ -145,7 +155,7 @@ public class BrigadeDaoImpl implements BaseDao<Long, Brigade> {
             throw new DAOException(EXCEPTION_SAVE_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_SAVE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_SAVE_ERROR_MESSAGE );
+            throw new DAOException(EXCEPTION_SAVE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
         } finally {
             CloseResultSet(resultSet);
             connectionPool.returnConnection(connection);
@@ -166,7 +176,7 @@ public class BrigadeDaoImpl implements BaseDao<Long, Brigade> {
             throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_UPDATE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE );
+            throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE+ EXCEPTION_SQL_MESSAGE );
         } finally {
             connectionPool.returnConnection(connection);
         }
@@ -189,7 +199,7 @@ public class BrigadeDaoImpl implements BaseDao<Long, Brigade> {
             return brigades;
         } catch (SQLException e) {
             logger.error(EXCEPTION_FINDALL_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_FINDALL_ERROR_MESSAGE );
+            throw new DAOException(EXCEPTION_FINDALL_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
         } finally {
             connectionPool.returnConnection(connection);
         }
@@ -214,7 +224,7 @@ public class BrigadeDaoImpl implements BaseDao<Long, Brigade> {
             throw new DAOException(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE+ EXCEPTION_SQL_MESSAGE);
         } finally {
             CloseResultSet(resultSet);
             ConnectionPoolImpl.getInstance().returnConnection(connection);
@@ -234,7 +244,7 @@ public class BrigadeDaoImpl implements BaseDao<Long, Brigade> {
             throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE+ EXCEPTION_SQL_MESSAGE);
         } finally {
             connectionPool.returnConnection(connection);
         }

@@ -16,6 +16,7 @@ public class EditAirportCommand implements Command {
     private static final Command INSTANCE = new EditAirportCommand();
     private static final String EDIT_AIRPORT_JSP = "/controller?command=SHOW_AIRPORT_PAGE";
     private static final int RESULT_MESSAGE_CODE = 118;
+    private static final int PARSING_ERROR_CODE = 247;
 
     private static final ResponseContext EDIT_AIRPORT_CONTEXT = new ResponseContext() {
         @Override
@@ -41,17 +42,20 @@ public class EditAirportCommand implements Command {
         logger.debug("execute method");
         AirportService airportService = new AirportService();
         AirportDTO airportDTO = new AirportDTO();
-        airportDTO.setName(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_NAME_ATTRIBUTE).trim());
-        airportDTO.setCountry(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_COUNTRY_ATTRIBUTE).trim());
-        airportDTO.setCity(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_CITY_ATTRIBUTE).trim());
-        airportDTO.setIATACode(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_IATACODE_ATTRIBUTE).trim());
+        airportDTO.setName(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_NAME_ATTRIBUTE));
+        airportDTO.setCountry(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_COUNTRY_ATTRIBUTE));
+        airportDTO.setCity(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_CITY_ATTRIBUTE));
+        airportDTO.setIATACode(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_IATACODE_ATTRIBUTE));
         try {
             airportDTO.setId(Integer.parseInt(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_ID_ATTRIBUTE)));
             airportService.updateAirport(airportDTO);
             requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE,  RESULT_MESSAGE_CODE);
-        } catch (DAOException | ValidatorException | NumberFormatException e ) {
+        } catch (DAOException | ValidatorException e ) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
+        } catch (NumberFormatException e ) {
+            logger.error(e);
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, PARSING_ERROR_CODE);
         }
         return EDIT_AIRPORT_CONTEXT;
     }

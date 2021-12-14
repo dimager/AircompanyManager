@@ -35,8 +35,8 @@ public class UserDaoImpl implements BaseDao<Long, User> {
     private static final String EXCEPTION_FIND_USER_FLIGHTS_ERROR_MESSAGE = "238";
     private static final String EXCEPTION_UPDATE_ROLE_ERROR_MESSAGE = "242";
     private static final String EXCEPTION_FIND_USER_BRIGADES_ERROR_MESSAGE = "246";
-       private final int ONE_UPDATED_ROW = 1;
-    ConnectionPool connectionPool = ConnectionPoolImpl.getInstance();
+    private final int ONE_UPDATED_ROW = 1;
+    final ConnectionPool connectionPool = ConnectionPoolImpl.getInstance();
 
     public boolean emailInUse(String email) throws DAOException {
         logger.debug("emailInUse method");
@@ -48,7 +48,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
             return resultSet.next() && resultSet.getString(1).equals(email);
         } catch (SQLException e) {
             logger.error(EXCEPTION_EMAIL_IN_USE_EXCEPTION + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_EMAIL_IN_USE_EXCEPTION);
+            throw new DAOException(EXCEPTION_EMAIL_IN_USE_EXCEPTION + EXCEPTION_SQL_MESSAGE);
         } finally {
             CloseResultSet(resultSet);
             connectionPool.returnConnection(connection);
@@ -66,7 +66,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
             return resultSet.next() && resultSet.getString(1).equals(username);
         } catch (SQLException e) {
             logger.error(EXCEPTION_USERNAME_IN_USE_EXCEPTION + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_USERNAME_IN_USE_EXCEPTION);
+            throw new DAOException(EXCEPTION_USERNAME_IN_USE_EXCEPTION + EXCEPTION_SQL_MESSAGE);
         } finally {
             CloseResultSet(resultSet);
             connectionPool.returnConnection(connection);
@@ -91,7 +91,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
             throw new DAOException(EXCEPTION_SAVE_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_SAVE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_SAVE_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_SAVE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
         } finally {
             CloseResultSet(resultSet);
             connectionPool.returnConnection(connection);
@@ -112,7 +112,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
 
         } catch (SQLException e) {
             logger.error(EXCEPTION_UPDATE_NEW_USER_EXCEPTION + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_UPDATE_NEW_USER_EXCEPTION);
+            throw new DAOException(EXCEPTION_UPDATE_NEW_USER_EXCEPTION + EXCEPTION_SQL_MESSAGE);
         } finally {
             connectionPool.returnConnection(connection);
         }
@@ -133,7 +133,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
             return users;
         } catch (SQLException e) {
             logger.error(EXCEPTION_FINDALL_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_FINDALL_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_FINDALL_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
         } finally {
             connectionPool.returnConnection(connection);
         }
@@ -158,7 +158,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
             return users;
         } catch (SQLException e) {
             logger.error(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
         } finally {
             CloseResultSet(resultSet);
             ConnectionPoolImpl.getInstance().returnConnection(connection);
@@ -183,7 +183,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
             return users;
         } catch (SQLException e) {
             logger.error(EXCEPTION_GET_FREE_USERS_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_GET_FREE_USERS_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_GET_FREE_USERS_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
         } finally {
             ConnectionPoolImpl.getInstance().returnConnection(connection);
         }
@@ -202,7 +202,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
             throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
         } finally {
             connectionPool.returnConnection(connection);
         }
@@ -222,7 +222,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
             return flightsIds;
         } catch (SQLException e) {
             logger.error(EXCEPTION_FIND_USER_FLIGHTS_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_FIND_USER_FLIGHTS_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_FIND_USER_FLIGHTS_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
         } finally {
             CloseResultSet(resultSet);
             ConnectionPoolImpl.getInstance().returnConnection(connection);
@@ -247,7 +247,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
             return userBrigades;
         } catch (SQLException e) {
             logger.error(EXCEPTION_FIND_USER_BRIGADES_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_FIND_USER_BRIGADES_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_FIND_USER_BRIGADES_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
         } finally {
             CloseResultSet(resultSet);
             ConnectionPoolImpl.getInstance().returnConnection(connection);
@@ -294,7 +294,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
             return user;
         } catch (SQLException e) {
             logger.error(EXCEPTION_FIND_BY_USERNAME_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_FIND_BY_USERNAME_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_FIND_BY_USERNAME_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
         } finally {
             CloseResultSet(resultSet);
             ConnectionPoolImpl.getInstance().returnConnection(connection);
@@ -314,7 +314,7 @@ public class UserDaoImpl implements BaseDao<Long, User> {
             throw new DAOException(EXCEPTION_UPDATE_ROLE_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_UPDATE_ROLE_ERROR_MESSAGE, e);
-            throw new DAOException(EXCEPTION_UPDATE_ROLE_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_UPDATE_ROLE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
         } finally {
             connectionPool.returnConnection(connection);
         }

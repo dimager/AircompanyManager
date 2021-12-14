@@ -14,6 +14,7 @@ public class ChangeRoleCommand implements Command {
     private static final Command INSTANCE = new ChangeRoleCommand();
     private static final String ALL_USERS_JSP = "/controller?command=SHOW_ALL_USERS";
     private static final int RESULT_MESSAGE_CODE = 116;
+    private static final int PARSING_ERROR_CODE = 247;
     private static final ResponseContext CHANGE_ROLE_PAGE_CONTEXT = new ResponseContext() {
         @Override
         public String getPage() {
@@ -33,10 +34,6 @@ public class ChangeRoleCommand implements Command {
         return INSTANCE;
     }
 
-    public String getPage() {
-        return ALL_USERS_JSP;
-    }
-
     @Override
     public ResponseContext execute(RequestContext requestContext) {
         logger.debug("execute method");
@@ -49,9 +46,9 @@ public class ChangeRoleCommand implements Command {
         } catch (DAOException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
-        } catch (NumberFormatException e) {
+        }  catch (NumberFormatException e) {
             logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, PARSING_ERROR_CODE);
         }
         return CHANGE_ROLE_PAGE_CONTEXT;
     }

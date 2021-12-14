@@ -4,7 +4,6 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
@@ -18,6 +17,10 @@ public class DataSourceFactory {
     private DataSourceFactory() {
     }
 
+    /**
+     * Read data from property file.
+     * @return MySqlDataSource with read data.
+     */
     public static MysqlDataSource getMysqlProperties() {
         logger.debug("getMysqlProperties method");
         if (Objects.isNull(mysqlProperties))

@@ -24,6 +24,7 @@ public class ShowAddEditFlightCommand implements Command {
     public static final String FLIGHT_JSP = "/WEB-INF/jsp/add_edit_flight.jsp";
     private static final Logger logger = LogManager.getLogger(ShowAddEditFlightCommand.class);
     private static final Command INSTANCE = new ShowAddEditFlightCommand();
+    private static final int PARSING_ERROR_CODE = 247;
     private static final String DATE_TIME_PATTERN = "MM/dd/yyyy h:mm a";
     private static final ResponseContext SHOW_ADD_EDIT_FLIGHT_COMMAND_CONTEXT = new ResponseContext() {
         @Override
@@ -58,9 +59,10 @@ public class ShowAddEditFlightCommand implements Command {
             requestContext.addAttributeToJSP(Attributes.AIRCRAFT_DTO_LIST_ATTRIBUTE, aircraftDTOList);
             requestContext.addAttributeToJSP(Attributes.BRIGADE_DTO_LIST_ATTRIBUTE, brigadeDTOList);
             requestContext.addAttributeToJSP(Attributes.AIRPORTS_DTO_LIST_ATTRIBUTE, airportDTOList);
-            if (Objects.nonNull(requestContext.getParamFromJSP(Attributes.EDIT_FLIGHT_ID_ATTRIBUTE))) {
+            String flightId = requestContext.getParamFromJSP(Attributes.EDIT_FLIGHT_ID_ATTRIBUTE);
+            if (Objects.nonNull(flightId)) {
                 requestContext.addAttributeToJSP(Attributes.EDIT_PAGE_BOOLEAN_ATTRIBUTE, true);
-                long id = Long.parseLong(requestContext.getParamFromJSP(Attributes.EDIT_FLIGHT_ID_ATTRIBUTE));
+                long id = Long.parseLong(flightId);
                 FlightDTO flightDTO = flightService.findFlightById(id);
                 requestContext.addAttributeToJSP(Attributes.FLIGHT_DTO_ATTRIBUTE, flightDTO);
                 SimpleDateFormat format = new SimpleDateFormat(DATE_TIME_PATTERN);
@@ -69,9 +71,9 @@ public class ShowAddEditFlightCommand implements Command {
         } catch (DAOException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
-        } catch (NumberFormatException e) {
+        }  catch (NumberFormatException e) {
             logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, PARSING_ERROR_CODE);
         }
 
         return SHOW_ADD_EDIT_FLIGHT_COMMAND_CONTEXT;

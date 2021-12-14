@@ -42,20 +42,21 @@ public class AddAircraftCommand implements Command {
         logger.debug("execute method");
         AircraftService aircraftService = new AircraftService();
         AircraftDTO aircraftDTO = new AircraftDTO();
-        aircraftDTO.setProducer(requestContext.getParamFromJSP(Attributes.AIRCRAFT_PRODUCER_ATTRIBUTE).trim());
-        aircraftDTO.setModel(requestContext.getParamFromJSP(Attributes.AIRCRAFT_MODEL_ATTRIBUTE).trim());
-        aircraftDTO.setRegistrationCode(requestContext.getParamFromJSP(Attributes.REG_CODE_ATTRIBUTE).trim());
-
+        String producer = requestContext.getParamFromJSP(Attributes.AIRCRAFT_PRODUCER_ATTRIBUTE);
+        String model = requestContext.getParamFromJSP(Attributes.AIRCRAFT_MODEL_ATTRIBUTE);
+        String registrationCode = requestContext.getParamFromJSP(Attributes.AIRCRAFT_MODEL_ATTRIBUTE);
+        aircraftDTO.setProducer(producer);
+        aircraftDTO.setModel(model);
+        aircraftDTO.setRegistrationCode(registrationCode);
+        aircraftDTO.setInOperation(true);
         try {
             aircraftService.saveAircraft(aircraftDTO);
-            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE,  RESULT_MESSAGE_CODE);
-        } catch (DAOException e) {
-            logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
-        } catch (ValidatorException e) {
+            requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE, RESULT_MESSAGE_CODE);
+        } catch (DAOException | ValidatorException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
         }
+
         return ADD_AIRCRAFT_PAGE_CONTEXT;
     }
 }

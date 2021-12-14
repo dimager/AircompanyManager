@@ -16,7 +16,7 @@ public class FlightValidator implements Validator<FlightDTO> {
     private static final String DATE_TIME_IS_NOT_VALID_ERROR_MESSAGE_CODE = "241";
     private static final String ERROR_MESSAGE_CODE = "242";
 
-    public boolean dateTimeIsValid(Timestamp departureTimestamp) throws ValidatorException {
+    private boolean dateTimeIsValid(Timestamp departureTimestamp) throws ValidatorException {
         logger.debug("dateTimeIsValid method");
         Timestamp timestamp = Timestamp.from(ZonedDateTime.now().toInstant());
         if (departureTimestamp.getTime() > timestamp.getTime()) {
@@ -30,7 +30,8 @@ public class FlightValidator implements Validator<FlightDTO> {
     public boolean isValid(FlightDTO flightDTO) throws ValidatorException {
         logger.debug("isValid method");
         if (flightDTO.getFlightCallsign().length() >= MIN_LENGTH &&
-                flightDTO.getFlightCallsign().length() <= MAX_LENGTH) {
+                flightDTO.getFlightCallsign().length() <= MAX_LENGTH &&
+                this.dateTimeIsValid(flightDTO.getDepartureDateTime())) {
             return true;
         } else {
             logger.error(ERROR_MESSAGE_CODE);

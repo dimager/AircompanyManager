@@ -35,6 +35,7 @@ public class SetLocaleCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
+        logger.debug("execute method");
         PAGE = "/controller";
         HttpServletRequest servletRequest = requestContext.getHttpServletRequest();
         String returnUrl = requestContext.getParamFromJSP(Attributes.RETURN_PAGE_ATTRIBUTE);

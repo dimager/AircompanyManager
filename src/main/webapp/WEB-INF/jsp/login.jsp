@@ -42,9 +42,9 @@
                         <div><h3 id="heading"> ${labellogin} ${companyName}</h3></div>
                         <div>
                             <label class="inputlabel">${labelUsername}</label>
-                            <input class="form-control" minlength="1" maxlength="50" name="username" pattern="[A-Za-z0-9]+" placeholder="<fmt:message bundle="${lang}" key="label.username"/>">
+                            <input class="form-control" maxlength="50" name="username" placeholder="<fmt:message bundle="${lang}" key="label.username"/>">
                             <label class="inputlabel"> ${labelPassword}</label>
-                            <input class="form-control" minlength="8" maxlength="50" type="password" name="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" placeholder="${labelPassword}">
+                            <input class="form-control"  maxlength="50" type="password" name="password"  placeholder="${labelPassword}">
                         </div>
                         <div class="btn1">
                             <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">

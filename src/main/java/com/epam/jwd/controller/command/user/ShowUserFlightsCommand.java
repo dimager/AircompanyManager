@@ -18,7 +18,10 @@ public class ShowUserFlightsCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ShowUserFlightsCommand.class);
     private static final Command INSTANCE = new ShowUserFlightsCommand();
     private static final String USER_FLIGHTS_JSP = "/WEB-INF/jsp/userflights.jsp";
+    private static final int PARSING_ERROR_CODE = 247;
+
     private static final ResponseContext SHOW_USER_FLIGHTS_PAGE_CONTEXT = new ResponseContext() {
+
         @Override
         public String getPage() {
             return USER_FLIGHTS_JSP;
@@ -59,7 +62,7 @@ public class ShowUserFlightsCommand implements Command {
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
         } catch (NumberFormatException e) {
             logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, PARSING_ERROR_CODE);
         }
 
         return SHOW_USER_FLIGHTS_PAGE_CONTEXT;

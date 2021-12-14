@@ -11,6 +11,7 @@
 <fmt:message bundle="${lang}" key="buttonname.changerole" var="changerole"/>
 <fmt:message bundle="${lang}" key="buttonname.close" var="close"/>
 <fmt:message bundle="${lang}" key="pagename.allusers" var="pagename"/>
+<fmt:message bundle="${lang}" key="tablecolumnlabel.username" var="username"/>
 <html>
 <head>
     <title>${pagename}</title>
@@ -39,6 +40,7 @@
                                     <th>${lastname}</th>
                                     <th>${email}</th>
                                     <th>${rolecol}</th>
+                                    <th>${username}</th>
                                     <c:if test="${sessionScope.loggedinUser.role == Role_ADMIN}">
                                         <th></th>
                                     </c:if>
@@ -54,10 +56,11 @@
                                         <td>${user.lastName}</td>
                                         <td><a href="mailto:${user.email}">${user.email}</a></td>
                                         <td><fmt:message bundle="${lang}" key="rolename.${user.role.roleId}"/></td>
+                                        <td>${user.username}</td>
                                         <c:if test="${sessionScope.loggedinUser.role == Role_ADMIN}">
                                             <td class="icons">
                                                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalLong${user.userId}">
-                                                    ${changerole}
+                                                        ${changerole}
                                                 </button>
                                             </td>
                                         </c:if>
@@ -93,7 +96,7 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="exampleModalLongTitle${user.userId}">
-                                                       ${changerole}
+                                                            ${changerole}
                                                     </h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>

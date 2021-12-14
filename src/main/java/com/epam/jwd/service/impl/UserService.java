@@ -21,11 +21,18 @@ import java.util.stream.Collectors;
 
 public class UserService {
     private static final Logger logger = LogManager.getLogger(UserService.class);
-    UserDaoImpl userDao = new UserDaoImpl();
-    FlightService flightService = new FlightService();
-    UserConverter userConverter = new UserConverter();
-    BrigadeConverter brigadeConverter = new BrigadeConverter();
+    private final  UserDaoImpl userDao = new UserDaoImpl();
+    private final FlightService flightService = new FlightService();
+    private final UserConverter userConverter = new UserConverter();
+    private final  BrigadeConverter brigadeConverter = new BrigadeConverter();
 
+
+    /**
+     * Allows saving user to DB
+     * @param userDTO new userDTO
+     * @return UserDTO with generated id or exception
+     * @throws DAOException
+     */
     public UserDTO save(UserDTO userDTO) throws DAOException {
         logger.debug("save method");
         userDTO.setRole(Role.GUEST);
@@ -34,6 +41,12 @@ public class UserService {
         return userConverter.convertToDTO(userDao.save(user));
     }
 
+    /**
+     * Allows getting user`s role by id
+     * @param id user id
+     * @return User Role.
+     * @throws DAOException
+     */
     public Role getCurrentUserRole (long id) throws DAOException {
         logger.debug("getCurrentUserRole method");
         UserDTO userDTO = this.findById(id);
@@ -41,6 +54,12 @@ public class UserService {
 
     }
 
+    /**
+     * Allows updating user in DB.
+     * @param userDTO userDTO with new data.
+     * @return true if user was updated or exception
+     * @throws DAOException
+     */
     public boolean update(UserDTO userDTO) throws DAOException {
         logger.debug("update method");
         User user = userConverter.convertToDAO(userDTO);
@@ -48,42 +67,69 @@ public class UserService {
         return userDao.update(user);
     }
 
-    public UserDTO findById(UserDTO userDTO) throws DAOException {
-        logger.debug("findById method");
-        return this.findById(userDTO.getUserId());
-    }
-
-    public List<UserDTO> findAllWorkers() throws DAOException {
-        logger.debug("findAllWorkers method");
-        return userConverter.convertWorkerUsersListToDTO(userDao.findAll());
-    }
-
-    public List<UserDTO> findFreeWorkers(long brigadeId) throws DAOException {
-        logger.debug("findFreeWorkers method");
+    /**
+     * Allows getting list of users which are not in brigade.
+     * @param brigadeId brigade id
+     * @return list of users which are not in brigade.
+     * @throws DAOException
+     */
+    public List<UserDTO> findFreeUsers(long brigadeId) throws DAOException {
+        logger.debug("findFreeUsers method");
         return userConverter.convertWorkerUsersListToDTO(userDao.getBrigadeFreeUsers(brigadeId));
     }
 
 
+    /**
+     * Allows getting all users in DB.
+     * @return List of UserDTO
+     * @throws DAOException
+     */
     public List<UserDTO> findAll() throws DAOException {
         logger.debug("findAll method");
         return userConverter.convertAllUsersListToDTO(userDao.findAll());
     }
 
+
+    /**
+     * Allows finding user by id
+     * @param userId user id
+     * @return userDTO or if user wasn't found exception
+     * @throws DAOException
+     */
     public UserDTO findById(long userId) throws DAOException {
         logger.debug("findById method");
         return userConverter.convertToDTO(userDao.findById(userId));
     }
 
+    /**
+     * Allows deleting user from DB by id.
+     * @param userId user id
+     * @return true or if user wasn't deleted exception
+     * @throws DAOException
+     */
     public boolean deleteById(long userId) throws DAOException {
         logger.debug("deleteById method");
         return userDao.deleteById(userId);
     }
 
+    /**
+     * Allows changing user role
+     * @param userId user id
+     * @param roleId new role
+     * @return true or if role wasn't changed exception
+     * @throws DAOException
+     */
     public boolean changUserRole(long userId, int roleId) throws DAOException {
         logger.debug("changUserRole method");
         return userDao.updateRole(userId, roleId);
     }
 
+    /**
+     * Allows finding user`s flights
+     * @param userId
+     * @return List of user flights
+     * @throws DAOException
+     */
     public List<FlightDTO> findUserFlights(Long userId) throws DAOException {
         logger.debug("findUserFlights method");
         List<Long> userFlightsId = userDao.getUserFlights(userId);
@@ -92,10 +138,17 @@ public class UserService {
             userFlightDTOList.add(flightService.findFlightById(flightId));
         }
         return userFlightDTOList.stream()
-                .filter(flightDTO -> flightDTO.getIsArchived()==false)
+                .filter(flightDTO -> !flightDTO.getIsArchived())
                 .sorted(Comparator.comparing(FlightDTO::getDepartureDateTime))
                 .collect(Collectors.toList());
     }
+
+    /**
+     * Allows find user history flights.
+     * @param userId user id
+     * @return List of history flights
+     * @throws DAOException
+     */
     public List<FlightDTO> findUserFlightsHistory(Long userId) throws DAOException {
         logger.debug("findUserFlightsHistory method");
         List<Long> userFlightsId = userDao.getUserFlights(userId);
@@ -104,23 +157,36 @@ public class UserService {
             userFlightDTOList.add(flightService.findFlightById(flightId));
         }
         return userFlightDTOList.stream()
-                .filter(flightDTO -> flightDTO.getIsArchived()==true)
+                .filter(flightDTO -> flightDTO.getIsArchived())
                 .sorted(Comparator.comparing(FlightDTO::getDepartureDateTime))
                 .collect(Collectors.toList());
     }
 
+
+    /**
+     * Allows finding archived user brigades.
+     * @param userId user id
+     * @return List of  archived brigades.
+     * @throws DAOException
+     */
     public List<BrigadeDTO> findArchivedUserBrigades(Long userId) throws DAOException {
         logger.debug("findUserBrigades method");
         return brigadeConverter.convertToDTOList(userDao.getUserBrigades(userId)).stream()
-                .filter(brigadeDTO -> brigadeDTO.getIsArchived() == true)
+                .filter(brigadeDTO -> brigadeDTO.getIsArchived())
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Allows finding current user brigades.
+     * @param userId user id
+     * @return List of brigades.
+     * @throws DAOException
+     */
     public List<BrigadeDTO> findCurrentUserBrigades(Long userId) throws DAOException {
         logger.debug("findUserBrigades method");
         return findUserFlights(userId).stream()
-                .filter(flightDTO -> flightDTO.getIsArchived() == false)
-                .map(flightDTO -> flightDTO.getBrigadeDTO())
+                .filter(flightDTO -> !flightDTO.getIsArchived())
+                .map(FlightDTO::getBrigadeDTO)
                 .distinct()
                 .collect(Collectors.toList());
     }

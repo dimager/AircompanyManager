@@ -1,7 +1,6 @@
 package com.epam.jwd.dao.entity;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Flight extends Entity {

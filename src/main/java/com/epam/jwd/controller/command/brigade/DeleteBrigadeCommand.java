@@ -6,7 +6,6 @@ import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.dao.exception.DAOException;
 import com.epam.jwd.service.impl.BrigadeService;
-import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,6 +16,7 @@ public class DeleteBrigadeCommand implements Command {
     private static final String DELETE_AIRCRAFT_ID_ATTRIBUTE = "delete_brigade_id";
     private static final int RESULT_MESSAGE_CODE = 108;
     private static final int ERROR_CODE = 131;
+    private static final int PARSING_ERROR_CODE = 247;
 
     private static final ResponseContext DELETE_BRIGADES_PAGE_CONTEXT = new ResponseContext() {
         @Override
@@ -52,9 +52,13 @@ public class DeleteBrigadeCommand implements Command {
                 requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE,  RESULT_MESSAGE_CODE);
 
             }
-        } catch (DAOException | NumberFormatException e) {
+        } catch (DAOException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
+
+        } catch (NumberFormatException e) {
+            logger.error(e);
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, PARSING_ERROR_CODE);
 
         }
         return DELETE_BRIGADES_PAGE_CONTEXT;

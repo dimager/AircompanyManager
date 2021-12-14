@@ -4,7 +4,6 @@ import com.epam.jwd.dao.BaseDao;
 import com.epam.jwd.dao.SQLQueries;
 import com.epam.jwd.dao.connectionpool.ConnectionPool;
 import com.epam.jwd.dao.connectionpool.impl.ConnectionPoolImpl;
-import com.epam.jwd.dao.entity.Brigade;
 import com.epam.jwd.dao.entity.Flight;
 import com.epam.jwd.dao.exception.DAOException;
 import org.apache.logging.log4j.LogManager;
@@ -48,7 +47,7 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
             throw new DAOException(EXCEPTION_ARCHIVE_STATUS_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_ARCHIVE_STATUS_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_ARCHIVE_STATUS_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_ARCHIVE_STATUS_ERROR_MESSAGE+ EXCEPTION_SQL_MESSAGE);
         } finally {
             connectionPool.returnConnection(connection);
         }
@@ -72,7 +71,7 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
             throw new DAOException(EXCEPTION_SAVE_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_SAVE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_SAVE_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_SAVE_ERROR_MESSAGE+ EXCEPTION_SQL_MESSAGE);
         } finally {
             CloseResultSet(resultSet);
             connectionPool.returnConnection(connection);
@@ -93,7 +92,7 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
             throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_UPDATE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE+ EXCEPTION_SQL_MESSAGE);
         } finally {
             connectionPool.returnConnection(connection);
         }
@@ -114,7 +113,7 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
             return flights;
         } catch (SQLException e) {
             logger.error(EXCEPTION_FINDALL_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_FINDALL_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_FINDALL_ERROR_MESSAGE+ EXCEPTION_SQL_MESSAGE);
         } finally {
             connectionPool.returnConnection(connection);
         }
@@ -137,7 +136,7 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
             throw new DAOException(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE  + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE+ EXCEPTION_SQL_MESSAGE);
         } finally {
             CloseResultSet(resultSet);
             ConnectionPoolImpl.getInstance().returnConnection(connection);
@@ -157,7 +156,7 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
             throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE );
+            throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
         } finally {
             connectionPool.returnConnection(connection);
         }
@@ -176,7 +175,7 @@ public class FlightDaoImpl implements BaseDao<Long, Flight> {
             throw new DAOException(EXCEPTION_UPDATE_FLIGHT_BRIGADE_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_UPDATE_FLIGHT_BRIGADE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_UPDATE_FLIGHT_BRIGADE_ERROR_MESSAGE );
+            throw new DAOException(EXCEPTION_UPDATE_FLIGHT_BRIGADE_ERROR_MESSAGE+ EXCEPTION_SQL_MESSAGE );
         } finally {
             connectionPool.returnConnection(connection);
         }

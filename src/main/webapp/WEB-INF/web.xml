@@ -19,6 +19,9 @@
             <trim-directive-whitespaces>true</trim-directive-whitespaces>
         </jsp-property-group>
     </jsp-config>
+   <error-page>
+        <location>/WEB-INF/jsp/errorpage.jsp</location>
+    </error-page>
 
 </web-app>
 

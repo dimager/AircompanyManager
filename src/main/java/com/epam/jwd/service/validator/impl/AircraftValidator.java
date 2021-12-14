@@ -6,6 +6,8 @@ import com.epam.jwd.service.validator.Validator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Objects;
+
 public class AircraftValidator implements Validator<AircraftDTO> {
     private static final Logger logger = LogManager.getLogger(AircraftValidator.class);
     private static final int MAX_LENGTH = 50;
@@ -17,14 +19,17 @@ public class AircraftValidator implements Validator<AircraftDTO> {
     @Override
     public boolean isValid(AircraftDTO aircraftDTO) throws ValidatorException {
         logger.debug("isValid method");
-        if (aircraftDTO.getProducer().length() <= MAX_LENGTH
+        if (Objects.nonNull(aircraftDTO.getProducer())
+                && Objects.nonNull(aircraftDTO.getModel())
+                && Objects.nonNull(aircraftDTO.getRegistrationCode())
+                && aircraftDTO.getProducer().length() <= MAX_LENGTH
                 && aircraftDTO.getModel().length() <= MAX_LENGTH
                 && aircraftDTO.getRegistrationCode().length() <= MAX_REGCODE_LENGTH
                 && aircraftDTO.getProducer().length() >= MIN_LENGTH
                 && aircraftDTO.getModel().length() >= MIN_LENGTH &&
                 aircraftDTO.getRegistrationCode().length() >= MIN_LENGTH) {
             return true;
-        } else {
+        } else{
             logger.error(VALIDATOR_EXCEPTION_MESSAGE);
             throw new ValidatorException(VALIDATOR_EXCEPTION_MESSAGE);
         }

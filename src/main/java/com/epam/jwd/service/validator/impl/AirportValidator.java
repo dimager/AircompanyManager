@@ -6,6 +6,8 @@ import com.epam.jwd.service.validator.Validator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Objects;
+
 public class AirportValidator implements Validator<AirportDTO> {
     private static final Logger logger = LogManager.getLogger(AirportValidator.class);
     private static final int MIN_LENGTH = 1;
@@ -16,7 +18,11 @@ public class AirportValidator implements Validator<AirportDTO> {
     @Override
     public boolean isValid(AirportDTO airportDTO) throws ValidatorException {
         logger.debug("isValid method");
-        if (airportDTO.getName().length() >= MIN_LENGTH &&
+        if (Objects.nonNull(airportDTO.getName()) &&
+                Objects.nonNull(airportDTO.getCountry()) &&
+                Objects.nonNull(airportDTO.getCity()) &&
+                Objects.nonNull(airportDTO.getIATACode()) &&
+                airportDTO.getName().length() >= MIN_LENGTH &&
                 airportDTO.getName().length() <= MAX_LENGTH &&
                 airportDTO.getCity().length() >= MIN_LENGTH &&
                 airportDTO.getCity().length() <= MAX_LENGTH &&

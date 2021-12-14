@@ -52,7 +52,7 @@ public class AirportDaoImpl implements BaseDao<Integer, Airport> {
             throw new DAOException(EXCEPTION_SAVE_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_SAVE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_SAVE_ERROR_MESSAGE );
+            throw new DAOException(EXCEPTION_SAVE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
         } finally {
             CloseResultSet(resultSet);
             connectionPool.returnConnection(connection);
@@ -76,7 +76,7 @@ public class AirportDaoImpl implements BaseDao<Integer, Airport> {
             throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_UPDATE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE );
+            throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE  + EXCEPTION_SQL_MESSAGE);
         } finally {
             connectionPool.returnConnection(connection);
         }
@@ -101,7 +101,7 @@ public class AirportDaoImpl implements BaseDao<Integer, Airport> {
             return airports;
         } catch (SQLException e) {
             logger.error(EXCEPTION_FINDALL_SQL_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_FINDALL_SQL_ERROR_MESSAGE );
+            throw new DAOException(EXCEPTION_FINDALL_SQL_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
         } finally {
             connectionPool.returnConnection(connection);
         }
@@ -128,7 +128,7 @@ public class AirportDaoImpl implements BaseDao<Integer, Airport> {
             throw new DAOException(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE );
+            throw new DAOException(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
         } finally {
             CloseResultSet(resultSet);
             connectionPool.returnConnection(connection);
@@ -141,14 +141,14 @@ public class AirportDaoImpl implements BaseDao<Integer, Airport> {
         Connection connection = connectionPool.requestConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQLQueries.SQL_AIRPORTS_DELETE_BY_ID)) {
             preparedStatement.setLong(1, id);
-            if (preparedStatement.executeUpdate() == ONE_UPDATED_ROW){
+            if (preparedStatement.executeUpdate() == ONE_UPDATED_ROW) {
                 return true;
             }
             logger.error(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE);
             throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE );
+            throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE);
         } finally {
             connectionPool.returnConnection(connection);
         }

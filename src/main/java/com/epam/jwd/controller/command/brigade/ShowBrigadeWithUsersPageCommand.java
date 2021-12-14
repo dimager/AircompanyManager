@@ -19,6 +19,7 @@ public class ShowBrigadeWithUsersPageCommand implements Command {
     private static final String BRIGADE_ID_ATTRIBUTE = "brigade_id";
     private static final Command INSTANCE = new ShowBrigadeWithUsersPageCommand();
     private static final String BRIGADES_USERS_JSP = "/WEB-INF/jsp/brigade_with_user.jsp";
+    private static final int PARSING_ERROR_CODE = 247;
     private static final ResponseContext SHOW_BRIGADES_USERS_PAGE_CONTEXT = new ResponseContext() {
         @Override
         public String getPage() {
@@ -50,10 +51,13 @@ public class ShowBrigadeWithUsersPageCommand implements Command {
             BrigadeUserDTO brigadeUserDTO = brigadeService.getBrigadeWithUsers(brigadeDTO);
             requestContext.addAttributeToJSP(BRIGADE_WITH_USERS_DTO_ATTRIBUTE, brigadeUserDTO);
             requestContext.addAttributeToJSP(Attributes.BRIGADE_DTO_ATTRIBUTE, brigadeDTO);
-            requestContext.addAttributeToJSP(Attributes.USER_DTO_LIST_ATTRIBUTE, userService.findFreeWorkers(brigadeDTO.getBrigadeId()));
-        } catch (DAOException | NumberFormatException e) {
+            requestContext.addAttributeToJSP(Attributes.USER_DTO_LIST_ATTRIBUTE, userService.findFreeUsers(brigadeDTO.getBrigadeId()));
+        } catch (DAOException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
+        }  catch (NumberFormatException e) {
+            logger.error(e);
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, PARSING_ERROR_CODE);
         }
         return SHOW_BRIGADES_USERS_PAGE_CONTEXT;
     }

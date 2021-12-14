@@ -5,7 +5,6 @@ import com.epam.jwd.controller.command.Command;
 import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.dao.exception.DAOException;
-
 import com.epam.jwd.service.dto.BrigadeDTO;
 import com.epam.jwd.service.impl.BrigadeService;
 import org.apache.logging.log4j.LogManager;
@@ -17,6 +16,7 @@ public class AddUserToBrigadeCommand implements Command {
     private static  String ADD_USER_TO_BRIGADE_JSP = "/controller?command=SHOW_BRIGADE_WITH_USERS_PAGE";
     private static final int ERROR_CODE = 129;
     private static final int RESULT_MESSAGE_CODE = 107;
+    private static final int PARSING_ERROR_CODE = 247;
 
     private static final ResponseContext ADD_BRIGADES_PAGE_CONTEXT = new ResponseContext() {
         @Override
@@ -52,7 +52,10 @@ public class AddUserToBrigadeCommand implements Command {
                 requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE,  RESULT_MESSAGE_CODE);
             }
             ADD_USER_TO_BRIGADE_JSP="/controller?command=SHOW_BRIGADE_WITH_USERS_PAGE&brigade_id="+brigadeId;
-        } catch (NumberFormatException | DAOException e) {
+        } catch (NumberFormatException e) {
+            logger.error(e);
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE,PARSING_ERROR_CODE );
+        } catch (DAOException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
         }

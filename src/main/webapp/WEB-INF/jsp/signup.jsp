@@ -45,14 +45,16 @@
                 <div>
                     <input type="hidden" name="command" value="SIGNUP">
                     <label class="inputlabel">${labelUsername}</label>
-                    <input class="form-control" minlength="1" maxlength="50" type="text" name="username" pattern="[A-Za-z0-9]+" placeholder="${phUsername}">
+                    <input class="form-control" minlength="1" maxlength="50" type="text" name="username" pattern="[A-Za-z0-9]+" placeholder="${phUsername}" value="${requestScope.userDTO.username}">
                     <p class="signuptip">${userHint}</p>
                     <label class="inputlabel">${labelFirstName}</label>
-                    <input class="form-control" minlength="1" maxlength="50" type="text" name="firstname" pattern="[A-Za-z0-9]+" placeholder="${phFirstname}">
+                    <input class="form-control" minlength="1" maxlength="50" type="text" name="firstname" pattern="[A-Za-z0-9]+" placeholder="${phFirstname}" value="${requestScope.userDTO.firstName}">
+                    <p class="signuptip">${userHint}</p>
                     <label class="inputlabel">${labelLastName}</label>
-                    <input class="form-control" minlength="1" maxlength="50" type="text" name="lastname" pattern="[A-Za-z0-9]+" placeholder="${phLastName}">
+                    <input class="form-control" minlength="1" maxlength="50" type="text" name="lastname" pattern="[A-Za-z0-9]+" placeholder="${phLastName}"  value="${requestScope.userDTO.lastName}">
+                    <p class="signuptip">${userHint}</p>
                     <label class="inputlabel">${labelEmail}</label>
-                    <input class="form-control" minlength="1" maxlength="320" type="email" name="email" pattern="^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$" placeholder="${phEmail}">
+                    <input class="form-control" minlength="1" maxlength="320" type="email" name="email" pattern="^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$" placeholder="${phEmail}" value="${requestScope.userDTO.email}">
                     <label class="inputlabel">${labelPassword}</label>
                     <input class="form-control" minlength="8" maxlength="50" type="password" name="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" placeholder="${phPassword}">
                     <p class="signuptip">${passwordHint}</p>

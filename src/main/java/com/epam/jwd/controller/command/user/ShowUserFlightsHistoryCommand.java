@@ -17,6 +17,7 @@ import java.util.Objects;
 public class ShowUserFlightsHistoryCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ShowUserFlightsHistoryCommand.class);
     private static final Command INSTANCE = new ShowUserFlightsHistoryCommand();
+    private static final int PARSING_ERROR_CODE = 247;
     private static final String USER_FLIGHTS_JSP = "/WEB-INF/jsp/userflightshistory.jsp";
     private static final ResponseContext SHOW_USER_FLIGHTS_PAGE_CONTEXT = new ResponseContext() {
         @Override
@@ -56,9 +57,9 @@ public class ShowUserFlightsHistoryCommand implements Command {
         } catch (DAOException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
-        } catch (NumberFormatException e) {
+        }  catch (NumberFormatException e) {
             logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, PARSING_ERROR_CODE);
         }
 
         return SHOW_USER_FLIGHTS_PAGE_CONTEXT;

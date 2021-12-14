@@ -41,10 +41,10 @@ public class AddAirportCommand implements Command {
         logger.debug("execute method");
         AirportService airportService = new AirportService();
         AirportDTO airportDTO = new AirportDTO();
-        airportDTO.setName(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_NAME_ATTRIBUTE).trim());
-        airportDTO.setCountry(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_COUNTRY_ATTRIBUTE).trim());
-        airportDTO.setCity(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_CITY_ATTRIBUTE).trim());
-        airportDTO.setIATACode(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_IATACODE_ATTRIBUTE).trim());
+        airportDTO.setName(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_NAME_ATTRIBUTE));
+        airportDTO.setCountry(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_COUNTRY_ATTRIBUTE));
+        airportDTO.setCity(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_CITY_ATTRIBUTE));
+        airportDTO.setIATACode(requestContext.getParamFromJSP(Attributes.AIRPORTS_DTO_IATACODE_ATTRIBUTE));
         try {
             airportService.saveAirport(airportDTO);
             requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE,  RESULT_MESSAGE_CODE);

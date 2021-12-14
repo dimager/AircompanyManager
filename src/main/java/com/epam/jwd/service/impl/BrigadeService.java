@@ -17,106 +17,113 @@ import java.util.List;
 
 public class BrigadeService {
     private static final Logger logger = LogManager.getLogger(BrigadeService.class);
-    BrigadeDaoImpl brigadeDAO = new BrigadeDaoImpl();
-    BrigadeConverter brigadeConverter = new BrigadeConverter();
-    UserConverter userConverter = new UserConverter();
-    BrigadeValidator brigadeValidator = new BrigadeValidator();
+    private final  BrigadeDaoImpl brigadeDAO = new BrigadeDaoImpl();
+    private final BrigadeConverter brigadeConverter = new BrigadeConverter();
+    private final UserConverter userConverter = new UserConverter();
+    private final BrigadeValidator brigadeValidator = new BrigadeValidator();
 
+
+    /**
+     * Allows adding user to brigade
+     * @param userId user id
+     * @param brigadeId brigade id
+     * @return true if user is successfully added, otherwise execption
+     * @throws DAOException
+     */
     public boolean addUserToBrigade(long userId, long brigadeId) throws DAOException {
         logger.debug("addUserToBrigade method");
         return brigadeDAO.addUserToBrigade(userId, brigadeId);
     }
 
-    public boolean addUserToBrigade(UserDTO userDTO, BrigadeDTO brigadeDTO) throws DAOException {
-        logger.debug("addUserToBrigade method");
-        return this.addUserToBrigade(userDTO.getUserId(), brigadeDTO.getBrigadeId());
-    }
 
-    public void addUsersToBrigade(List<UserDTO> userDTOS, BrigadeDTO brigadeDTO) throws DAOException {
-        logger.debug("addUsersToBrigade method");
-        for (UserDTO userDTO : userDTOS) {
-            this.addUserToBrigade(userDTO, brigadeDTO);
-        }
-    }
-
-    public void addUsersToBrigade(List<Long> userDTOIds, long brigadeId) throws DAOException {
-        logger.debug("addUsersToBrigade method");
-        for (long userId : userDTOIds) {
-            this.addUserToBrigade(userId, brigadeId);
-        }
-    }
-
+    /**
+     * Allows removing user from brigade
+     * @param userId user id
+     * @param brigadeId brigade id
+     * @return true if user is successfully removed, otherwise execption
+     * @throws DAOException
+     */
     public boolean removeUserFromBrigade(long userId, long brigadeId) throws DAOException {
         logger.debug("removeUserFromBrigade method");
         return brigadeDAO.removeUserFromBrigade(userId, brigadeId);
     }
 
-    public boolean removeUserFromBrigade(UserDTO userDTO, BrigadeDTO brigadeDTO) throws DAOException {
-        logger.debug("removeUserFromBrigade method");
-        return this.removeUserFromBrigade(userDTO.getUserId(), brigadeDTO.getBrigadeId());
-    }
-
-    public void removeUsersFromBrigade(List<UserDTO> userDTOS, BrigadeDTO brigadeDTO) throws DAOException {
-        logger.debug("removeUsersFromBrigade method");
-        for (UserDTO userDTO : userDTOS) {
-            this.removeUserFromBrigade(userDTO.getUserId(), brigadeDTO.getBrigadeId());
-        }
-    }
-
-    public void removeUsersFromBrigade(List<Long> userDTOIds, long brigadeId) throws DAOException {
-        logger.debug("removeUsersFromBrigade method");
-        for (Long userDTOId : userDTOIds) {
-            this.removeUserFromBrigade(userDTOId, brigadeId);
-        }
-    }
-
+    /**
+     * Allows getting brigade userslist).
+     * @param brigadeId brigade id
+     * @return List of brigade users
+     * @throws DAOException
+     */
     public List<UserDTO> getBrigadeUsers(long brigadeId) throws DAOException {
         logger.debug("getBrigadeUsers method");
         return userConverter.convertWorkerUsersListToDTO(brigadeDAO.getBrigadeUsers(brigadeId));
     }
 
-    public List<UserDTO> getBrigadeUsers(BrigadeDTO brigadeDTO) throws DAOException {
-        logger.debug("getBrigadeUsers method");
-        return this.getBrigadeUsers(brigadeDTO.getBrigadeId());
-    }
-
+    /**
+     * Allows saving brigade in DB.
+     * @param brigadeDTO brigade
+     * @return brigadeDTO with generated ID or exception
+     * @throws DAOException
+     * @throws ValidatorException
+     */
     public BrigadeDTO saveBrigade(BrigadeDTO brigadeDTO) throws DAOException, ValidatorException {
         logger.debug("saveBrigade method");
         brigadeValidator.isValid(brigadeDTO);
         return brigadeConverter.convertToDTO(brigadeDAO.save(brigadeConverter.convertToDAO(brigadeDTO)));
     }
 
+    /**
+     * Allows updating brigade data in DB.
+     * @param brigadeDTO new brigade
+     * @return true if brigade is successfully updated, otherwise exception
+     * @throws DAOException
+     * @throws ValidatorException
+     */
     public boolean updateBrigade(BrigadeDTO brigadeDTO) throws DAOException, ValidatorException {
         logger.debug("updateBrigade method");
         brigadeValidator.isValid(brigadeDTO);
         return brigadeDAO.update(brigadeConverter.convertToDAO(brigadeDTO));
     }
 
+    /**
+     * Allows deleting brigade by id.
+     * @param brigadeId brigade id
+     * @return true if brigade is successfully deleted, otherwise exception
+     * @throws DAOException
+     */
     public boolean deleteBrigade(long brigadeId) throws DAOException {
         logger.debug("deleteBrigade method");
         return brigadeDAO.deleteById(brigadeId);
     }
 
-    public boolean deleteBrigade(BrigadeDTO brigadeDTO) throws DAOException {
-        logger.debug("deleteBrigade method");
-        return this.deleteBrigade(brigadeDTO.getBrigadeId());
-    }
 
+    /**
+     * Allows finding brigade by id
+     * @param brigadeId brigade id
+     * @return return Brigade Id, otherwise exception
+     * @throws DAOException
+     */
     public BrigadeDTO findById(long brigadeId) throws DAOException {
         logger.debug("findById method");
         return brigadeConverter.convertToDTO(brigadeDAO.findById(brigadeId));
     }
 
-    public BrigadeDTO findById(BrigadeDTO brigadeDTO) throws DAOException {
-        logger.debug("findById method");
-        return this.findById(brigadeDTO.getBrigadeId());
-    }
-
+    /**
+     * Allows finding all brigades
+     * @return List of brigades
+     * @throws DAOException
+     */
     public List<BrigadeDTO> findAllBrigade() throws DAOException {
         logger.debug("findAllBrigade method");
         return brigadeConverter.convertToDTOList(brigadeDAO.findAll());
     }
 
+    /**
+     * Allows getting brigade with userlist
+     * @param brigadeDTO brigade
+     * @return brigade with userDTOlist
+     * @throws DAOException
+     */
     public BrigadeUserDTO getBrigadeWithUsers(BrigadeDTO brigadeDTO) throws DAOException {
         logger.debug("getBrigadeWithUsers method");
         BrigadeUserDTO brigadeUserDTO = new BrigadeUserDTO();
@@ -127,6 +134,13 @@ public class BrigadeService {
         return brigadeUserDTO;
     }
 
+
+
+    /**
+     *  Allows getting all brigades with userlist
+     * @return Brigades list with userlist.
+     * @throws DAOException
+     */
     public List<BrigadeUserDTO> findAllBrigadeWithUsers() throws DAOException {
         logger.debug("findAllBrigadeWithUsers method");
         List<BrigadeUserDTO> brigadeUserDTOs = new ArrayList<>();
@@ -137,6 +151,13 @@ public class BrigadeService {
         return brigadeUserDTOs;
     }
 
+    /**
+     * Allows changing Archived status if brigade
+     * @param brigadeId brigade id
+     * @param isArchived Archive status
+     * @return true if status is changed, otherwise exception
+     * @throws DAOException
+     */
     public boolean changeArchiveStatus(long brigadeId, boolean isArchived) throws DAOException {
         return brigadeDAO.changeArchiveStatus(brigadeId,isArchived);
     }

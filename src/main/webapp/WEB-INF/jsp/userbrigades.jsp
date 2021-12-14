@@ -29,10 +29,11 @@
     <c:import url="command_result_state.jsp"/>
     <c:import url="errors.jsp"/>
     <div class="container">
-        <div class="row">
-            <div class="col-sm">
+        <div class="row-cols-1">
+            <div class="col">
                 <div class="login-one-userform">
                     <div class="form-group">
+                        <div class="tab-content">
                         <c:choose>
                             <c:when test="${not empty param.show_user_id}">
                                 <h3>${requestScope.userDTO.firstName} ${requestScope.userDTO.lastName} ${userpagename}</h3>
@@ -52,10 +53,13 @@
                                 <a class="list-group-item list-group-item-action" data-toggle="list" href="#brigade${brigade.brigadeId}" role="tab">${brigade.brigadeName}</a>
                             </c:forEach>
                         </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </div>        </div>
+
+        </div>
             <c:if test="${not empty requestScope.userBrigades}">
+                <div class="row-cols-1" >
                 <div class="login-one-userform" <c:if test="${empty requestScope.userBrigades}">hidden</c:if>>
                         <div class="form-group">
                             <div class="tab-content">
@@ -80,12 +84,11 @@
                                 </c:forEach>
                             </div>
                         </div>
+                        </div>
                     </div>
                 </div>
             </c:if>
-        </div>
     </div>
-</div>
 <c:import url="footer.jsp"/>
 <c:import url="scripts.jsp"/>
 </body>

@@ -11,8 +11,15 @@ import org.apache.logging.log4j.Logger;
 
 public class SignupService {
     private static final Logger logger = LogManager.getLogger(SignupService.class);
-    UserDaoImpl userDao = new UserDaoImpl();
-    UserConverter userConverter = new UserConverter();
+    private final  UserDaoImpl userDao = new UserDaoImpl();
+    private final UserConverter userConverter = new UserConverter();
+
+    /**
+     * Allows saving new user in DB.
+     * @param userDTO new user
+     * @return userDTO with generated id
+     * @throws DAOException
+     */
     public UserDTO saveNewUser(UserDTO userDTO) throws DAOException {
         logger.debug("saveNewUser method");
         userDTO.setRole(Role.GUEST);

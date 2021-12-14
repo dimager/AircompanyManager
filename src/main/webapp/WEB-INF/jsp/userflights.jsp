@@ -49,7 +49,7 @@
                 </div>
             </div>
         </div>
-            <div class="row" style="text-align: left">
+            <div class="row" >
                 <c:forEach items="${requestScope.flightDTOList}" var="flight">
                     <div class="col-sm">
                         <div class="login-one-userform2">

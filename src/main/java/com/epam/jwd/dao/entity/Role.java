@@ -17,7 +17,4 @@ public enum Role {
         }
         return GUEST;
     }
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
-    }
 }

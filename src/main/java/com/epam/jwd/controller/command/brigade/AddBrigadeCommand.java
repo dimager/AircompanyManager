@@ -41,7 +41,7 @@ public class AddBrigadeCommand implements Command {
         logger.debug("execute method");
         BrigadeDTO brigadeDTO = new BrigadeDTO();
         BrigadeService brigadeService = new BrigadeService();
-        brigadeDTO.setBrigadeName(requestContext.getParamFromJSP(Attributes.BRIGADENAME_ATTRIBUTE).trim());
+        brigadeDTO.setBrigadeName(requestContext.getParamFromJSP(Attributes.BRIGADENAME_ATTRIBUTE));
         try {
             brigadeService.saveBrigade(brigadeDTO);
             requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE,  RESULT_MESSAGE_CODE);

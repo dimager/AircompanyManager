@@ -1,6 +1,6 @@
 package com.epam.jwd.controller.tag;
+
 import com.epam.jwd.service.dto.UserDTO;
-import jakarta.servlet.jsp.JspException;
 import jakarta.servlet.jsp.JspWriter;
 import jakarta.servlet.jsp.tagext.SimpleTagSupport;
 import org.apache.logging.log4j.LogManager;
@@ -17,7 +17,7 @@ public class CurrentUsernameTag extends SimpleTagSupport {
     }
 
     @Override
-    public void doTag() throws JspException, IOException {
+    public void doTag() throws IOException {
         logger.debug("doTag method");
         JspWriter jspWriter = getJspContext().getOut();
         jspWriter.println(userDTO.getUsername());

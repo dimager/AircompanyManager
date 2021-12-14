@@ -54,12 +54,12 @@
                 <input class="form-control" type="text" id="input-1" name="regCode"
                        <c:if test="${not empty requestScope.aircraftDTO}">value="${requestScope.aircraftDTO.registrationCode}"</c:if>
                        placeholder="reg code" minlength="1" maxlength="10">
-                <label>${producer}</label>
+                <label for="input-4">${producer}</label>
                 <input class="form-control" type="text" id="input-4" name="aircraftProducer"
                        <c:if test="${not empty requestScope.aircraftDTO}">value="${requestScope.aircraftDTO.producer}"</c:if>
                        placeholder="producer" minlength="1" maxlength="50">
                 <div class="form-group">
-                    <label>${model}</label>
+                    <label for="input-3">${model}</label>
                     <input class="form-control" type="text" id="input-3" name="aircraftModel" placeholder="model"
                            <c:if test="${not empty requestScope.aircraftDTO}">value="${requestScope.aircraftDTO.model}"</c:if>
                            minlength="1" maxlength="50">

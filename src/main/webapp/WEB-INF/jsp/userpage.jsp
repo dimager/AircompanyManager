@@ -92,12 +92,12 @@
                                                                            placeholder="<fmt:message bundle="${lang}" key="label.oldpassword"/>">
                                             </div>
                                             <div class="form-group">
-                                                <input class="form-control" minlength="1" maxlength="50" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
+                                                <input class="form-control" minlength="8" maxlength="50" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
                                                                            type="password" name="newPassword"
                                                                            placeholder="<fmt:message bundle="${lang}" key="label.newpassword"/>">
                                                 <p class="signuptip"><fmt:message bundle="${lang}" key="promt.password"/></p>
                                             </div>
-                                            <div class="form-group"><input class="form-control" minlength="1" maxlength="50" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
+                                            <div class="form-group"><input class="form-control" minlength="8" maxlength="50" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
                                                                            type="password" name="newPasswordRepeat"
                                                                            placeholder="<fmt:message bundle="${lang}" key="label.repnewpassword"/>">
                                             </div>

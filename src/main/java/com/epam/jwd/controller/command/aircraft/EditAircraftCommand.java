@@ -16,6 +16,8 @@ public class EditAircraftCommand implements Command {
     private static final Command INSTANCE = new EditAircraftCommand();
     private static final String EDIT_AIRCRAFT_JSP = "/controller?command=SHOW_AIRCRAFT_PAGE";
     private static final int RESULT_MESSAGE_CODE = 122;
+    private static final int PARSING_ERROR_CODE = 247;
+
     private static final ResponseContext EDIT_AIRCRAFT_CONTEXT = new ResponseContext() {
         @Override
         public String getPage() {
@@ -40,17 +42,21 @@ public class EditAircraftCommand implements Command {
         logger.debug("execute method");
         AircraftService aircraftService = new AircraftService();
         AircraftDTO aircraftDTO = new AircraftDTO();
-        aircraftDTO.setProducer(requestContext.getParamFromJSP(Attributes.AIRCRAFT_PRODUCER_ATTRIBUTE).trim());
-        aircraftDTO.setModel(requestContext.getParamFromJSP(Attributes.AIRCRAFT_MODEL_ATTRIBUTE).trim());
-        aircraftDTO.setRegistrationCode(requestContext.getParamFromJSP(Attributes.REG_CODE_ATTRIBUTE).trim());
-        aircraftDTO.setAircraftId(Integer.parseInt(requestContext.getParamFromJSP(Attributes.AIRCRAFT_ID_ATTRIBUTE)));
         try {
+            aircraftDTO.setProducer(requestContext.getParamFromJSP(Attributes.AIRCRAFT_PRODUCER_ATTRIBUTE));
+            aircraftDTO.setModel(requestContext.getParamFromJSP(Attributes.AIRCRAFT_MODEL_ATTRIBUTE));
+            aircraftDTO.setRegistrationCode(requestContext.getParamFromJSP(Attributes.REG_CODE_ATTRIBUTE));
+            aircraftDTO.setAircraftId(Integer.parseInt(requestContext.getParamFromJSP(Attributes.AIRCRAFT_ID_ATTRIBUTE)));
+            boolean inOperation = aircraftService.findAircraftById(aircraftDTO.getAircraftId()).getInOperation();
+            aircraftDTO.setInOperation(inOperation);
             aircraftService.updateAircraft(aircraftDTO);
             requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE, RESULT_MESSAGE_CODE);
-        } catch (DAOException | ValidatorException |  NumberFormatException e) {
+        } catch (DAOException | ValidatorException e) {
             logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.AIRCRAFT_DTO_ATTRIBUTE, aircraftDTO);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
+        }  catch (NumberFormatException e) {
+            logger.error(e);
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, PARSING_ERROR_CODE);
         }
         return EDIT_AIRCRAFT_CONTEXT;
     }

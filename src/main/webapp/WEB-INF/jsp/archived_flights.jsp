@@ -80,7 +80,6 @@
 
                                         <c:if test="${sessionScope.loggedinUser.role == Role_MANAGER}">
                                             <td>
-                                                </a>
                                                 <c:url value="/controller" var="showBrigadeURL">
                                                     <c:param name="command" value="SHOW_BRIGADE_WITH_USERS_PAGE_ARCHIVE"/>
                                                     <c:param name="brigade_id" value="${flight.brigadeDTO.brigadeId}"/>

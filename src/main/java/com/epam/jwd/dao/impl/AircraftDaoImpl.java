@@ -52,7 +52,7 @@ public class AircraftDaoImpl implements BaseDao<Integer, Aircraft> {
 
         } catch (SQLException e) {
             logger.error(EXCEPTION_SAVE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_SAVE_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_SAVE_ERROR_MESSAGE  + EXCEPTION_SQL_MESSAGE);
         } finally {
             CloseResultSet(resultSet);
             connectionPool.returnConnection(connection);
@@ -78,12 +78,6 @@ public class AircraftDaoImpl implements BaseDao<Integer, Aircraft> {
         }
     }
 
-    /**
-     * Update Aircraft entry in database by ID.
-     *
-     * @param aircraft- aircraft entity.
-     * @return true - if entry is successfully updated, otherwise false.
-     */
     @Override
     public boolean update(Aircraft aircraft) throws DAOException {
         logger.debug("update method");
@@ -100,7 +94,7 @@ public class AircraftDaoImpl implements BaseDao<Integer, Aircraft> {
             throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_UPDATE_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_UPDATE_ERROR_MESSAGE  + EXCEPTION_SQL_MESSAGE);
         } finally {
             connectionPool.returnConnection(connection);
         }
@@ -128,7 +122,7 @@ public class AircraftDaoImpl implements BaseDao<Integer, Aircraft> {
             return aircrafts;
         } catch (SQLException e) {
             logger.error(EXCEPTION_FINDALL_SQL_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_FINDALL_SQL_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_FINDALL_SQL_ERROR_MESSAGE  + EXCEPTION_SQL_MESSAGE);
         } finally {
             connectionPool.returnConnection(connection);
         }
@@ -156,7 +150,7 @@ public class AircraftDaoImpl implements BaseDao<Integer, Aircraft> {
             throw new DAOException(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_FIND_BY_ID_ERROR_MESSAGE  + EXCEPTION_SQL_MESSAGE);
         } finally {
             CloseResultSet(resultSet);
             connectionPool.returnConnection(connection);
@@ -176,7 +170,7 @@ public class AircraftDaoImpl implements BaseDao<Integer, Aircraft> {
             throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE);
         } catch (SQLException e) {
             logger.error(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE + EXCEPTION_SQL_MESSAGE, e);
-            throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE);
+            throw new DAOException(EXCEPTION_DELETE_BY_ID_ERROR_MESSAGE   + EXCEPTION_SQL_MESSAGE);
         } finally {
             connectionPool.returnConnection(connection);
         }

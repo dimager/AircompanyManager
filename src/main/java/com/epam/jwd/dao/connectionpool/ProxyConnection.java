@@ -69,7 +69,7 @@ public class ProxyConnection implements Connection {
     }
 
     @Override
-    public void close() throws SQLException {
+    public void close() {
         this.connectionPool.returnConnection(connection);
     }
 
@@ -204,7 +204,7 @@ public class ProxyConnection implements Connection {
     }
 
     @Override
-    public PreparedStatement prepareStatement(String sql, String[] columnNames) throws SQLException {
+    public PreparedStatement prepareStatement(String sql, String[] columnNames) {
         return prepareStatement(sql, columnNames);
     }
 
@@ -239,7 +239,7 @@ public class ProxyConnection implements Connection {
     }
 
     @Override
-    public String getClientInfo(String name) throws SQLException {
+    public String getClientInfo(String name) {
         return getClientInfo(name);
     }
 
@@ -294,7 +294,7 @@ public class ProxyConnection implements Connection {
     }
 
     @Override
-    public boolean isWrapperFor(Class<?> iface) throws SQLException {
+    public boolean isWrapperFor(Class<?> iface) {
         return isWrapperFor(iface);
     }
 }

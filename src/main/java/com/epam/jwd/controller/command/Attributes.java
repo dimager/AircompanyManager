@@ -16,13 +16,12 @@ public interface Attributes {
     String AIRCRAFT_DTO_LIST_ATTRIBUTE = "aircraftDTOList";
     String CALLSIGN_INPUT_FIELD = "callsignInput";
     String SELECTED_DATE_TIME = "selectedDateTime";
-    String SELECTED_BRIGADE_FIELD_NAME = "selectedBrigade";
     String SELECTED_AIRCRAFT_FIELD_NAME = "selectedAircraft";
     String SELECTED_DEPARTURE_AIRPORT_FIELD_NAME = "selectedDepartureAirport";
     String SELECTED_DESTINATION_AIRPORT_FIELD_NAME = "selectedDestinationAirport";
     String EDIT_FLIGHT_ID_ATTRIBUTE = "edit_flight_id";
     String ARCHIVE_FLIGHT_ID_ATTRIBUTE = "archive_flight_id";
-    String ARCHIVE_BRIGADE_ID_ATTRIBUTE = "archive_brigade_id";
+    String BRIGADE_WITH_USERS_DTO_ATTRIBUTE = "brigadeUserDTO";
     String IS_ARCHIVED_ID_ATTRIBUTE = "isArchived";
     String DELETE_FLIGHT_ID_ATTRIBUTE = "delete_flight_id";
     String NEW_BRIGADE_ID_ATTRIBUTE = "new_brigade";

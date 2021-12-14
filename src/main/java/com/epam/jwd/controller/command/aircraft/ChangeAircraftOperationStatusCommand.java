@@ -15,6 +15,7 @@ public class ChangeAircraftOperationStatusCommand implements Command {
     private static final String AIRCRAFT_JSP = "/controller?command=SHOW_AIRCRAFT_PAGE";
     private static final int RESULT_MESSAGE_CODE_IN_OPERATION = 129;
     private static final int RESULT_MESSAGE_CODE_NOT_IN_OPERATION = 130;
+    private static final int PARSING_ERROR_CODE = 247;
 
     private static final ResponseContext CHANGE_AIRCRAFT_OPERATION_STATUS_CONTEXT = new ResponseContext() {
         @Override
@@ -55,7 +56,7 @@ public class ChangeAircraftOperationStatusCommand implements Command {
                 requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
             } catch (NumberFormatException e) {
                 logger.error(e);
-                requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
+                requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, PARSING_ERROR_CODE);
             }
         return CHANGE_AIRCRAFT_OPERATION_STATUS_CONTEXT;
     }

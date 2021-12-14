@@ -17,9 +17,9 @@ public class ChangeFlightArchiveStatusCommand implements Command {
     private static final Logger logger = LogManager.getLogger(AddFlightCommand.class);
     private static final Command INSTANCE = new ChangeFlightArchiveStatusCommand();
     private static final String RESULT_MESSAGE_CODE_ARCHIVED = "123";
-    private static final String PARSING_EXECPTION = "300";
+    private static final int PARSING_ERROR_CODE = 247;
     private static final String ERROR_CODE = "12";
-    public static String FLIGHT_JSP = "/controller?command=SHOW_FLIGHT_PAGE";
+    public static final String FLIGHT_JSP = "/controller?command=SHOW_FLIGHT_PAGE";
     private static final ResponseContext CHANGE_FLIGHT_ARCHIVE_STATUS_COMMAND_CONTEXT = new ResponseContext() {
         @Override
         public String getPage() {
@@ -47,11 +47,11 @@ public class ChangeFlightArchiveStatusCommand implements Command {
         try {
             long flightId = Long.parseLong(requestContext.getParamFromJSP(Attributes.ARCHIVE_FLIGHT_ID_ATTRIBUTE));
             boolean isArchived = Boolean.parseBoolean(requestContext.getParamFromJSP(Attributes.IS_ARCHIVED_ID_ATTRIBUTE));
-            FlightDTO flightDTO = flightService.findFlightById(flightId);
+            FlightDTO flightDTOFromDB = flightService.findFlightById(flightId);
             if (isArchived) {
-                if (Objects.nonNull(flightDTO.getBrigadeDTO())) {
-                    brigadeService.changeArchiveStatus(flightDTO.getBrigadeDTO().getBrigadeId(), isArchived);
-                    flightService.changeArchiveStatus(flightId, isArchived);
+                if (Objects.nonNull(flightDTOFromDB.getBrigadeDTO())) {
+                    brigadeService.changeArchiveStatus(flightDTOFromDB.getBrigadeDTO().getBrigadeId(), true);
+                    flightService.changeArchiveStatus(flightId, true);
                     requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE, RESULT_MESSAGE_CODE_ARCHIVED);
                 } else {
                     requestContext.addAttributeToJSP(Attributes.COMMAND_ONEERROR_ATTRIBUTE, ERROR_CODE);
@@ -59,7 +59,7 @@ public class ChangeFlightArchiveStatusCommand implements Command {
             }
         } catch (NumberFormatException e) {
             logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, PARSING_EXECPTION );
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, PARSING_ERROR_CODE );
         } catch (DAOException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());

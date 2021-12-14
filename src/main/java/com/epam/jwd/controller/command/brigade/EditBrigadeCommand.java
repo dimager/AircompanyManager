@@ -17,6 +17,7 @@ public class EditBrigadeCommand implements Command {
     private static final String EDIT_BRIGADE_JSP = "/controller?command=SHOW_BRIGADE_PAGE";
     private static final int RESULT_MESSAGE_CODE = 110;
     private static final int ERROR_CODE = 131;
+    private static final int PARSING_ERROR_CODE = 247;
 
     private static final ResponseContext EDIT_BRIGADES_PAGE_CONTEXT = new ResponseContext() {
         @Override
@@ -54,9 +55,12 @@ public class EditBrigadeCommand implements Command {
                 brigadeService.updateBrigade(brigadeDTO);
                 requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE,  RESULT_MESSAGE_CODE);
             }
-        } catch (DAOException | ValidatorException |  NumberFormatException e) {
+        } catch (DAOException | ValidatorException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
+        }  catch (NumberFormatException e) {
+            logger.error(e);
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, PARSING_ERROR_CODE);
         }
         return EDIT_BRIGADES_PAGE_CONTEXT;
     }

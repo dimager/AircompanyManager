@@ -21,6 +21,7 @@ public class ShowUserBrigadesCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ShowUserBrigadesCommand.class);
     private static final Command INSTANCE = new ShowUserBrigadesCommand();
     private static final String USER_BRIGADES_JSP = "/WEB-INF/jsp/userbrigades.jsp";
+    private static final int PARSING_ERROR_CODE = 247;
     private static final ResponseContext SHOW_USER_FLIGHTS_PAGE_CONTEXT = new ResponseContext() {
         @Override
         public String getPage() {
@@ -64,9 +65,9 @@ public class ShowUserBrigadesCommand implements Command {
         } catch (DAOException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
-        } catch (NumberFormatException e) {
+        }  catch (NumberFormatException e) {
             logger.error(e);
-            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, PARSING_ERROR_CODE);
         }
         return SHOW_USER_FLIGHTS_PAGE_CONTEXT;
     }

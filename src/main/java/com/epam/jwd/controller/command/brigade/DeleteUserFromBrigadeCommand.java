@@ -16,6 +16,7 @@ public class DeleteUserFromBrigadeCommand implements Command {
     private static final String SHOW_BRIGADE_WITH_USERS_PAGE = "/controller?command=SHOW_BRIGADE_WITH_USERS_PAGE";
     private static final int RESULT_MESSAGE_CODE = 109;
     private static final int ERROR_CODE = 130;
+    private static final int PARSING_ERROR_CODE = 247;
 
     private static final ResponseContext DELETE_USER_FROM_BRIGADES_PAGE_CONTEXT = new ResponseContext() {
         @Override
@@ -51,7 +52,10 @@ public class DeleteUserFromBrigadeCommand implements Command {
                 brigadeService.removeUserFromBrigade(userId, brigadeId);
                 requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE,  RESULT_MESSAGE_CODE);
             }
-        } catch (NumberFormatException | DAOException e) {
+        }  catch (NumberFormatException e) {
+            logger.error(e);
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, PARSING_ERROR_CODE);
+        } catch (DAOException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
         }

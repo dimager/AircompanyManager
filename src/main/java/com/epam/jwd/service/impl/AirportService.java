@@ -15,26 +15,52 @@ import java.util.List;
 
 public class AirportService {
     private static final Logger logger = LogManager.getLogger(AirportService.class);
-    AirportDaoImpl airportDao = new AirportDaoImpl();
-    AirportConverter airportConverter = new AirportConverter();
-    AirportValidator airportValidator  = new AirportValidator();
+    private final AirportDaoImpl airportDao = new AirportDaoImpl();
+    private final AirportConverter airportConverter = new AirportConverter();
+    private final AirportValidator airportValidator  = new AirportValidator();
+
+    /**
+     * Allows saving airport entity in DB.
+     * @param airportDTO entity which should be saved
+     * @return airportDTO with generated id.
+     * @throws DAOException throws if entity wasn't saved or sql exception
+     * @throws ValidatorException throws if data validation is failed
+     */
     public AirportDTO saveAirport (AirportDTO airportDTO) throws DAOException, ValidatorException {
         logger.debug("saveAirport method");
         airportValidator.isValid(airportDTO);
         return airportConverter.convertToDTO(airportDao.save(airportConverter.convertToDAO(airportDTO)));
     }
 
+    /**
+     * Allows update airport data in DB.
+     * @param airportDTO  entity which should be updated
+     * @return true if data was successfully updated, otherwise exception
+     * @throws ValidatorException throws if data validation is failed
+     * @throws DAOException throws if entity wasn't updated or sql exception
+     */
     public boolean updateAirport (AirportDTO airportDTO) throws ValidatorException, DAOException {
         logger.debug("updateAirport method");
         airportValidator.isValid(airportDTO);
         return airportDao.update(airportConverter.convertToDAO(airportDTO));
     }
 
+    /**
+     * Allows finding airport by id.
+     * @param id airport id which should be found in DB.
+     * @return if entity was found return AirportDTO, otherwise exception
+     * @throws DAOException
+     */
     public AirportDTO findAirportById (int id) throws DAOException {
         logger.debug("findAirportById method");
         return airportConverter.convertToDTO(airportDao.findById(id));
     }
 
+    /**
+     * Allows finding list of all airports in DB
+     * @return List of AirportDTO
+     * @throws DAOException if some sql exception
+     */
     public List<AirportDTO> findAllAirports() throws DAOException {
         logger.debug("findAllAirports method");
         List<AirportDTO> airportDTOList = new ArrayList<>();
@@ -44,6 +70,12 @@ public class AirportService {
         return airportDTOList;
     }
 
+    /**
+     * Allows deleting airport entity in db by id
+     * @param id of airport
+     * @return true if airport was deleted, otherwise exception
+     * * @throws DAOException
+     */
     public boolean deleteAirport (int id) throws DAOException {
         logger.debug("deleteAirport method");
         return airportDao.deleteById(id);

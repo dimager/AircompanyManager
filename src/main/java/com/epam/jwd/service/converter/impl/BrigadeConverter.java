@@ -31,10 +31,4 @@ public class BrigadeConverter implements Converter<Brigade, BrigadeDTO> {
         return brigadeDTOs;
     }
 
-    public List<Brigade> convertToDAOList(List<BrigadeDTO> brigadeDTOs) {
-        List<Brigade> brigades = new ArrayList<>();
-        brigadeDTOs.forEach(brigade -> brigades.add(convertToDAO(brigade)));
-        return brigades;
-    }
-
 }

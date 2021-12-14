@@ -2,8 +2,6 @@ package com.epam.jwd.service.dto;
 
 import com.epam.jwd.dao.entity.Role;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class UserDTO extends BaseDTO {

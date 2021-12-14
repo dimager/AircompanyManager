@@ -96,10 +96,6 @@ public final class ConnectionPoolImpl implements ConnectionPool {
 
     private void closeConnection(ProxyConnection connection) {
         logger.debug("closeConnection method");
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            logger.error(e);
-        }
+        connection.close();
     }
 }

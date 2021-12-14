@@ -55,8 +55,10 @@
                                 <tr>
                                     <th>${colCallsign}</th>
                                     <th>${colAircraft}</th>
+                                    <c:if test="${sessionScope.loggedinUser.role <= Role_MANAGER}">
+                                        <th></th>
+                                    </c:if>
                                     <c:if test="${sessionScope.loggedinUser.role == Role_MANAGER}">
-                                        <th>${colBrigade}</th>
                                         <th></th>
                                     </c:if>
                                     <th>${colDepAirport}</th>
@@ -77,7 +79,6 @@
                                                     <td class="redaircraft">${setaircraft}</td>
                                                 </c:when>
                                                 <c:when test="${not flight.aircraftDTO.inOperation}">
-                                                    <c:set var="oneError" scope="request" value="144"></c:set>
                                                     <td class="redaircraft">${flight.aircraftDTO.registrationCode} ${aircraftinservice}</td>
                                                 </c:when>
                                                 <c:otherwise>
@@ -87,8 +88,10 @@
                                                 </c:otherwise>
                                             </c:choose>
 
-                                            <c:if test="${sessionScope.loggedinUser.role == Role_MANAGER}">
+                                            <c:if test="${sessionScope.loggedinUser.role <= Role_MANAGER}">
                                                 <td>${flight.brigadeDTO.brigadeName}</td>
+                                            </c:if>
+                                            <c:if test="${sessionScope.loggedinUser.role == Role_MANAGER}">
                                                 <td>
                                                     <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalLong${flight.id}">
                                                             ${btnChangeBrigade}
@@ -108,17 +111,10 @@
                                                     <a href="${editURL}">
                                                         <i class="icon ion-edit" style=" margin-left: 10px;"></i>
                                                     </a>
-                                                    <c:url value="/controller" var="deleteURL">
-                                                        <c:param name="command" value="DELETE_FLIGHT"/>
-                                                        <c:param name="delete_flight_id" value="${flight.id}"/>
-                                                    </c:url>
-                                                    <a href="${deleteURL}">
-                                                        <i class="icon ion-android-delete" style=" margin-left: 10px;"></i>
-                                                    </a>
                                                     <c:url value="/controller" var="changeArchiveStatusURL">
                                                         <c:param name="command" value="CHANGE_FLIGHT_ARCHIVE_STATUS"/>
                                                         <c:param name="archive_flight_id" value="${flight.id}"/>
-                                                        <c:param name="isArchived" value="true"></c:param>
+                                                        <c:param name="isArchived" value="true"/>
                                                     </c:url>
                                                     <a href="${changeArchiveStatusURL}">
                                                         <i class="icon ion-archive" style=" margin-left: 10px;"></i>

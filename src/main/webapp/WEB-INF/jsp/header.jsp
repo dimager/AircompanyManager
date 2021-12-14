@@ -34,7 +34,7 @@
         <div class="collapse navbar-collapse" id="navcol-1">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" <c:if test="${fn:endsWith(pageContext.request.queryString,'/controller' )}"> style="color:#007bff" </c:if> href="/controller">
+                    <a class="nav-link" <c:if test="${fn:endsWith(pageContext.request.queryString,'/controller' )}"> style="color:#007bff" </c:if> href="/">
                         ${main}
                     </a>
                 </li>

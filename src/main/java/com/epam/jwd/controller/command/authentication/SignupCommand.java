@@ -44,9 +44,8 @@ public class SignupCommand implements Command {
         List<Integer> errors = new ArrayList<>();
         ValidationService validationService = new ValidationService();
         SignupService signupService = new SignupService();
-
-        String password = requestContext.getParamFromJSP(Attributes.JSP_PASSWORD_INPUT_FILED_NAME).trim();
-        String passwordRepeat = requestContext.getParamFromJSP(Attributes.JSP_PASSWORD_REPEAT_INPUT_FILED_NAME).trim();
+        String password = requestContext.getParamFromJSP(Attributes.JSP_PASSWORD_INPUT_FILED_NAME);
+        String passwordRepeat = requestContext.getParamFromJSP(Attributes.JSP_PASSWORD_REPEAT_INPUT_FILED_NAME);
         userDTO.setUsername(requestContext.getParamFromJSP(Attributes.JSP_USERNAME_INPUT_FILED_NAME));
         userDTO.setFirstName(requestContext.getParamFromJSP(Attributes.JSP_FIRSTNAME_INPUT_FILED_NAME));
         userDTO.setLastName(requestContext.getParamFromJSP(Attributes.JSP_LASTNAME_INPUT_FILED_NAME));
@@ -56,9 +55,9 @@ public class SignupCommand implements Command {
             if (validationService.validateNewUser(userDTO,passwordRepeat,errors)) {
                 signupService.saveNewUser(userDTO);
                 requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE, RESULT_MESSAGE_CODE);
-
             }
             else {
+                requestContext.addAttributeToJSP(Attributes.USER_DTO_ATTRIBUTE,userDTO);
                 requestContext.addAttributeToJSP(Attributes.COMMAND_ERRORS_ATTRIBUTE, errors);
             }
         } catch (DAOException e) {

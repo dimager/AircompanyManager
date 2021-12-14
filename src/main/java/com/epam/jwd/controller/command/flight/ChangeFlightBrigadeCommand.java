@@ -4,22 +4,18 @@ import com.epam.jwd.controller.command.Attributes;
 import com.epam.jwd.controller.command.Command;
 import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
-import com.epam.jwd.dao.entity.Brigade;
-import com.epam.jwd.dao.entity.Flight;
 import com.epam.jwd.dao.exception.DAOException;
-import com.epam.jwd.service.exception.ValidatorException;
 import com.epam.jwd.service.impl.BrigadeService;
 import com.epam.jwd.service.impl.FlightService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.time.format.DateTimeParseException;
 
 public class ChangeFlightBrigadeCommand implements Command {
     public static final String FLIGHT_JSP = "/controller?command=SHOW_FLIGHT_PAGE";
     private static final Logger logger = LogManager.getLogger(AddFlightCommand.class);
     private static final Command INSTANCE = new ChangeFlightBrigadeCommand();
     private static final int RESULT_MESSAGE_CODE = 112;
+    private static final int PARSING_ERROR_CODE = 247;
     private static final int ERROR_CODE_FLIGHT = 133;
     private static final int ERROR_CODE_BRIGADE = 135;
 
@@ -63,9 +59,12 @@ public class ChangeFlightBrigadeCommand implements Command {
                 requestContext.addAttributeToJSP(Attributes.COMMAND_RESULT_ATTRIBUTE, RESULT_MESSAGE_CODE);
             }
 
-        } catch (DAOException | NumberFormatException e) {
+        } catch (DAOException e) {
             logger.error(e);
             requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
+        }  catch (NumberFormatException e) {
+            logger.error(e);
+            requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, PARSING_ERROR_CODE);
         }
         return CHANGE_FLIGHT_BRIGADE_COMMAND_CONTEXT;
     }

@@ -20,11 +20,9 @@ public class ValidationService {
     private static final Integer PASSWORD_IS_NOT_VALID_CODE = 6;
     private static final Integer FIRSTNAME_IS_NOT_VALID_CODE = 7;
     private static final Integer LASTNAME_IS_NOT_VALID_CODE = 8;
-    private static final Integer USERNAME_IS_NOT_REGISTERED_CODE = 9;
 
-    UserDaoImpl userDAO = new UserDaoImpl();
-    UserValidator userValidator = new UserValidator();
-
+    private final UserDaoImpl userDAO = new UserDaoImpl();
+    private final UserValidator userValidator = new UserValidator();
 
     public boolean validateNewUser(UserDTO userDTO, String passwordRepeat, List<Integer> errors) throws DAOException {
         logger.debug("validateNewUser method");
@@ -62,10 +60,10 @@ public class ValidationService {
             logger.debug("error code: " + LASTNAME_IS_NOT_VALID_CODE);
             errors.add(LASTNAME_IS_NOT_VALID_CODE);
         }
-        return errors.size() == 0;
+        return errors.isEmpty();
     }
 
-    public boolean validateNewPassword(UserDTO userDTO, String passwordRepeat, List<Integer> errors) throws DAOException {
+    public boolean validateNewPassword(UserDTO userDTO, String passwordRepeat, List<Integer> errors) {
         if (userValidator.passwordsMismatch(userDTO.getPassword(), passwordRepeat)) {
             logger.debug("error code: " + PASSWORD_MISMATCH_CODE);
             errors.add(PASSWORD_MISMATCH_CODE);
@@ -73,22 +71,7 @@ public class ValidationService {
             logger.debug("error code: " + PASSWORD_IS_NOT_VALID_CODE);
             errors.add(PASSWORD_IS_NOT_VALID_CODE);
         }
-        return errors.size() == 0;
-    }
-
-    public boolean validateLogin(UserDTO userDTO, List<Integer> errors) throws DAOException {
-        if (!this.isUsernameInUse(userDTO.getUsername())) {
-            logger.debug("error code: " + USERNAME_IS_NOT_REGISTERED_CODE);
-            errors.add(USERNAME_IS_NOT_REGISTERED_CODE);
-        } else if (userValidator.usernameIsNotValid(userDTO.getUsername())) {
-            logger.debug("error code: " + USERNAME_IS_NOT_VALID_CODE);
-            errors.add(USERNAME_IS_NOT_VALID_CODE);
-        }
-        if (userValidator.passwordIsNotValid(userDTO.getPassword())){
-            logger.debug("error code: " + PASSWORD_IS_NOT_VALID_CODE);
-            errors.add(PASSWORD_IS_NOT_VALID_CODE);
-        }
-        return errors.size() == 0;
+        return errors.isEmpty();
     }
 
     private boolean isUsernameInUse(String username) throws DAOException {
@@ -100,6 +83,5 @@ public class ValidationService {
         logger.debug("emailInUse method");
         return userDAO.emailInUse(email);
     }
-
 
 }

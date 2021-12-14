@@ -16,6 +16,7 @@ public class ShowAddEditBrigadePageCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ShowAddEditBrigadePageCommand.class);
     private static final Command INSTANCE = new ShowAddEditBrigadePageCommand();
     private static final String ADD_EDIT_JSP = "/WEB-INF/jsp/add_edit_brigade.jsp";
+    private static final int PARSING_ERROR_CODE = 247;
     private static final ResponseContext SHOW_ADD_EDIT_PAGE_CONTEXT = new ResponseContext() {
         @Override
         public String getPage() {
@@ -47,9 +48,12 @@ public class ShowAddEditBrigadePageCommand implements Command {
                 brigadeDTO = brigadeService.findById(id);
                 requestContext.addAttributeToJSP(Attributes.BRIGADE_DTO_ATTRIBUTE, brigadeDTO);
 
-            } catch (DAOException |  NumberFormatException e) {
+            } catch (DAOException e) {
                 logger.error(e);
                 requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, e.getMessage());
+            } catch (NumberFormatException e) {
+                logger.error(e);
+                requestContext.addAttributeToJSP(Attributes.EXCEPTION_ATTRIBUTE, PARSING_ERROR_CODE);
             }
         }
 

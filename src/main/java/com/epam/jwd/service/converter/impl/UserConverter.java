@@ -39,7 +39,7 @@ public class UserConverter implements Converter<User, UserDTO> {
 
     public List<UserDTO> convertWorkerUsersListToDTO(List<User> users) {
         List<UserDTO> userDTOs = new ArrayList<>();
-        users.stream().filter(user -> user.getRoleId() > 2).forEach(user -> userDTOs.add(convertToDTO(user)));
+        users.stream().filter(user -> user.getRoleId() > Role.MANAGER.ordinal()).forEach(user -> userDTOs.add(convertToDTO(user)));
         return userDTOs;
     }
 
@@ -49,9 +49,4 @@ public class UserConverter implements Converter<User, UserDTO> {
         return userDTOs;
     }
 
-    public List<User> convertUserDTOListToDao(List<UserDTO> userDTOs) {
-        List<User> users = new ArrayList<>();
-        userDTOs.forEach(userDTO -> users.add(convertToDAO(userDTO)));
-        return users;
-    }
 }
