@@ -58,7 +58,7 @@
     </properties>
 
     <build>
-        <finalName>APmanager</finalName>
+        <finalName>ROOT</finalName>
         <sourceDirectory>/src/main/java/com/epam/jwd</sourceDirectory>
         <resources>
             <resource>

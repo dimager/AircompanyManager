@@ -1,9 +1,13 @@
 package com.epam.jwd.service.impl;
 
 import com.epam.jwd.service.dto.UserDTO;
+import com.epam.jwd.service.exception.ServiceException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import javax.sql.rowset.serial.SerialException;
 
 
 class LoginServiceTest {
@@ -20,10 +24,11 @@ class LoginServiceTest {
     }
 
     @Test
-    void authenticate() {
+    @DisplayName("Test authenticating method")
+    void authenticateTest() {
         Assertions.assertAll(() -> userDTFromDB = userService.findById(userDTO.getUserId()),
                 () -> Assertions.assertEquals(userDTFromDB,loginService.authenticate(userDTO)),
                 () -> userDTO.setPassword("WrongPassword"),
-                () -> Assertions.assertNull(loginService.authenticate(userDTO)));
+                () -> Assertions.assertThrows(ServiceException.class, () ->  loginService.authenticate(userDTO)));
     }
 }
