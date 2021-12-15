@@ -56,10 +56,10 @@
                                     <th>${colCallsign}</th>
                                     <th>${colAircraft}</th>
                                     <c:if test="${sessionScope.loggedinUser.role <= Role_MANAGER}">
-                                        <th></th>
+                                        <th>${colBrigade}</th>
                                     </c:if>
                                     <c:if test="${sessionScope.loggedinUser.role == Role_MANAGER}">
-                                        <th></th>
+                                        <th>${colBrigade}</th>
                                     </c:if>
                                     <th>${colDepAirport}</th>
                                     <th>${colDestAirport}</th>
